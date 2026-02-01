@@ -5,6 +5,7 @@ const withNextIntl = createNextIntlPlugin('./i18n.ts');
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  swcMinify: true,
   images: {
     domains: ['localhost'],
     remotePatterns: [
@@ -15,6 +16,10 @@ const nextConfig = {
         pathname: '/storage/**',
       },
     ],
+  },
+  // Force SWC to use fallback if binary not found
+  experimental: {
+    swcFileReading: true,
   },
 }
 
