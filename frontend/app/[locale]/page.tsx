@@ -9,6 +9,10 @@ import Reviews from '@/components/Reviews';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 
+// Force static generation
+export const dynamic = 'force-static';
+export const dynamicParams = false;
+
 export default function HomePage() {
   return (
     <main className="min-h-screen overflow-x-hidden w-full">
