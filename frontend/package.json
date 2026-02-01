@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "NEXT_SWC_BINARY_PATH= next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "node -e \"try { require('@next/swc-linux-x64-gnu'); } catch(e) { console.log('SWC binary not found, will use Babel'); }\""
   },
   "dependencies": {
     "react": "^18.2.0",
