@@ -7,10 +7,6 @@ const nextConfig = {
   reactStrictMode: true,
   // Disable SWC completely, use Babel instead
   swcMinify: false,
-  // next-intl configuration
-  env: {
-    _next_intl_trailing_slash: 'never',
-  },
   compiler: {
     // Use Babel for compilation
   },
