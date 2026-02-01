@@ -125,7 +125,7 @@ export default function Reviews() {
                 ))}
               </div>
               <p className="text-gray-700 mb-4 leading-relaxed">
-                "{review.text}"
+                &quot;{review.text}&quot;
               </p>
               <p className="text-sm font-semibold text-gray-900">
                 — {review.author}
