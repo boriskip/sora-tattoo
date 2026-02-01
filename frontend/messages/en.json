@@ -1,0 +1,143 @@
+{
+  "common": {
+    "book": "Book Appointment",
+    "viewWorks": "View Works",
+    "works": "Works",
+    "masters": "Masters",
+    "styles": "Styles",
+    "info": "Information",
+    "availability": "Availability",
+    "reviews": "Reviews",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "SORA TATTOO",
+    "subtitle": "Artistic Tattoos with Passion",
+    "description": "We create unique tattoo artworks that reflect your personality",
+    "book": "Book Appointment",
+    "viewWorks": "View Works",
+    "tagline": "Where ink meets air."
+  },
+  "about": {
+    "title": "About Us",
+    "content": "SORA Tattoo stands for clarity, precision, and artistic freedom.\nOur studio in Berlin is a place where ideas take shape and personal stories become visible.\nWe don't work with a rigid surface, but with the body in motion – lines follow rhythm, flow, and natural dynamics.\nFor us, skin is not a canvas substitute, but part of the composition.\nEmptiness doesn't mean absence, but balance – a conscious pause within the entire visual dialogue.\nWith care, transparency, and the highest standards of quality and safety, each tattoo emerges as part of a greater whole."
+  },
+  "artists": {
+    "title": "Masters",
+    "artist1": {
+      "name": "Artist 01",
+      "style": "Japanese Style",
+      "description": "Works in traditional Japanese tattoo style.\nInspired by symbolism, balance, and timeless forms.\nEach motif carries meaning and inner strength."
+    },
+    "artist2": {
+      "name": "Artist 02",
+      "style": "Japanese · Realism · Graphic",
+      "description": "Combines Japanese motifs with realism and graphic elements.\nStrong compositions, deep contrast, and expressive details.\nWhere tradition meets modern vision."
+    },
+    "artist3": {
+      "name": "Artist 03",
+      "style": "Minimal · Fine Line · Micro Realism",
+      "description": "Specializes in minimalist tattoos, fine line, and micro realism.\nFine lines, clear forms, and precise details.\nSubtle tattoos with lasting impact."
+    }
+  },
+  "guides": {
+    "chooseArtist": {
+      "title": "How to Choose the Right Tattoo Artist?",
+      "content": "Each artist at SORA has their own signature and works in different styles.\nPay attention to the style, line work, and how motifs are structured.\nEqually important is the personal feeling – whether you feel understood and well taken care of.\nA tattoo is a collaborative process that requires time, trust, and calm.\nTake that time – we're happy to guide you through it."
+    },
+    "prepare": {
+      "title": "How Do I Prepare for a Tattoo Appointment?",
+      "content": "Good preparation helps you experience the tattoo appointment relaxed.\nMake sure you're well-rested, have eaten well, and drink enough water.\nAvoid alcohol and drugs at least 24 hours before the appointment.\nWear comfortable clothing and take your time – calm and a good feeling are part of the process.\nIf you have questions, we're always here for you."
+    },
+    "session": {
+      "title": "What to Expect During the Tattoo Session?",
+      "content": "The tattoo appointment begins with a calm conversation about your motif and placement.\nTogether we go through the details before the process starts.\nDuring the session, we take our time, take breaks, and pay attention to your well-being.\nYou can ask questions at any time or let us know if you need a break.\nYour comfort and a good feeling are our top priority."
+    },
+    "aftercare": {
+      "title": "Tattoo Care & Healing",
+      "intro": "Good aftercare is crucial for a beautiful and lasting result.\nPlease follow these guidelines – they help your skin heal optimally.",
+      "method1": {
+        "title": "Option 1 — Healing with Protective Film (Second Skin)",
+        "description": "After the tattoo, a special protective film is applied to the skin.",
+        "steps": [
+          "The film stays on the skin for 3–5 days, depending on your artist's recommendation.",
+          "During this time, it protects the tattoo from bacteria, friction, and dirt.",
+          "If fluid collects under the film, this is normal.",
+          "If the film comes off prematurely or becomes very uncomfortable, remove it carefully."
+        ],
+        "afterRemoval": "After removing the film:\n• Wash the tattoo with lukewarm water and a mild, unscented soap.\n• Gently pat the skin dry (do not rub).\n• Apply a thin layer of tattoo care cream.\n• Care for the tattoo 2–3 times daily."
+      },
+      "method2": {
+        "title": "Option 2 — Healing with Compress",
+        "description": "After the appointment, the tattoo is covered with a compress.",
+        "steps": [
+          "Remove the compress after 1.5–2 hours.",
+          "Wash the tattoo thoroughly with lukewarm water and mild soap.",
+          "Gently pat it dry.",
+          "Apply a thin layer of care cream."
+        ],
+        "followingDays": "In the following days:\n• Wash the tattoo 2–3 times daily.\n• Apply a thin layer of cream each time.\n• The skin should not dry out, but also not 'suffocate'."
+      },
+      "important": {
+        "title": "Important Notes for Both Options",
+        "points": [
+          "Avoid scratching or rubbing.",
+          "Do not pull on scabs or skin flakes.",
+          "No bathing, sauna, tanning, or swimming for at least 2–3 weeks.",
+          "Avoid direct sunlight.",
+          "Wear loose, clean clothing over the tattoo."
+        ]
+      },
+      "healing": {
+        "title": "Healing Process",
+        "content": "• In the first days, the skin may be red, sensitive, or slightly swollen – this is normal.\n• Itching is part of the healing process, please do not scratch.\n• Complete healing takes about 2–4 weeks, deeper skin layers longer."
+      },
+      "support": "If you're unsure or have questions, feel free to contact us anytime.\nWe'll support you even after the tattoo – your well-being is important to us."
+    }
+  },
+  "nav": {
+    "home": "Home",
+    "works": "Works",
+    "masters": "Masters",
+    "styles": "Styles",
+    "info": "Information",
+    "availability": "Availability",
+    "reviews": "Reviews",
+    "contact": "Contact",
+    "book": "Book Appointment"
+  },
+  "gallery": {
+    "all": "All",
+    "japanese": "Japanese",
+    "realism": "Realism",
+    "minimal": "Minimal",
+    "graphic": "Graphic"
+  },
+  "contact": {
+    "studioInfo": "Studio Information",
+    "address": "Address",
+    "addressValue": "Berlin, Germany",
+    "hours": "Opening Hours",
+    "hoursValue": "By Appointment",
+    "formName": "Name",
+    "formContact": "Contact (Phone/Instagram)",
+    "formBodyPart": "Desired Body Part",
+    "formStyle": "Style",
+    "formStylePlaceholder": "Please select",
+    "formDate": "Preferred Date",
+    "formMessage": "Message"
+  },
+  "footer": {
+    "navigation": "Navigation",
+    "followUs": "Follow Us",
+    "rights": "All rights reserved."
+  },
+  "reviews": {
+    "leaveReview": "Leave Review",
+    "formName": "Name",
+    "formRating": "Rating",
+    "formMessage": "Your Review",
+    "formSubmit": "Submit",
+    "formCancel": "Cancel"
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "common": {
+    "book": "Termin buchen",
+    "viewWorks": "Arbeiten ansehen",
+    "works": "Arbeiten",
+    "masters": "Meister",
+    "styles": "Stile",
+    "info": "Information",
+    "availability": "Verfügbarkeit",
+    "reviews": "Bewertungen",
+    "contact": "Kontakt"
+  },
+  "hero": {
+    "title": "SORA TATTOO",
+    "subtitle": "Kunstvolle Tattoos mit Leidenschaft",
+    "description": "Wir schaffen einzigartige Tattoo-Kunstwerke, die Ihre Persönlichkeit widerspiegeln",
+    "book": "Termin buchen",
+    "viewWorks": "Arbeiten ansehen",
+    "tagline": "Where ink meets air."
+  },
+  "about": {
+    "title": "Über uns",
+    "content": "SORA Tattoo steht für Klarheit, Präzision und künstlerische Freiheit.\nUnser Studio in Berlin ist ein Ort, an dem Ideen Form annehmen und persönliche Geschichten sichtbar werden.\nWir arbeiten nicht mit einer starren Fläche, sondern mit dem Körper in Bewegung – Linien folgen dem Rhythmus, dem Fluss und der natürlichen Dynamik.\nFür uns ist Haut kein Leinwandersatz, sondern Teil der Komposition.\nLeere bedeutet nicht Abwesenheit, sondern Balance – eine bewusste Pause innerhalb des gesamten visuellen Dialogs.\nMit Sorgfalt, Transparenz und höchstem Anspruch an Qualität und Sicherheit entsteht jedes Tattoo als Teil eines größeren Ganzen."
+  },
+  "artists": {
+    "title": "Meister",
+    "artist1": {
+      "name": "Artist 01",
+      "style": "Japanese Style",
+      "description": "Arbeitet im traditionellen japanischen Tattoo-Stil.\nInspiriert von Symbolik, Balance und zeitlosen Formen.\nJedes Motiv trägt Bedeutung und innere Stärke."
+    },
+    "artist2": {
+      "name": "Artist 02",
+      "style": "Japanese · Realismus · Grafik",
+      "description": "Vereint japanische Motive mit Realismus und grafischen Elementen.\nStarke Kompositionen, tiefer Kontrast und ausdrucksstarke Details.\nWo Tradition auf moderne Vision trifft."
+    },
+    "artist3": {
+      "name": "Artist 03",
+      "style": "Minimal · Fine Line · Micro Realism",
+      "description": "Spezialisiert auf minimalistische Tattoos, Fine Line und Micro Realism.\nFeine Linien, klare Formen und präzise Details.\nSubtile Tattoos mit bleibender Wirkung."
+    }
+  },
+  "guides": {
+    "chooseArtist": {
+      "title": "Wie wählt man den richtigen Tattoo-Artist?",
+      "content": "Jeder Artist bei SORA hat eine eigene Handschrift und arbeitet in unterschiedlichen Stilrichtungen.\nAchte auf den Stil, die Linienführung und darauf, wie Motive aufgebaut sind.\nEbenso wichtig ist das persönliche Gefühl — ob du dich verstanden und gut aufgehoben fühlst.\nEin Tattoo ist ein gemeinsamer Prozess, der Zeit, Vertrauen und Ruhe braucht.\nNimm dir diese Zeit — wir begleiten dich gerne dabei."
+    },
+    "prepare": {
+      "title": "Wie bereite ich mich auf einen Tattoo-Termin vor?",
+      "content": "Eine gute Vorbereitung hilft, den Tattoo-Termin entspannt zu erleben.\nSorge dafür, dass du ausgeschlafen bist, gut gegessen hast und ausreichend Wasser trinkst.\nVermeide Alkohol und Drogen mindestens 24 Stunden vor dem Termin.\nTrage bequeme Kleidung und nimm dir Zeit — Ruhe und ein gutes Gefühl sind Teil des Prozesses.\nWenn du Fragen hast, sind wir jederzeit für dich da."
+    },
+    "session": {
+      "title": "Was erwartet mich während der Tattoo-Session?",
+      "content": "Der Tattoo-Termin beginnt mit einem ruhigen Gespräch über dein Motiv und die Platzierung.\nGemeinsam gehen wir die Details durch, bevor der Prozess startet.\nWährend der Session nehmen wir uns Zeit, machen Pausen und achten auf dein Wohlbefinden.\nDu kannst jederzeit Fragen stellen oder Bescheid sagen, wenn du eine Pause brauchst.\nDein Komfort und ein gutes Gefühl stehen für uns an erster Stelle."
+    },
+    "aftercare": {
+      "title": "Tattoo-Pflege & Heilung",
+      "intro": "Eine gute Nachsorge ist entscheidend für ein schönes und dauerhaftes Ergebnis.\nBitte halte dich an die folgenden Hinweise — sie helfen deiner Haut, optimal zu heilen.",
+      "method1": {
+        "title": "Variante 1 — Heilung mit Schutzfolie (Second Skin)",
+        "description": "Nach dem Tattoo wird eine spezielle Schutzfolie auf die Haut aufgebracht.",
+        "steps": [
+          "Die Folie bleibt 3–5 Tage auf der Haut, je nach Empfehlung deines Artists.",
+          "In dieser Zeit schützt sie das Tattoo vor Bakterien, Reibung und Schmutz.",
+          "Sollte sich Flüssigkeit unter der Folie sammeln, ist das normal.",
+          "Wenn sich die Folie vorzeitig löst oder stark unangenehm wird, entferne sie vorsichtig."
+        ],
+        "afterRemoval": "Nach dem Entfernen der Folie:\n• Wasche das Tattoo mit lauwarmem Wasser und einer milden, unparfümierten Seife.\n• Tupfe die Haut vorsichtig trocken (nicht reiben).\n• Trage eine dünne Schicht Tattoo-Pflegecreme auf.\n• Pflege das Tattoo 2–3 Mal täglich."
+      },
+      "method2": {
+        "title": "Variante 2 — Heilung mit Kompresse",
+        "description": "Nach dem Termin wird das Tattoo mit einer Kompresse abgedeckt.",
+        "steps": [
+          "Entferne die Kompresse nach 1,5–2 Stunden.",
+          "Wasche das Tattoo gründlich mit lauwarmem Wasser und einer milden Seife.",
+          "Tupfe es vorsichtig trocken.",
+          "Trage eine dünne Schicht Pflegecreme auf."
+        ],
+        "followingDays": "In den folgenden Tagen:\n• Wasche das Tattoo 2–3 Mal täglich.\n• Trage jedes Mal eine dünne Schicht Creme auf.\n• Die Haut darf nicht austrocknen, aber auch nicht \"ersticken\"."
+      },
+      "important": {
+        "title": "Wichtige Hinweise für beide Varianten",
+        "points": [
+          "Kratzen oder Reiben vermeiden.",
+          "Nicht an Schorf oder Hautschuppen ziehen.",
+          "Kein Baden, Sauna, Solarium oder Schwimmen für mindestens 2–3 Wochen.",
+          "Direkte Sonneneinstrahlung vermeiden.",
+          "Trage lockere, saubere Kleidung über dem Tattoo."
+        ]
+      },
+      "healing": {
+        "title": "Heilungsprozess",
+        "content": "• In den ersten Tagen kann die Haut gerötet, empfindlich oder leicht geschwollen sein — das ist normal.\n• Juckreiz gehört zum Heilungsprozess, bitte nicht kratzen.\n• Die vollständige Heilung dauert ca. 2–4 Wochen, tieferliegende Hautschichten länger."
+      },
+      "support": "Wenn du unsicher bist oder Fragen hast, melde dich jederzeit bei uns.\nWir begleiten dich auch nach dem Tattoo — dein Wohlbefinden ist uns wichtig."
+    }
+  },
+  "nav": {
+    "home": "Startseite",
+    "works": "Arbeiten",
+    "masters": "Meister",
+    "styles": "Stile",
+    "info": "Information",
+    "availability": "Verfügbarkeit",
+    "reviews": "Bewertungen",
+    "contact": "Kontakt",
+    "book": "Termin buchen"
+  },
+  "gallery": {
+    "all": "Alle",
+    "japanese": "Japanisch",
+    "realism": "Realismus",
+    "minimal": "Minimal",
+    "graphic": "Grafik"
+  },
+  "contact": {
+    "studioInfo": "Studio Information",
+    "address": "Adresse",
+    "addressValue": "Berlin, Deutschland",
+    "hours": "Öffnungszeiten",
+    "hoursValue": "Nach Vereinbarung",
+    "formName": "Name",
+    "formContact": "Kontakt (Telefon/Instagram)",
+    "formBodyPart": "Gewünschte Stelle am Körper",
+    "formStyle": "Stil",
+    "formStylePlaceholder": "Bitte wählen",
+    "formDate": "Bevorzugtes Datum",
+    "formMessage": "Nachricht"
+  },
+  "footer": {
+    "navigation": "Navigation",
+    "followUs": "Follow Us",
+    "rights": "All rights reserved."
+  },
+  "reviews": {
+    "leaveReview": "Bewertung hinterlassen",
+    "formName": "Name",
+    "formRating": "Bewertung",
+    "formMessage": "Ihre Bewertung",
+    "formSubmit": "Absenden",
+    "formCancel": "Abbrechen"
+  }
+}

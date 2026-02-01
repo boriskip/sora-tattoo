@@ -1,0 +1,9 @@
+backend/
+docker-compose.yml
+nginx/
+*.md
+!README.md
+.env
+.env.local
+.env.*.local
+
