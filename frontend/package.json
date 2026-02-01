@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "postinstall": "npm install @next/swc-linux-x64-gnu@14.2.35 --save-dev --no-save || true"
+    "lint": "next lint"
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -26,8 +25,7 @@
     "postcss": "^8.4.0",
     "autoprefixer": "^10.4.0",
     "eslint": "^8.0.0",
-    "eslint-config-next": "^14.0.0",
-    "@next/swc-linux-x64-gnu": "14.2.35"
+    "eslint-config-next": "^14.0.0"
   }
 }
 
