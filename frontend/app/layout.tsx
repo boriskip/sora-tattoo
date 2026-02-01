@@ -1,5 +1,6 @@
 import { Inter, Cormorant_Garamond } from 'next/font/google';
 import './globals.css';
+import type { Metadata } from 'next';
 
 const inter = Inter({ 
   subsets: ['latin'], 
@@ -15,6 +16,12 @@ const cormorant = Cormorant_Garamond({
   display: 'swap',
   preload: true
 });
+
+export const metadata: Metadata = {
+  icons: {
+    icon: '/logo.jpg',
+  },
+};
 
 export default function RootLayout({
   children,
