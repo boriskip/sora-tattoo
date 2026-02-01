@@ -1,9 +1,7 @@
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
+import { getMessages, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { locales } from '@/i18n';
-
-export const dynamicParams = true;
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -20,8 +18,11 @@ export default async function LocaleLayout({
     notFound();
   }
 
-  // Use getMessages without locale parameter to avoid headers() usage
-  const messages = await getMessages();
+  // Enable static rendering
+  setRequestLocale(locale);
+
+  // Now we can use getMessages with locale parameter for static rendering
+  const messages = await getMessages({ locale });
 
   return (
     <NextIntlClientProvider messages={messages}>
