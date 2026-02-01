@@ -26,6 +26,7 @@ const styleVariantsMobile = {
 
 export default function Styles() {
   const tCommon = useTranslations('common');
+  const tStyles = useTranslations('styles');
   const { isMobile, prefersReducedMotion, getAnimationProps } = useMobileAnimation();
   
   const viewport = prefersReducedMotion
@@ -37,23 +38,17 @@ export default function Styles() {
   const styles = [
     {
       id: 1,
-      name: 'Realismus',
       slug: 'realism',
-      description: 'Lebensechte Darstellungen mit tiefem Schatten und detailreichen Motiven. Perfekt für Porträts, Natur und realistische Kunstwerke.',
       color: 'bg-gray-900'
     },
     {
       id: 2,
-      name: 'Japoniškas',
       slug: 'japanese',
-      description: 'Traditionelle japanische Motive mit Symbolik und Balance. Zeitlose Formen, die innere Stärke und Bedeutung tragen.',
       color: 'bg-gray-800'
     },
     {
       id: 3,
-      name: 'Grafika',
       slug: 'graphic',
-      description: 'Moderne grafische Elemente mit starken Kompositionen und ausdrucksstarken Details. Wo Tradition auf moderne Vision trifft.',
       color: 'bg-gray-700'
     }
   ];
@@ -87,10 +82,10 @@ export default function Styles() {
               <div className={`absolute inset-0 ${style.color} opacity-90`} />
               <div className="relative z-10 h-full flex flex-col justify-end p-6 text-white">
                 <h3 className="text-3xl font-serif font-bold mb-3">
-                  {style.name}
+                  {tStyles(`${style.slug}.name`)}
                 </h3>
                 <p className="text-gray-200 mb-4 leading-relaxed">
-                  {style.description}
+                  {tStyles(`${style.slug}.description`)}
                 </p>
                 <button className="text-white underline hover:no-underline font-medium">
                   {tCommon('viewWorks')}

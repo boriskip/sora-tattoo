@@ -113,6 +113,20 @@
     "minimal": "Minimal",
     "graphic": "Graphic"
   },
+  "styles": {
+    "realism": {
+      "name": "Realism",
+      "description": "Lifelike representations with deep shadows and detailed motifs. Perfect for portraits, nature, and realistic artworks."
+    },
+    "japanese": {
+      "name": "Japanese",
+      "description": "Traditional Japanese motifs with symbolism and balance. Timeless forms that carry inner strength and meaning."
+    },
+    "graphic": {
+      "name": "Graphic",
+      "description": "Modern graphic elements with strong compositions and expressive details. Where tradition meets modern vision."
+    }
+  },
   "contact": {
     "studioInfo": "Studio Information",
     "address": "Address",
