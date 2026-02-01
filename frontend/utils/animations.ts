@@ -81,11 +81,17 @@ export function getMobileAnimation(
   
   // Reduce transform distances (less movement, but slower animation)
   if (mobile.initial) {
-    const initial = { ...mobile.initial };
-    if (initial.y) initial.y = (initial.y as number) * 0.6; // 0.6 instead of 0.5
-    if (initial.x) initial.x = (initial.x as number) * 0.6; // 0.6 instead of 0.5
-    if (initial.scale && initial.scale < 1) initial.scale = 0.95;
-    mobile.initial = initial;
+    const initial: Record<string, number> = { ...mobile.initial };
+    if ('y' in initial && typeof initial.y === 'number') {
+      initial.y = initial.y * 0.6; // 0.6 instead of 0.5
+    }
+    if ('x' in initial && typeof initial.x === 'number') {
+      initial.x = initial.x * 0.6; // 0.6 instead of 0.5
+    }
+    if ('scale' in initial && typeof initial.scale === 'number' && initial.scale < 1) {
+      initial.scale = 0.95;
+    }
+    mobile.initial = initial as typeof mobile.initial;
   }
   
   return mobile;
