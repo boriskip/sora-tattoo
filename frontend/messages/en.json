@@ -11,6 +11,8 @@
     "contact": "Contact"
   },
   "hero": {
+    "titleMain": "SORA",
+    "titleSub": "Tattoo",
     "title": "SORA TATTOO",
     "subtitle": "Artistic Tattoos with Passion",
     "description": "We create unique tattoo artworks that reflect your personality",
@@ -138,6 +140,7 @@
     "formBodyPart": "Desired Body Part",
     "formStyle": "Style",
     "formStylePlaceholder": "Please select",
+    "formArtist": "Preferred artist",
     "formDate": "Preferred Date",
     "formMessage": "Message"
   },

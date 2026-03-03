@@ -57,7 +57,7 @@ export default function Header() {
         initial={{ y: 0 }}
         animate={{ y: isVisible ? 0 : -100 }}
         transition={{ duration: 0.3, ease: 'easeInOut' }}
-        className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm border-b border-gray-200/50"
+        className="fixed top-0 left-0 right-0 z-50 bg-graphite border-b border-white/10"
       >
         <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
           <div className="flex items-center justify-between gap-2">
@@ -77,21 +77,21 @@ export default function Header() {
 
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center space-x-6">
-              <a href="#works" className="text-gray-700 hover:text-gray-900 transition">
+              <Link href={`/${locale}#works`} className="text-white/90 hover:text-white transition">
                 {t('works')}
-              </a>
-              <a href="#masters" className="text-gray-700 hover:text-gray-900 transition">
+              </Link>
+              <Link href={`/${locale}#masters`} className="text-white/90 hover:text-white transition">
                 {t('masters')}
-              </a>
-              <a href="#styles" className="text-gray-700 hover:text-gray-900 transition">
+              </Link>
+              <Link href={`/${locale}#styles`} className="text-white/90 hover:text-white transition">
                 {t('styles')}
-              </a>
-              <a href="#info" className="text-gray-700 hover:text-gray-900 transition">
+              </Link>
+              <Link href={`/${locale}#info`} className="text-white/90 hover:text-white transition">
                 {t('info')}
-              </a>
-              <a href="#contact" className="text-gray-700 hover:text-gray-900 transition">
+              </Link>
+              <Link href={`/${locale}#contact`} className="text-white/90 hover:text-white transition">
                 {t('contact')}
-              </a>
+              </Link>
             </nav>
 
             {/* Desktop Language Switcher & CTA */}
@@ -102,7 +102,7 @@ export default function Header() {
                   href="https://facebook.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-600 hover:text-gray-900 transition"
+                  className="text-white/80 hover:text-white transition"
                   aria-label="Facebook"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -113,7 +113,7 @@ export default function Header() {
                   href="https://wa.me"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-600 hover:text-gray-900 transition"
+                  className="text-white/80 hover:text-white transition"
                   aria-label="WhatsApp"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -124,7 +124,7 @@ export default function Header() {
                   href="https://instagram.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-600 hover:text-gray-900 transition"
+                  className="text-white/80 hover:text-white transition"
                   aria-label="Instagram"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -141,8 +141,8 @@ export default function Header() {
                     onClick={() => switchLocale(loc)}
                     className={`px-1.5 py-1 text-sm font-medium transition ${
                       locale === loc
-                        ? 'text-gray-900 underline'
-                        : 'text-gray-500 hover:text-gray-700'
+                        ? 'text-white underline'
+                        : 'text-white/70 hover:text-white'
                     }`}
                   >
                     {loc.toUpperCase()}
@@ -151,9 +151,9 @@ export default function Header() {
               </div>
 
               {/* CTA Button */}
-              <button className="px-6 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition font-medium">
+              <Link href={`/${locale}#contact`} className="px-6 py-2 bg-white text-graphite rounded-md hover:bg-white/90 transition font-medium inline-block">
                 {t('book')}
-              </button>
+              </Link>
             </div>
 
             {/* Mobile: Social Icons, Language Switcher & Burger Menu */}
@@ -164,7 +164,7 @@ export default function Header() {
                   href="https://facebook.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-600 hover:text-gray-900 transition p-0.5"
+                  className="text-white/80 hover:text-white transition p-0.5"
                   aria-label="Facebook"
                 >
                   <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -175,7 +175,7 @@ export default function Header() {
                   href="https://wa.me"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-600 hover:text-gray-900 transition p-0.5"
+                  className="text-white/80 hover:text-white transition p-0.5"
                   aria-label="WhatsApp"
                 >
                   <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -186,7 +186,7 @@ export default function Header() {
                   href="https://instagram.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-600 hover:text-gray-900 transition p-0.5"
+                  className="text-white/80 hover:text-white transition p-0.5"
                   aria-label="Instagram"
                 >
                   <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -203,8 +203,8 @@ export default function Header() {
                     onClick={() => switchLocale(loc)}
                     className={`px-1 sm:px-1.5 py-0.5 sm:py-1 text-xs font-medium transition ${
                       locale === loc
-                        ? 'text-gray-900 underline'
-                        : 'text-gray-500 hover:text-gray-700'
+                        ? 'text-white underline'
+                        : 'text-white/70 hover:text-white'
                     }`}
                   >
                     {loc.toUpperCase()}
@@ -215,7 +215,7 @@ export default function Header() {
               {/* Burger Menu Button */}
               <button
                 onClick={toggleMobileMenu}
-                className="p-1.5 sm:p-2 text-gray-700 hover:text-gray-900 transition flex-shrink-0"
+                className="p-1.5 sm:p-2 text-white/80 hover:text-white transition flex-shrink-0"
                 aria-label="Toggle menu"
               >
                 <svg
@@ -247,59 +247,36 @@ export default function Header() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
-            className="fixed top-[65px] sm:top-[73px] left-0 right-0 z-40 bg-white border-b border-gray-200 shadow-lg md:hidden"
+            className="fixed top-[65px] sm:top-[73px] left-0 right-0 z-40 bg-graphite border-b border-white/10 shadow-lg md:hidden"
           >
             <nav className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 space-y-3 sm:space-y-4">
-              <a
-                href="#works"
-                onClick={closeMobileMenu}
-                className="block py-2 text-gray-700 hover:text-gray-900 transition border-b border-gray-100"
-              >
+              <Link href={`/${locale}#works`} onClick={closeMobileMenu} className="block py-2 text-white/90 hover:text-white transition border-b border-white/10">
                 {t('works')}
-              </a>
-              <a
-                href="#masters"
-                onClick={closeMobileMenu}
-                className="block py-2 text-gray-700 hover:text-gray-900 transition border-b border-gray-100"
-              >
+              </Link>
+              <Link href={`/${locale}#masters`} onClick={closeMobileMenu} className="block py-2 text-white/90 hover:text-white transition border-b border-white/10">
                 {t('masters')}
-              </a>
-              <a
-                href="#styles"
-                onClick={closeMobileMenu}
-                className="block py-2 text-gray-700 hover:text-gray-900 transition border-b border-gray-100"
-              >
+              </Link>
+              <Link href={`/${locale}#styles`} onClick={closeMobileMenu} className="block py-2 text-white/90 hover:text-white transition border-b border-white/10">
                 {t('styles')}
-              </a>
-              <a
-                href="#info"
-                onClick={closeMobileMenu}
-                className="block py-2 text-gray-700 hover:text-gray-900 transition border-b border-gray-100"
-              >
+              </Link>
+              <Link href={`/${locale}#info`} onClick={closeMobileMenu} className="block py-2 text-white/90 hover:text-white transition border-b border-white/10">
                 {t('info')}
-              </a>
-              <a
-                href="#contact"
-                onClick={closeMobileMenu}
-                className="block py-2 text-gray-700 hover:text-gray-900 transition border-b border-gray-100"
-              >
+              </Link>
+              <Link href={`/${locale}#contact`} onClick={closeMobileMenu} className="block py-2 text-white/90 hover:text-white transition border-b border-white/10">
                 {t('contact')}
-              </a>
-              <button
-                onClick={closeMobileMenu}
-                className="w-full mt-4 px-6 py-3 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition font-medium"
-              >
+              </Link>
+              <Link href={`/${locale}#contact`} onClick={closeMobileMenu} className="block w-full mt-4 px-6 py-3 bg-white text-graphite rounded-md hover:bg-white/90 transition font-medium text-center">
                 {t('book')}
-              </button>
+              </Link>
               
               {/* Mobile Social Icons */}
-              <div className="flex justify-center space-x-4 mt-6 pt-6 border-t border-gray-200">
+              <div className="flex justify-center space-x-4 mt-6 pt-6 border-t border-white/10">
                 <a
                   href="https://facebook.com"
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={closeMobileMenu}
-                  className="text-gray-600 hover:text-gray-900 transition"
+                  className="text-white/80 hover:text-white transition"
                   aria-label="Facebook"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -311,7 +288,7 @@ export default function Header() {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={closeMobileMenu}
-                  className="text-gray-600 hover:text-gray-900 transition"
+                  className="text-white/80 hover:text-white transition"
                   aria-label="WhatsApp"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -323,7 +300,7 @@ export default function Header() {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={closeMobileMenu}
-                  className="text-gray-600 hover:text-gray-900 transition"
+                  className="text-white/80 hover:text-white transition"
                   aria-label="Instagram"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">

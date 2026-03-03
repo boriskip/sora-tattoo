@@ -10,21 +10,21 @@ export default function Footer() {
   const tNav = useTranslations('nav');
 
   return (
-    <footer className="bg-gray-900 text-white py-12 overflow-x-hidden w-full">
+    <footer className="bg-graphite text-white py-12 overflow-x-hidden w-full">
       <div className="container mx-auto px-4 max-w-full">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Logo & Description */}
           <div>
-            <h3 className="text-2xl font-serif font-bold mb-4">SORA TATTOO</h3>
-            <p className="text-gray-400 text-sm">
+            <h3 className="text-2xl font-serif font-semibold tracking-[0.2em] mb-4 text-white">SORA TATTOO</h3>
+            <p className="text-white/80 text-sm">
               Where ink meets air.
             </p>
           </div>
 
           {/* Links */}
           <div>
-            <h4 className="font-semibold mb-4">{tFooter('navigation')}</h4>
-            <ul className="space-y-2 text-sm text-gray-400">
+            <h4 className="font-semibold mb-4 text-white">{tFooter('navigation')}</h4>
+            <ul className="space-y-2 text-sm text-white/80">
               <li>
                 <Link href={`/${locale}#works`} className="hover:text-white transition">
                   {tNav('works')}
@@ -55,13 +55,13 @@ export default function Footer() {
 
           {/* Social */}
           <div>
-            <h4 className="font-semibold mb-4">{tFooter('followUs')}</h4>
+            <h4 className="font-semibold mb-4 text-white">{tFooter('followUs')}</h4>
             <div className="flex gap-4">
               <a
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white transition"
+                className="text-white/80 hover:text-white transition"
                 aria-label="Instagram"
               >
                 <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -72,7 +72,7 @@ export default function Footer() {
                 href="https://facebook.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white transition"
+                className="text-white/80 hover:text-white transition"
                 aria-label="Facebook"
               >
                 <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -83,7 +83,7 @@ export default function Footer() {
                 href="https://wa.me"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white transition"
+                className="text-white/80 hover:text-white transition"
                 aria-label="WhatsApp"
               >
                 <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -94,7 +94,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
+        <div className="border-t border-white/20 mt-8 pt-8 text-center text-sm text-white/80">
           <p>&copy; {new Date().getFullYear()} SORA TATTOO. {tFooter('rights')}</p>
         </div>
       </div>

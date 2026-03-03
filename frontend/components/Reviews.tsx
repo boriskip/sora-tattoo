@@ -77,12 +77,12 @@ export default function Reviews() {
   };
 
   return (
-    <section id="reviews" className="py-12 md:py-32 bg-gray-50 overflow-x-hidden w-full">
+    <section id="reviews" className="py-12 md:py-32 bg-background overflow-x-hidden w-full">
       <div className="container mx-auto px-4 max-w-full">
         <div className="flex flex-col md:flex-row justify-between items-center mb-6 md:mb-12">
           <motion.h2
-            className="text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-6 md:mb-0 text-center md:text-left"
-            initial={{ opacity: 0, y: 20 }}
+            className="text-4xl md:text-5xl font-serif font-semibold text-graphite mb-6 md:mb-0 text-center md:text-left"
+            initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false }}
             transition={{ duration: 0.6 }}
@@ -92,8 +92,8 @@ export default function Reviews() {
           <motion.button
             type="button"
             onClick={() => setIsFormOpen(true)}
-            className="px-6 py-3 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition font-medium cursor-pointer"
-            initial={{ opacity: 0, y: 20 }}
+            className="px-6 py-3 bg-graphite text-white rounded-md hover:opacity-90 transition font-medium cursor-pointer"
+            initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false }}
             transition={{ duration: 0.6, delay: 0.2 }}
@@ -106,11 +106,11 @@ export default function Reviews() {
           {reviews.map((review, index) => (
             <motion.div
               key={review.id}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1, duration: 0.6 }}
-              className="bg-white p-6 rounded-lg shadow-md"
+              className="bg-background p-6 rounded-lg shadow-md"
             >
               <div className="flex items-center mb-4">
                 {[...Array(review.rating)].map((_, i) => (
@@ -124,10 +124,10 @@ export default function Reviews() {
                   </svg>
                 ))}
               </div>
-              <p className="text-gray-700 mb-4 leading-relaxed">
+              <p className="text-mocha mb-4 leading-relaxed">
                 &quot;{review.text}&quot;
               </p>
-              <p className="text-sm font-semibold text-gray-900">
+              <p className="text-sm font-semibold text-graphite">
                 — {review.author}
               </p>
             </motion.div>
@@ -149,22 +149,22 @@ export default function Reviews() {
               
               {/* Form */}
               <motion.div
-                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                initial={{ opacity: 0, scale: 0.98, y: 10 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                exit={{ opacity: 0, scale: 0.98, y: 10 }}
                 className="fixed inset-0 z-50 flex items-center justify-center p-4"
                 onClick={(e) => e.stopPropagation()}
               >
-                <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                <div className="bg-background rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
                   <div className="p-6 md:p-8">
                     <div className="flex justify-between items-center mb-6">
-                      <h3 className="text-2xl md:text-3xl font-serif font-bold text-gray-900">
+                      <h3 className="text-2xl md:text-3xl font-serif font-semibold text-graphite">
                         {tReviews('leaveReview')}
                       </h3>
                       <button
                         type="button"
                         onClick={() => setIsFormOpen(false)}
-                        className="text-gray-500 hover:text-gray-700 text-2xl"
+                        className="text-mocha hover:text-graphite text-2xl"
                       >
                         ×
                       </button>
@@ -173,7 +173,7 @@ export default function Reviews() {
                     <form onSubmit={handleSubmit} className="space-y-6">
                       {/* Name */}
                       <div>
-                        <label htmlFor="review-name" className="block text-sm font-medium text-gray-700 mb-2">
+                        <label htmlFor="review-name" className="block text-sm font-medium text-mocha mb-2">
                           {tReviews('formName')}
                         </label>
                         <input
@@ -189,7 +189,7 @@ export default function Reviews() {
 
                       {/* Rating */}
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-mocha mb-2">
                           {tReviews('formRating')}
                         </label>
                         <div className="flex gap-2">
@@ -200,7 +200,7 @@ export default function Reviews() {
                               onClick={() => handleRatingChange(rating)}
                               className={`w-10 h-10 rounded-full transition ${
                                 formData.rating >= rating
-                                  ? 'bg-yellow-400 text-gray-900'
+                                  ? 'bg-yellow-400 text-graphite'
                                   : 'bg-gray-200 text-gray-400 hover:bg-gray-300'
                               }`}
                             >
@@ -212,7 +212,7 @@ export default function Reviews() {
 
                       {/* Message */}
                       <div>
-                        <label htmlFor="review-message" className="block text-sm font-medium text-gray-700 mb-2">
+                        <label htmlFor="review-message" className="block text-sm font-medium text-mocha mb-2">
                           {tReviews('formMessage')}
                         </label>
                         <textarea
@@ -231,13 +231,13 @@ export default function Reviews() {
                         <button
                           type="button"
                           onClick={() => setIsFormOpen(false)}
-                          className="px-6 py-2 bg-white text-gray-900 rounded-md hover:bg-gray-50 transition font-medium border border-gray-300"
+                          className="px-6 py-2 bg-background text-graphite rounded-md hover:bg-white/90 transition font-medium border border-mocha/30"
                         >
                           {tReviews('formCancel')}
                         </button>
                         <button
                           type="submit"
-                          className="px-6 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition font-medium"
+                          className="px-6 py-2 bg-graphite text-white rounded-md hover:opacity-90 transition font-medium"
                         >
                           {tReviews('formSubmit')}
                         </button>

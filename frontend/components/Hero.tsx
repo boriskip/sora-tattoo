@@ -1,11 +1,13 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
+import Link from 'next/link';
 import { motion, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
 import Image from 'next/image';
 
 export default function Hero() {
+  const locale = useLocale();
   const t = useTranslations('hero');
   const tCommon = useTranslations('common');
   const containerRef = useRef<HTMLDivElement>(null);
@@ -84,7 +86,7 @@ export default function Hero() {
       {/* Content - fades on scroll */}
       <motion.div
         className="relative z-10 text-center px-4"
-        initial={{ opacity: isContentVisible ? 0 : 0, y: 30 }}
+        initial={{ opacity: isContentVisible ? 0 : 0, y: 12 }}
         animate={{ opacity: isContentVisible ? 1 : 0, y: 0 }}
         transition={{ duration: 0.8, ease: 'easeOut' }}
         style={{
@@ -93,20 +95,32 @@ export default function Hero() {
           pointerEvents: isContentVisible ? 'auto' : 'none'
         }}
       >
-        {/* Title */}
+        {/* Title: SORA dominant (max 600), Tattoo po juo su linijomis */}
         <motion.h1
-          className="text-6xl md:text-8xl font-serif font-bold text-gray-900 mb-4 drop-shadow-lg"
-          initial={{ opacity: 0, y: 20 }}
+          className="font-serif font-semibold text-graphite mb-4 drop-shadow-lg flex flex-col items-center justify-center tracking-[0.2em]"
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.6 }}
         >
-          {t('title')}
+          <span className="text-6xl md:text-8xl">{t('titleMain')}</span>
+          {/* Tattoo su hr iš 2 pusių – storesnė prie teksto, plonėja link kraštų */}
+          <span className="flex items-center gap-4 w-full max-w-md justify-center mt-1">
+            <span
+              className="h-0.5 flex-1 max-w-[80px] md:max-w-[120px] bg-gradient-to-r from-transparent to-graphite"
+              aria-hidden
+            />
+            <span className="text-xl md:text-2xl tracking-[0.2em] shrink-0">{t('titleSub')}</span>
+            <span
+              className="h-0.5 flex-1 max-w-[80px] md:max-w-[120px] bg-gradient-to-l from-transparent to-graphite"
+              aria-hidden
+            />
+          </span>
         </motion.h1>
 
         {/* Subtitle */}
         <motion.p
-          className="text-xl md:text-2xl text-gray-800 mb-6 font-serif drop-shadow-md"
-          initial={{ opacity: 0, y: 20 }}
+          className="text-xl md:text-2xl text-mocha mb-6 font-serif drop-shadow-md leading-relaxed"
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7, duration: 0.6 }}
         >
@@ -115,8 +129,8 @@ export default function Hero() {
 
         {/* Description */}
         <motion.p
-          className="text-lg text-gray-700 mb-8 max-w-2xl mx-auto drop-shadow-sm"
-          initial={{ opacity: 0, y: 20 }}
+          className="text-lg text-mocha mb-8 max-w-2xl mx-auto drop-shadow-sm leading-relaxed"
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.9, duration: 0.6 }}
         >
@@ -126,16 +140,16 @@ export default function Hero() {
         {/* CTA Buttons */}
         <motion.div
           className="flex flex-col sm:flex-row gap-4 justify-center"
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.1, duration: 0.6 }}
         >
-          <button className="px-8 py-3 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition font-medium text-lg shadow-lg">
+          <Link href={`/${locale}#contact`} className="px-8 py-3 bg-graphite text-white rounded-md hover:opacity-90 transition font-medium text-lg shadow-lg text-center">
             {t('book')}
-          </button>
-          <button className="px-8 py-3 bg-white/90 text-gray-900 rounded-md hover:bg-white transition font-medium text-lg border border-gray-300 shadow-lg backdrop-blur-sm">
+          </Link>
+          <Link href={`/${locale}#works`} className="px-8 py-3 bg-background text-graphite rounded-md hover:bg-white/80 transition font-medium text-lg border border-mocha/40 shadow-lg backdrop-blur-sm text-center">
             {t('viewWorks')}
-          </button>
+          </Link>
         </motion.div>
 
         {/* Social Icons */}
@@ -149,7 +163,7 @@ export default function Hero() {
             href="https://facebook.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-gray-700 hover:text-gray-900 transition drop-shadow-sm"
+            className="text-mocha hover:text-graphite transition drop-shadow-sm"
             aria-label="Facebook"
           >
             <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -160,7 +174,7 @@ export default function Hero() {
             href="https://wa.me"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-gray-700 hover:text-gray-900 transition drop-shadow-sm"
+            className="text-mocha hover:text-graphite transition drop-shadow-sm"
             aria-label="WhatsApp"
           >
             <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -171,7 +185,7 @@ export default function Hero() {
             href="https://instagram.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-gray-700 hover:text-gray-900 transition drop-shadow-sm"
+            className="text-mocha hover:text-graphite transition drop-shadow-sm"
             aria-label="Instagram"
           >
             <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">

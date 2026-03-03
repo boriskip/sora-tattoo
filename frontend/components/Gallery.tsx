@@ -1,17 +1,26 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useMobileAnimation } from '@/hooks/useMobileAnimation';
 import { viewportSettings } from '@/utils/animations';
 
+const VALID_STYLE_IDS = ['all', 'japanese', 'realism', 'minimal', 'graphic'];
+
 export default function Gallery() {
+  const searchParams = useSearchParams();
   const tCommon = useTranslations('common');
   const tGallery = useTranslations('gallery');
   const [selectedFilter, setSelectedFilter] = useState<string>('all');
   const { isMobile, prefersReducedMotion, getAnimationProps } = useMobileAnimation();
+
+  useEffect(() => {
+    const style = searchParams.get('style');
+    if (style && VALID_STYLE_IDS.includes(style)) setSelectedFilter(style);
+  }, [searchParams]);
   
   const viewport = prefersReducedMotion
     ? viewportSettings.reduced
@@ -45,12 +54,12 @@ export default function Gallery() {
     : works.filter(work => work.style === selectedFilter);
 
   return (
-    <section id="works" className="py-12 md:py-32 bg-white overflow-x-hidden w-full">
+    <section id="works" className="py-12 md:py-32 bg-background overflow-x-hidden w-full">
       <div className="container mx-auto px-4 max-w-full">
         <motion.h2
-          className="text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-6 md:mb-12 text-center"
+          className="text-4xl md:text-5xl font-serif font-semibold text-graphite mb-6 md:mb-12 text-center"
           {...getAnimationProps({
-            initial: { opacity: 0, y: 30 },
+            initial: { opacity: 0, y: 12 },
             whileInView: { opacity: 1, y: 0 },
             transition: { duration: 0.8, ease: 'easeOut' },
           })}
@@ -63,7 +72,7 @@ export default function Gallery() {
         <motion.div
           className="flex flex-wrap justify-center gap-4 mb-6 md:mb-12"
           {...getAnimationProps({
-            initial: { opacity: 0, y: 20 },
+            initial: { opacity: 0, y: 10 },
             whileInView: { opacity: 1, y: 0 },
             transition: { duration: 0.6, delay: 0.2 },
           })}
@@ -81,8 +90,8 @@ export default function Gallery() {
               }}
               className={`px-6 py-2 rounded-md transition cursor-pointer ${
                 selectedFilter === filter.id
-                  ? 'bg-gray-900 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-graphite text-white'
+                  : 'bg-mocha/10 text-mocha hover:bg-mocha/20'
               }`}
               style={{ pointerEvents: 'auto' }}
             >
@@ -97,7 +106,7 @@ export default function Gallery() {
             <motion.div
               key={work.id}
               {...getAnimationProps({
-                initial: { opacity: 0, scale: 0.9, y: 20 },
+                initial: { opacity: 0, scale: 0.98, y: 10 },
                 whileInView: { opacity: 1, scale: 1, y: 0 },
                 transition: { delay: index * 0.05, duration: 0.5, ease: 'easeOut' },
               })}

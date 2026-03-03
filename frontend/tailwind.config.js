@@ -10,6 +10,9 @@ module.exports = {
       colors: {
         background: 'var(--background)',
         foreground: 'var(--foreground)',
+        graphite: 'var(--graphite)',
+        mocha: 'var(--mocha)',
+        stylesDark: '#383737',
       },
       fontFamily: {
         serif: ['Cormorant Garamond', 'serif'],

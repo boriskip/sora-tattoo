@@ -1,20 +1,29 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Contact() {
+  const searchParams = useSearchParams();
   const tCommon = useTranslations('common');
   const tContact = useTranslations('contact');
+  const tArtists = useTranslations('artists');
   const [formData, setFormData] = useState({
     name: '',
     contact: '',
     bodyPart: '',
     style: '',
+    artist: '',
     preferredDate: '',
     message: ''
   });
+
+  useEffect(() => {
+    const artist = searchParams.get('artist') || '';
+    if (artist) setFormData((prev) => ({ ...prev, artist }));
+  }, [searchParams]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,11 +39,11 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-12 md:py-32 bg-white overflow-x-hidden w-full">
+    <section id="contact" className="py-12 md:py-32 bg-background overflow-x-hidden w-full">
       <div className="container mx-auto px-4 max-w-full">
         <motion.h2
-          className="text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-6 md:mb-12 text-center"
-          initial={{ opacity: 0, y: 20 }}
+          className="text-4xl md:text-5xl font-serif font-semibold text-graphite mb-6 md:mb-12 text-center"
+          initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
@@ -45,15 +54,15 @@ export default function Contact() {
         <div className="max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Contact Info */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 0, x: -12 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h3 className="text-2xl font-serif font-bold text-gray-900 mb-6">
+            <h3 className="text-2xl font-serif font-semibold text-graphite mb-6">
               {tContact('studioInfo')}
             </h3>
-            <div className="space-y-4 text-gray-700">
+            <div className="space-y-4 text-mocha">
               <p>
                 <strong>{tContact('address')}:</strong><br />
                 {tContact('addressValue')}
@@ -67,7 +76,7 @@ export default function Contact() {
                   href="https://instagram.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-700 hover:text-gray-900 transition"
+                  className="text-mocha hover:text-graphite transition"
                   aria-label="Instagram"
                 >
                   <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -78,7 +87,7 @@ export default function Contact() {
                   href="https://facebook.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-700 hover:text-gray-900 transition"
+                  className="text-mocha hover:text-graphite transition"
                   aria-label="Facebook"
                 >
                   <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -89,7 +98,7 @@ export default function Contact() {
                   href="https://wa.me"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-700 hover:text-gray-900 transition"
+                  className="text-mocha hover:text-graphite transition"
                   aria-label="WhatsApp"
                 >
                   <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -102,7 +111,7 @@ export default function Contact() {
 
           {/* Booking Form */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
+            initial={{ opacity: 0, x: 12 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: false, amount: 0.3 }}
             transition={{ duration: 0.6 }}
@@ -112,7 +121,7 @@ export default function Contact() {
             className="space-y-4"
           >
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="name" className="block text-sm font-medium text-mocha mb-1">
                 {tContact('formName')} *
               </label>
               <input
@@ -127,7 +136,7 @@ export default function Contact() {
             </div>
 
             <div>
-              <label htmlFor="contact" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="contact" className="block text-sm font-medium text-mocha mb-1">
                 {tContact('formContact')} *
               </label>
               <input
@@ -142,7 +151,7 @@ export default function Contact() {
             </div>
 
             <div>
-              <label htmlFor="bodyPart" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="bodyPart" className="block text-sm font-medium text-mocha mb-1">
                 {tContact('formBodyPart')}
               </label>
               <input
@@ -155,8 +164,26 @@ export default function Contact() {
               />
             </div>
 
+            {formData.artist && (
+              <div>
+                <span className="block text-sm font-medium text-mocha mb-1">
+                  {tContact('formArtist')}
+                </span>
+                <p className="text-graphite font-medium">
+                  {formData.artist === 'artist-01'
+                    ? tArtists('artist1.name')
+                    : formData.artist === 'artist-02'
+                      ? tArtists('artist2.name')
+                      : formData.artist === 'artist-03'
+                        ? tArtists('artist3.name')
+                        : formData.artist}
+                </p>
+                <input type="hidden" name="artist" value={formData.artist} />
+              </div>
+            )}
+
             <div>
-              <label htmlFor="style" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="style" className="block text-sm font-medium text-mocha mb-1">
                 {tContact('formStyle')}
               </label>
               <select
@@ -175,7 +202,7 @@ export default function Contact() {
             </div>
 
             <div>
-              <label htmlFor="preferredDate" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="preferredDate" className="block text-sm font-medium text-mocha mb-1">
                 {tContact('formDate')}
               </label>
               <input
@@ -189,7 +216,7 @@ export default function Contact() {
             </div>
 
             <div>
-              <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="message" className="block text-sm font-medium text-mocha mb-1">
                 {tContact('formMessage')}
               </label>
               <textarea
@@ -204,7 +231,7 @@ export default function Contact() {
 
             <button
               type="submit"
-              className="w-full px-6 py-3 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition font-medium"
+              className="w-full px-6 py-3 bg-graphite text-white rounded-md hover:opacity-90 transition font-medium"
             >
               {tCommon('book')}
             </button>

@@ -11,6 +11,8 @@
     "contact": "Kontakt"
   },
   "hero": {
+    "titleMain": "SORA",
+    "titleSub": "Tattoo",
     "title": "SORA TATTOO",
     "subtitle": "Kunstvolle Tattoos mit Leidenschaft",
     "description": "Wir schaffen einzigartige Tattoo-Kunstwerke, die Ihre Persönlichkeit widerspiegeln",
@@ -138,6 +140,7 @@
     "formBodyPart": "Gewünschte Stelle am Körper",
     "formStyle": "Stil",
     "formStylePlaceholder": "Bitte wählen",
+    "formArtist": "Bevorzugter Artist",
     "formDate": "Bevorzugtes Datum",
     "formMessage": "Nachricht"
   },

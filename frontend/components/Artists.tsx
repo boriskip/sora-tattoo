@@ -1,6 +1,7 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { useEffect, useRef } from 'react';
@@ -8,7 +9,7 @@ import { useMobileAnimation } from '@/hooks/useMobileAnimation';
 import { viewportSettings } from '@/utils/animations';
 
 const artistVariants = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 12 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
@@ -17,6 +18,7 @@ const artistVariants = {
 };
 
 export default function Artists() {
+  const locale = useLocale();
   const t = useTranslations('artists');
   const tCommon = useTranslations('common');
   const galleryRef = useRef<HTMLDivElement>(null);
@@ -73,12 +75,12 @@ export default function Artists() {
   ];
 
   return (
-    <section id="masters" className="py-12 md:py-32 bg-gray-50 overflow-x-hidden w-full">
+    <section id="masters" className="py-12 md:py-32 bg-background overflow-x-hidden w-full">
       <div className="container mx-auto px-4 max-w-full">
         <motion.h2
-          className="text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-8 text-center"
+          className="text-4xl md:text-5xl font-serif font-semibold text-graphite mb-8 text-center"
           {...getAnimationProps({
-            initial: { opacity: 0, y: 20 },
+            initial: { opacity: 0, y: 10 },
             whileInView: { opacity: 1, y: 0 },
             transition: { duration: 0.6 },
           })}
@@ -91,7 +93,7 @@ export default function Artists() {
         <motion.div
           className="w-full mb-6 md:mb-12 overflow-hidden"
           {...getAnimationProps({
-            initial: { opacity: 0, y: 20 },
+            initial: { opacity: 0, y: 10 },
             whileInView: { opacity: 1, y: 0 },
             transition: { duration: 0.6, delay: 0.2 },
           })}
@@ -195,38 +197,29 @@ export default function Artists() {
                 
                 {/* Content */}
                 <div className="md:col-span-2 p-4 md:p-8 flex flex-col justify-center">
-                  <h3 className="text-2xl md:text-4xl font-serif font-bold text-gray-900 mb-2 md:mb-3">
+                  <h3 className="text-2xl md:text-4xl font-serif font-semibold text-graphite mb-2 md:mb-3">
                     {t(artist.nameKey)}
                   </h3>
-                  <p className="text-sm md:text-base text-gray-600 mb-2 md:mb-4 font-medium">
+                  <p className="text-sm md:text-base text-mocha mb-2 md:mb-4 font-medium">
                     {t(artist.styleKey)}
                   </p>
-                  <p className="text-sm md:text-base text-gray-700 mb-4 md:mb-6 leading-relaxed whitespace-pre-line">
+                  <p className="text-sm md:text-base text-mocha mb-4 md:mb-6 leading-relaxed whitespace-pre-line">
                     {t(artist.descriptionKey)}
                   </p>
                   <div className="flex gap-3">
-                    <button 
-                      type="button"
-                      onClick={() => {
-                        console.log('View works clicked for:', artist.slug);
-                        // TODO: Navigate to artist works page
-                        window.location.href = `#works?artist=${artist.slug}`;
-                      }}
-                      className="px-6 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition font-medium cursor-pointer"
+                    {/* Laikinai → #works (be backend). Vėliau: href={`/${locale}/artists/${artist.slug}`} */}
+                    <Link 
+                      href={`/${locale}#works`}
+                      className="px-6 py-2 bg-graphite text-white rounded-md hover:opacity-90 transition font-medium cursor-pointer inline-block text-center"
                     >
                       {tCommon('viewWorks')}
-                    </button>
-                    <button 
-                      type="button"
-                      onClick={() => {
-                        console.log('Book clicked for:', artist.slug);
-                        // TODO: Navigate to booking page
-                        window.location.href = `#contact?artist=${artist.slug}`;
-                      }}
-                      className="px-6 py-2 bg-white text-gray-900 rounded-md hover:bg-gray-50 transition font-medium border border-gray-300 cursor-pointer"
+                    </Link>
+                    <Link 
+                      href={`/${locale}${artist.slug ? `?artist=${artist.slug}` : ''}#contact`}
+                      className="px-6 py-2 bg-background text-graphite rounded-md hover:bg-white/90 transition font-medium border border-mocha/30 cursor-pointer inline-block text-center"
                     >
                       {tCommon('book')}
-                    </button>
+                    </Link>
                   </div>
                 </div>
               </div>

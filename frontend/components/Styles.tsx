@@ -1,12 +1,13 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useMobileAnimation } from '@/hooks/useMobileAnimation';
 import { viewportSettings } from '@/utils/animations';
 
 const styleVariants = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 12 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
@@ -16,7 +17,7 @@ const styleVariants = {
 
 // Mobile variants - simpler, no delay to prevent flickering
 const styleVariantsMobile = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 10 },
   visible: {
     opacity: 1,
     y: 0,
@@ -25,6 +26,7 @@ const styleVariantsMobile = {
 };
 
 export default function Styles() {
+  const locale = useLocale();
   const tCommon = useTranslations('common');
   const tStyles = useTranslations('styles');
   const { isMobile, prefersReducedMotion, getAnimationProps } = useMobileAnimation();
@@ -36,30 +38,18 @@ export default function Styles() {
     : viewportSettings.desktop;
 
   const styles = [
-    {
-      id: 1,
-      slug: 'realism',
-      color: 'bg-gray-900'
-    },
-    {
-      id: 2,
-      slug: 'japanese',
-      color: 'bg-gray-800'
-    },
-    {
-      id: 3,
-      slug: 'graphic',
-      color: 'bg-gray-700'
-    }
+    { id: 1, slug: 'realism' },
+    { id: 2, slug: 'japanese' },
+    { id: 3, slug: 'graphic' },
   ];
 
   return (
-    <section id="styles" className="py-12 md:py-32 bg-white overflow-x-hidden w-full">
+    <section id="styles" className="py-12 md:py-32 bg-background overflow-x-hidden w-full">
       <div className="container mx-auto px-4 max-w-full">
         <motion.h2
-          className="text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-6 md:mb-12 text-center"
+          className="text-4xl md:text-5xl font-serif font-semibold text-graphite mb-6 md:mb-12 text-center"
           {...getAnimationProps({
-            initial: { opacity: 0, y: 20 },
+            initial: { opacity: 0, y: 10 },
             whileInView: { opacity: 1, y: 0 },
             transition: { duration: 0.6 },
           })}
@@ -77,19 +67,21 @@ export default function Styles() {
               whileInView="visible"
               viewport={isMobile ? { once: true, amount: 0.3, margin: '0px' } : viewport}
               variants={isMobile ? styleVariantsMobile : styleVariants}
-              className="relative h-80 rounded-lg overflow-hidden group cursor-pointer"
+              className="relative h-80 rounded-lg overflow-hidden group cursor-pointer bg-stylesDark transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-xl"
             >
-              <div className={`absolute inset-0 ${style.color} opacity-90`} />
-              <div className="relative z-10 h-full flex flex-col justify-end p-6 text-white">
-                <h3 className="text-3xl font-serif font-bold mb-3">
-                  {tStyles(`${style.slug}.name`)}
-                </h3>
-                <p className="text-gray-200 mb-4 leading-relaxed">
-                  {tStyles(`${style.slug}.description`)}
-                </p>
-                <button className="text-white underline hover:no-underline font-medium">
+              <div className="absolute inset-0 bg-stylesDark" />
+              <div className="relative z-10 h-full flex flex-col justify-between p-6">
+                <div>
+                  <h3 className="text-3xl font-serif font-semibold text-white mb-3">
+                    {tStyles(`${style.slug}.name`)}
+                  </h3>
+                  <p className="text-white/80 mb-4 leading-relaxed min-h-[4.5rem]">
+                    {tStyles(`${style.slug}.description`)}
+                  </p>
+                </div>
+                <Link href={`/${locale}?style=${style.slug}#works`} className="text-white underline hover:no-underline font-medium shrink-0">
                   {tCommon('viewWorks')}
-                </button>
+                </Link>
               </div>
             </motion.div>
           ))}

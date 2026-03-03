@@ -4,45 +4,41 @@
  */
 
 export const animationPresets = {
-  // Fade in from bottom (mobile: reduced distance)
+  // Švelnus fade in iš apačios – mažesnis poslinkis
   fadeInUp: {
-    initial: { opacity: 0, y: 20 },
+    initial: { opacity: 0, y: 10 },
     animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.6, ease: 'easeOut' },
-  },
-
-  // Fade in from bottom (mobile: shorter duration)
-  fadeInUpSlow: {
-    initial: { opacity: 0, y: 30 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.8, ease: 'easeOut' },
-  },
-
-  // Fade in from side (mobile: reduced distance)
-  fadeInLeft: {
-    initial: { opacity: 0, x: -30 },
-    animate: { opacity: 1, x: 0 },
-    transition: { duration: 0.6, ease: 'easeOut' },
-  },
-
-  fadeInRight: {
-    initial: { opacity: 0, x: 30 },
-    animate: { opacity: 1, x: 0 },
-    transition: { duration: 0.6, ease: 'easeOut' },
-  },
-
-  // Scale + fade (mobile: less scale)
-  scaleIn: {
-    initial: { opacity: 0, scale: 0.9 },
-    animate: { opacity: 1, scale: 1 },
     transition: { duration: 0.5, ease: 'easeOut' },
   },
 
-  // Simple fade (works well on all devices)
+  fadeInUpSlow: {
+    initial: { opacity: 0, y: 12 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.6, ease: 'easeOut' },
+  },
+
+  fadeInLeft: {
+    initial: { opacity: 0, x: -12 },
+    animate: { opacity: 1, x: 0 },
+    transition: { duration: 0.5, ease: 'easeOut' },
+  },
+
+  fadeInRight: {
+    initial: { opacity: 0, x: 12 },
+    animate: { opacity: 1, x: 0 },
+    transition: { duration: 0.5, ease: 'easeOut' },
+  },
+
+  scaleIn: {
+    initial: { opacity: 0, scale: 0.98 },
+    animate: { opacity: 1, scale: 1 },
+    transition: { duration: 0.45, ease: 'easeOut' },
+  },
+
   fadeIn: {
     initial: { opacity: 0 },
     animate: { opacity: 1 },
-    transition: { duration: 0.4, ease: 'easeOut' },
+    transition: { duration: 0.35, ease: 'easeOut' },
   },
 };
 
@@ -99,21 +95,19 @@ export function getMobileAnimation(
 
 /**
  * Viewport settings for scroll animations
+ * once: true – blokai animuojasi tik vieną kartą, nebe „dingsta“ scrollinant
  */
 export const viewportSettings = {
-  // Desktop: more aggressive
   desktop: {
-    once: false,
-    amount: 0.3,
-    margin: '-100px',
+    once: true,
+    amount: 0.2,
+    margin: '-40px',
   },
-  // Mobile: more visible, trigger earlier so animation has time to complete
   mobile: {
-    once: false,
-    amount: 0.4, // Increased from 0.2 to 0.4 - trigger earlier
-    margin: '-100px', // Increased from -50px to -100px - more space to see animation
+    once: true,
+    amount: 0.15,
+    margin: '-20px',
   },
-  // Reduced motion: simple
   reduced: {
     once: true,
     amount: 0.1,

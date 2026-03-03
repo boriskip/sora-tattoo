@@ -3,8 +3,11 @@
 @tailwind utilities;
 
 :root {
-  --background: #faf8f5;
-  --foreground: #2d2d2d;
+  /* Šilta paletė: milky fonas, graphite antraštėms, mocha tekstui */
+  --background: #fbf7f4;
+  --foreground: #675d54;
+  --graphite: #232323;
+  --mocha: #675d54;
 }
 
 html {
@@ -16,6 +19,7 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: var(--font-inter);
+  line-height: 1.7;
   overflow-x: hidden;
   width: 100%;
   position: relative;
@@ -24,6 +28,7 @@ body {
 @layer base {
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-cormorant);
+    color: var(--graphite);
   }
 }
 
