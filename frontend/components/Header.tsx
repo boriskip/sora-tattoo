@@ -5,7 +5,7 @@ import { useLocale } from 'next-intl';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { locales } from '@/i18n';
 
@@ -17,6 +17,20 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
+  const langDropdownDesktopRef = useRef<HTMLDivElement>(null);
+  const langDropdownMobileRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as Node;
+      const outsideDesktop = !langDropdownDesktopRef.current?.contains(target);
+      const outsideMobile = !langDropdownMobileRef.current?.contains(target);
+      if (outsideDesktop && outsideMobile) setIsLangDropdownOpen(false);
+    };
+    if (isLangDropdownOpen) document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [isLangDropdownOpen]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -39,6 +53,7 @@ export default function Header() {
   }, [lastScrollY]);
 
   const switchLocale = (newLocale: string) => {
+    setIsLangDropdownOpen(false);
     const newPathname = pathname.replace(`/${locale}`, `/${newLocale}`);
     router.push(newPathname);
   };
@@ -133,25 +148,52 @@ export default function Header() {
                 </a>
               </div>
 
-              {/* Language Switcher */}
-              <div className="flex items-center space-x-1 border-r pr-3">
-                {locales.map((loc) => (
-                  <button
-                    key={loc}
-                    onClick={() => switchLocale(loc)}
-                    className={`px-1.5 py-1 text-sm font-medium transition ${
-                      locale === loc
-                        ? 'text-white underline'
-                        : 'text-white/70 hover:text-white'
-                    }`}
-                  >
-                    {loc.toUpperCase()}
-                  </button>
-                ))}
+              {/* Language Switcher - Dropdown */}
+              <div className="relative border-r pr-3" ref={langDropdownDesktopRef}>
+                <button
+                  type="button"
+                  onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
+                  className="flex items-center gap-1 px-2 py-1.5 text-sm font-medium text-white hover:text-white transition rounded-md hover:bg-white/10"
+                  aria-expanded={isLangDropdownOpen}
+                  aria-haspopup="listbox"
+                  aria-label="Select language"
+                >
+                  <span>{locale.toUpperCase()}</span>
+                  <svg className={`w-4 h-4 transition-transform ${isLangDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <AnimatePresence>
+                  {isLangDropdownOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -4 }}
+                      transition={{ duration: 0.15 }}
+                      className="absolute top-full right-0 mt-1 py-1 min-w-[80px] bg-graphite border border-white/10 rounded-xl shadow-xl z-50"
+                      role="listbox"
+                    >
+                      {locales.map((loc) => (
+                        <button
+                          key={loc}
+                          type="button"
+                          onClick={() => switchLocale(loc)}
+                          className={`w-full text-left px-4 py-2 text-sm font-medium transition ${
+                            locale === loc ? 'text-white bg-white/10' : 'text-white/80 hover:text-white hover:bg-white/5'
+                          }`}
+                          role="option"
+                          aria-selected={locale === loc}
+                        >
+                          {loc.toUpperCase()}
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
 
               {/* CTA Button */}
-              <Link href={`/${locale}#contact`} className="px-6 py-2 bg-white text-graphite rounded-md hover:bg-white/90 transition font-medium inline-block">
+              <Link href={`/${locale}#contact`} className="px-6 py-1.5 bg-white/95 text-graphite rounded-xl hover:bg-white transition font-medium inline-block shadow-sm">
                 {t('book')}
               </Link>
             </div>
@@ -195,21 +237,44 @@ export default function Header() {
                 </a>
               </div>
 
-              {/* Mobile Language Switcher */}
-              <div className="flex items-center gap-0.5 sm:gap-1">
-                {locales.map((loc) => (
-                  <button
-                    key={loc}
-                    onClick={() => switchLocale(loc)}
-                    className={`px-1 sm:px-1.5 py-0.5 sm:py-1 text-xs font-medium transition ${
-                      locale === loc
-                        ? 'text-white underline'
-                        : 'text-white/70 hover:text-white'
-                    }`}
-                  >
-                    {loc.toUpperCase()}
-                  </button>
-                ))}
+              {/* Mobile Language Switcher - Dropdown */}
+              <div className="relative" ref={langDropdownMobileRef}>
+                <button
+                  type="button"
+                  onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
+                  className="flex items-center gap-0.5 px-1.5 py-1 text-xs font-medium text-white/90 hover:text-white transition rounded hover:bg-white/10"
+                  aria-expanded={isLangDropdownOpen}
+                  aria-label="Select language"
+                >
+                  <span>{locale.toUpperCase()}</span>
+                  <svg className={`w-3 h-3 transition-transform ${isLangDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <AnimatePresence>
+                  {isLangDropdownOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -4 }}
+                      transition={{ duration: 0.15 }}
+                      className="absolute top-full right-0 mt-1 py-1 min-w-[72px] bg-graphite border border-white/10 rounded-lg shadow-xl z-50"
+                    >
+                      {locales.map((loc) => (
+                        <button
+                          key={loc}
+                          type="button"
+                          onClick={() => switchLocale(loc)}
+                          className={`w-full text-left px-3 py-1.5 text-xs font-medium transition ${
+                            locale === loc ? 'text-white bg-white/10' : 'text-white/80 hover:text-white hover:bg-white/5'
+                          }`}
+                        >
+                          {loc.toUpperCase()}
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
 
               {/* Burger Menu Button */}
@@ -265,7 +330,7 @@ export default function Header() {
               <Link href={`/${locale}#contact`} onClick={closeMobileMenu} className="block py-2 text-white/90 hover:text-white transition border-b border-white/10">
                 {t('contact')}
               </Link>
-              <Link href={`/${locale}#contact`} onClick={closeMobileMenu} className="block w-full mt-4 px-6 py-3 bg-white text-graphite rounded-md hover:bg-white/90 transition font-medium text-center">
+              <Link href={`/${locale}#contact`} onClick={closeMobileMenu} className="block w-full mt-4 px-6 py-2 bg-white/95 text-graphite rounded-xl hover:bg-white transition font-medium text-center shadow-sm">
                 {t('book')}
               </Link>
               

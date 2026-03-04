@@ -121,7 +121,7 @@ export default function Guides() {
 
         <div className="space-y-4">
           <div>
-            <h4 className="font-semibold text-graphite mb-2">
+            <h4 className="font-serif font-normal text-[27px] leading-[36px] tracking-[0.2em] text-graphite mb-2">
               {t('aftercare.method1.title')}
             </h4>
             <p className="text-mocha mb-3">
@@ -138,7 +138,7 @@ export default function Guides() {
           </div>
 
           <div>
-            <h4 className="font-semibold text-graphite mb-2">
+            <h4 className="font-serif font-normal text-[27px] leading-[36px] tracking-[0.2em] text-graphite mb-2">
               {t('aftercare.method2.title')}
             </h4>
             <p className="text-mocha mb-3">
@@ -155,7 +155,7 @@ export default function Guides() {
           </div>
 
           <div>
-            <h4 className="font-semibold text-graphite mb-2">
+            <h4 className="font-serif font-normal text-[27px] leading-[36px] tracking-[0.2em] text-graphite mb-2">
               {t('aftercare.important.title')}
             </h4>
             <ul className="list-disc list-inside space-y-1 text-mocha ml-4">
@@ -166,7 +166,7 @@ export default function Guides() {
           </div>
 
           <div>
-            <h4 className="font-semibold text-graphite mb-2">
+            <h4 className="font-serif font-normal text-[27px] leading-[36px] tracking-[0.2em] text-graphite mb-2">
               {t('aftercare.healing.title')}
             </h4>
             <p className="text-mocha whitespace-pre-line">
@@ -186,7 +186,7 @@ export default function Guides() {
     <section id="info" className="py-12 md:py-32 bg-background overflow-x-hidden w-full">
       <div className="container mx-auto px-4 max-w-full">
         <motion.h2
-          className="text-4xl md:text-5xl font-serif font-semibold text-graphite mb-6 md:mb-12 text-center"
+          className="font-serif font-normal text-[27px] leading-[36px] tracking-[0.2em] text-graphite mb-12 md:mb-16 text-center"
           {...getAnimationProps({
             initial: { opacity: 0, y: 10 },
             whileInView: { opacity: 1, y: 0 },
@@ -213,7 +213,7 @@ export default function Guides() {
                 onClick={() => toggleGuide(index)}
                 className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-mocha/5 transition"
               >
-                <h3 className="text-xl font-serif font-semibold text-graphite">
+                <h3 className="font-serif font-normal text-[27px] leading-[36px] tracking-[0.2em] text-graphite">
                   {t(guide.titleKey)}
                 </h3>
                 <svg

@@ -33,7 +33,7 @@ export default function About() {
     <section id="about" className="py-12 md:py-32 bg-background relative z-50 overflow-x-hidden w-full">
       <div className="container mx-auto px-4 max-w-full">
         <motion.h2
-          className="text-4xl md:text-5xl font-serif font-semibold text-graphite mb-6 md:mb-12 text-center"
+          className="font-serif font-normal text-[27px] leading-[36px] tracking-[0.2em] text-graphite mb-12 md:mb-16 text-center"
           {...getAnimationProps({
             initial: { opacity: 0, y: 12 },
             whileInView: { opacity: 1, y: 0 },

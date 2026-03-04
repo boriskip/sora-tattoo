@@ -57,7 +57,7 @@ export default function Gallery() {
     <section id="works" className="py-12 md:py-32 bg-background overflow-x-hidden w-full">
       <div className="container mx-auto px-4 max-w-full">
         <motion.h2
-          className="text-4xl md:text-5xl font-serif font-semibold text-graphite mb-6 md:mb-12 text-center"
+          className="font-serif font-normal text-[27px] leading-[36px] tracking-[0.2em] text-graphite mb-12 md:mb-16 text-center"
           {...getAnimationProps({
             initial: { opacity: 0, y: 12 },
             whileInView: { opacity: 1, y: 0 },
@@ -88,9 +88,9 @@ export default function Gallery() {
                 console.log('Filter clicked:', filter.id);
                 setSelectedFilter(filter.id);
               }}
-              className={`px-6 py-2 rounded-md transition cursor-pointer ${
+              className={`px-6 py-1.5 rounded-xl transition cursor-pointer shadow-sm ${
                 selectedFilter === filter.id
-                  ? 'bg-graphite text-white'
+                  ? 'bg-graphite text-white hover:opacity-95'
                   : 'bg-mocha/10 text-mocha hover:bg-mocha/20'
               }`}
               style={{ pointerEvents: 'auto' }}

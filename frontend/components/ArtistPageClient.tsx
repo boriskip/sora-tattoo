@@ -77,7 +77,7 @@ export default function ArtistPageClient({
                 />
               </div>
               <div className="md:col-span-2 p-6 md:p-10 flex flex-col justify-center">
-                <h1 className="text-3xl md:text-4xl font-serif font-semibold text-graphite mb-2">
+                <h1 className="font-serif font-normal text-[27px] leading-[36px] tracking-[0.2em] text-graphite mb-2">
                   {artist.name}
                 </h1>
                 {artist.style && (
@@ -91,7 +91,7 @@ export default function ArtistPageClient({
                 <div className="mt-6">
                   <Link
                     href={`/${locale}${artist.slug ? `?artist=${artist.slug}` : ''}#contact`}
-                    className="inline-block px-6 py-3 bg-graphite text-white rounded-md hover:opacity-90 transition font-medium"
+                    className="inline-block px-6 py-2 bg-graphite text-white rounded-xl hover:opacity-95 transition font-medium shadow-sm"
                   >
                     {tCommon('book')}
                   </Link>
@@ -102,7 +102,7 @@ export default function ArtistPageClient({
 
           {/* Works */}
           <motion.h2
-            className="text-2xl md:text-3xl font-serif font-semibold text-graphite mb-6 text-center"
+            className="font-serif font-normal text-[27px] leading-[36px] tracking-[0.2em] text-graphite mb-6 text-center"
             {...getAnimationProps({
               initial: { opacity: 0, y: 10 },
               whileInView: { opacity: 1, y: 0 },

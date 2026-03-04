@@ -1,0 +1,160 @@
+{
+  "common": {
+    "book": "Prenota",
+    "viewWorks": "Vedi lavori",
+    "works": "Lavori",
+    "masters": "Maestri",
+    "styles": "Stili",
+    "info": "Informazioni",
+    "availability": "Disponibilità",
+    "reviews": "Recensioni",
+    "contact": "Contatti"
+  },
+  "hero": {
+    "titleMain": "SORA",
+    "titleSub": "Tattoo",
+    "title": "SORA TATTOO",
+    "subtitle": "Tatuaggi artistici con passione",
+    "description": "Creiamo opere uniche che riflettono la tua personalità",
+    "book": "Prenota",
+    "viewWorks": "Vedi lavori",
+    "tagline": "Where ink meets air."
+  },
+  "about": {
+    "title": "Chi siamo",
+    "content": "SORA Tattoo significa chiarezza, precisione e libertà artistica.\nIl nostro studio a Berlino è un luogo dove le idee prendono forma e le storie personali diventano visibili.\nNon lavoriamo su una superficie rigida, ma sul corpo in movimento — le linee seguono ritmo, flusso e dinamica naturale.\nPer noi la pelle non è un sostituto della tela, ma parte della composizione.\nIl vuoto non è assenza, ma equilibrio — una pausa consapevole nel dialogo visivo.\nCon cura, trasparenza e i massimi standard di qualità e sicurezza, ogni tatuaggio nasce come parte di un insieme più grande."
+  },
+  "artists": {
+    "title": "Maestri",
+    "artist1": {
+      "name": "Artist 01",
+      "style": "Stile giapponese",
+      "description": "Lavora nello stile tradizionale del tatuaggio giapponese.\nIspirato da simbolismo, equilibrio e forme senza tempo.\nOgni motivo porta significato e forza interiore."
+    },
+    "artist2": {
+      "name": "Artist 02",
+      "style": "Giapponese · Realismo · Grafica",
+      "description": "Combina motivi giapponesi con realismo ed elementi grafici.\nComposizioni forti, contrasto profondo, dettagli espressivi.\nDove la tradizione incontra la visione moderna."
+    },
+    "artist3": {
+      "name": "Artist 03",
+      "style": "Minimal · Fine Line · Micro Realism",
+      "description": "Specializzato in tatuaggi minimalisti, fine line e micro realismo.\nLinee sottili, forme chiare, dettagli precisi.\nTatuaggi discreti con impatto duraturo."
+    }
+  },
+  "guides": {
+    "chooseArtist": {
+      "title": "Come scegliere il maestro giusto?",
+      "content": "Ogni artista SORA ha la propria firma e lavora in stili diversi.\nFai attenzione allo stile, al tratto e a come sono costruiti i motivi.\nImportante è anche la sensazione personale — se ti senti compreso e a tuo agio.\nUn tatuaggio è un processo condiviso che richiede tempo, fiducia e calma.\nPrenditi questo tempo — siamo felici di accompagnarti."
+    },
+    "prepare": {
+      "title": "Come prepararsi all'appuntamento?",
+      "content": "Una buona preparazione aiuta a vivere l'appuntamento con serenità.\nAssicurati di aver riposato, mangiato bene e bevuto a sufficienza.\nEvita alcol e sostanze almeno 24 ore prima.\nIndossa abiti comodi e prenditi il tuo tempo — calma e benessere fanno parte del processo.\nSe hai domande, siamo sempre a disposizione."
+    },
+    "session": {
+      "title": "Cosa aspettarsi durante la seduta?",
+      "content": "L'appuntamento inizia con una conversazione tranquilla su motivo e posizione.\nInsieme affrontiamo i dettagli prima di iniziare.\nDurante la seduta ci prendiamo tempo, facciamo pause e badiamo al tuo benessere.\nPuoi fare domande in qualsiasi momento o chiedere una pausa.\nIl tuo comfort e una buona sensazione sono la nostra priorità."
+    },
+    "aftercare": {
+      "title": "Cura e guarigione del tatuaggio",
+      "intro": "Una buona cura è decisiva per un risultato bello e duraturo.\nSegui queste indicazioni — aiutano la pelle a guarire al meglio.",
+      "method1": {
+        "title": "Opzione 1 — Guarigione con pellicola protettiva (Second Skin)",
+        "description": "Dopo il tatuaggio viene applicata una pellicola protettiva sulla pelle.",
+        "steps": [
+          "La pellicola resta sulla pelle 3–5 giorni, in base alla raccomandazione del maestro.",
+          "In questo periodo protegge il tatuaggio da batteri, sfregamento e sporco.",
+          "Se si raccoglie liquido sotto la pellicola, è normale.",
+          "Se la pellicola si stacca prima o dà fastidio, rimuovila con delicatezza."
+        ],
+        "afterRemoval": "Dopo la rimozione:\n• Lava il tatuaggio con acqua tiepida e sapone delicato senza profumo.\n• Asciuga la pelle tamponando (non strofinare).\n• Applica uno strato sottile di crema per tatuaggi.\n• Cura il tatuaggio 2–3 volte al giorno."
+      },
+      "method2": {
+        "title": "Opzione 2 — Guarigione con compressa",
+        "description": "Dopo l'appuntamento il tatuaggio viene coperto con una compressa.",
+        "steps": [
+          "Rimuovi la compressa dopo 1,5–2 ore.",
+          "Lava bene il tatuaggio con acqua tiepida e sapone delicato.",
+          "Asciuga tamponando.",
+          "Applica uno strato sottile di crema."
+        ],
+        "followingDays": "Nei giorni seguenti:\n• Lava il tatuaggio 2–3 volte al giorno.\n• Applica ogni volta uno strato sottile di crema.\n• La pelle non deve seccarsi né \"soffocare\"."
+      },
+      "important": {
+        "title": "Note importanti per entrambe le opzioni",
+        "points": [
+          "Evita di grattarti o strofinare.",
+          "Non tirare croste o desquamazioni.",
+          "Niente bagno, sauna, lettini o piscina per almeno 2–3 settimane.",
+          "Evita il sole diretto.",
+          "Indossa indumenti larghi e puliti sul tatuaggio."
+        ]
+      },
+      "healing": {
+        "title": "Processo di guarigione",
+        "content": "• Nei primi giorni la pelle può essere arrossata, sensibile o leggermente gonfia — è normale.\n• Il prurito fa parte della guarigione, evita di grattarti.\n• La guarigione completa richiede circa 2–4 settimane, gli strati più profondi più a lungo."
+      },
+      "support": "Se hai dubbi o domande, contattaci quando vuoi.\nTi seguiamo anche dopo il tatuaggio — il tuo benessere ci sta a cuore."
+    }
+  },
+  "nav": {
+    "home": "Home",
+    "works": "Lavori",
+    "masters": "Maestri",
+    "styles": "Stili",
+    "info": "Informazioni",
+    "availability": "Disponibilità",
+    "reviews": "Recensioni",
+    "contact": "Contatti",
+    "book": "Prenota"
+  },
+  "gallery": {
+    "all": "Tutti",
+    "japanese": "Giapponese",
+    "realism": "Realismo",
+    "minimal": "Minimal",
+    "graphic": "Grafica"
+  },
+  "styles": {
+    "realism": {
+      "name": "Realismo",
+      "description": "Rappresentazioni fedeli con ombre profonde e motivi dettagliati. Perfetto per ritratti, natura e opere realistiche."
+    },
+    "japanese": {
+      "name": "Giapponese",
+      "description": "Motivi tradizionali giapponesi con simbolismo e equilibrio. Forme senza tempo che portano forza interiore e significato."
+    },
+    "graphic": {
+      "name": "Grafica",
+      "description": "Elementi grafici moderni con composizioni forti e dettagli espressivi. Dove la tradizione incontra la visione moderna."
+    }
+  },
+  "contact": {
+    "studioInfo": "Informazioni studio",
+    "address": "Indirizzo",
+    "addressValue": "Berlino, Germania",
+    "hours": "Orari",
+    "hoursValue": "Su appuntamento",
+    "formName": "Nome",
+    "formContact": "Contatto (telefono/Instagram)",
+    "formBodyPart": "Parte del corpo desiderata",
+    "formStyle": "Stile",
+    "formStylePlaceholder": "Seleziona",
+    "formArtist": "Artista preferito",
+    "formDate": "Data preferita",
+    "formMessage": "Messaggio"
+  },
+  "footer": {
+    "navigation": "Navigazione",
+    "followUs": "Seguici",
+    "rights": "Tutti i diritti riservati."
+  },
+  "reviews": {
+    "leaveReview": "Lascia una recensione",
+    "formName": "Nome",
+    "formRating": "Valutazione",
+    "formMessage": "La tua recensione",
+    "formSubmit": "Invia",
+    "formCancel": "Annulla"
+  }
+}

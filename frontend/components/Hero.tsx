@@ -95,21 +95,21 @@ export default function Hero() {
           pointerEvents: isContentVisible ? 'auto' : 'none'
         }}
       >
-        {/* Title: SORA dominant (max 600), Tattoo po juo su linijomis */}
+        {/* Title: SORA – light 300, 80px, line-height 44px, letter-spacing 0.2em */}
         <motion.h1
-          className="font-serif font-semibold text-graphite mb-4 drop-shadow-lg flex flex-col items-center justify-center tracking-[0.2em]"
+          className="font-serif text-graphite mb-4 drop-shadow-lg flex flex-col items-center justify-center"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.6 }}
         >
-          <span className="text-6xl md:text-8xl">{t('titleMain')}</span>
+          <span className="font-light text-[80px] leading-[44px] tracking-[0.2em]">{t('titleMain')}</span>
           {/* Tattoo su hr iš 2 pusių – storesnė prie teksto, plonėja link kraštų */}
-          <span className="flex items-center gap-4 w-full max-w-md justify-center mt-1">
+          <span className="flex items-center gap-4 w-full max-w-md justify-center mt-6">
             <span
               className="h-0.5 flex-1 max-w-[80px] md:max-w-[120px] bg-gradient-to-r from-transparent to-graphite"
               aria-hidden
             />
-            <span className="text-xl md:text-2xl tracking-[0.2em] shrink-0">{t('titleSub')}</span>
+            <span className="font-inter font-light text-[25px] leading-[1.6] tracking-[0.2em] shrink-0 text-graphite">{t('titleSub')}</span>
             <span
               className="h-0.5 flex-1 max-w-[80px] md:max-w-[120px] bg-gradient-to-l from-transparent to-graphite"
               aria-hidden
@@ -144,10 +144,10 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.1, duration: 0.6 }}
         >
-          <Link href={`/${locale}#contact`} className="px-8 py-3 bg-graphite text-white rounded-md hover:opacity-90 transition font-medium text-lg shadow-lg text-center">
+          <Link href={`/${locale}#contact`} className="px-8 py-2 bg-graphite text-white rounded-xl hover:opacity-95 transition font-medium text-lg shadow-md text-center">
             {t('book')}
           </Link>
-          <Link href={`/${locale}#works`} className="px-8 py-3 bg-background text-graphite rounded-md hover:bg-white/80 transition font-medium text-lg border border-mocha/40 shadow-lg backdrop-blur-sm text-center">
+          <Link href={`/${locale}#works`} className="px-8 py-2 bg-background/95 text-graphite rounded-xl hover:bg-white/90 transition font-medium text-lg border border-mocha/20 shadow-md backdrop-blur-sm text-center">
             {t('viewWorks')}
           </Link>
         </motion.div>

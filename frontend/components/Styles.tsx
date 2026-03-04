@@ -47,7 +47,7 @@ export default function Styles() {
     <section id="styles" className="py-12 md:py-32 bg-background overflow-x-hidden w-full">
       <div className="container mx-auto px-4 max-w-full">
         <motion.h2
-          className="text-4xl md:text-5xl font-serif font-semibold text-graphite mb-6 md:mb-12 text-center"
+          className="font-serif font-normal text-[27px] leading-[36px] tracking-[0.2em] text-graphite mb-12 md:mb-16 text-center"
           {...getAnimationProps({
             initial: { opacity: 0, y: 10 },
             whileInView: { opacity: 1, y: 0 },
@@ -72,7 +72,7 @@ export default function Styles() {
               <div className="absolute inset-0 bg-stylesDark" />
               <div className="relative z-10 h-full flex flex-col justify-between p-6">
                 <div>
-                  <h3 className="text-3xl font-serif font-semibold text-white mb-3">
+                  <h3 className="font-serif font-normal text-[27px] leading-[36px] tracking-[0.2em] text-white mb-3">
                     {tStyles(`${style.slug}.name`)}
                   </h3>
                   <p className="text-white/80 mb-4 leading-relaxed min-h-[4.5rem]">

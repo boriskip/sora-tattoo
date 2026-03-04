@@ -18,7 +18,7 @@ html {
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: var(--font-inter);
+  font-family: var(--font-cormorant);
   line-height: 1.7;
   overflow-x: hidden;
   width: 100%;
@@ -28,6 +28,10 @@ body {
 @layer base {
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-cormorant);
+    font-weight: 400;
+    font-size: 27px;
+    line-height: 36px;
+    letter-spacing: 0.2em;
     color: var(--graphite);
   }
 }

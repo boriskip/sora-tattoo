@@ -42,7 +42,7 @@ export default function Contact() {
     <section id="contact" className="py-12 md:py-32 bg-background overflow-x-hidden w-full">
       <div className="container mx-auto px-4 max-w-full">
         <motion.h2
-          className="text-4xl md:text-5xl font-serif font-semibold text-graphite mb-6 md:mb-12 text-center"
+          className="font-serif font-normal text-[27px] leading-[36px] tracking-[0.2em] text-graphite mb-12 md:mb-16 text-center"
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -59,7 +59,7 @@ export default function Contact() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h3 className="text-2xl font-serif font-semibold text-graphite mb-6">
+            <h3 className="font-serif font-normal text-[27px] leading-[36px] tracking-[0.2em] text-graphite mb-6">
               {tContact('studioInfo')}
             </h3>
             <div className="space-y-4 text-mocha">
@@ -231,7 +231,7 @@ export default function Contact() {
 
             <button
               type="submit"
-              className="w-full px-6 py-3 bg-graphite text-white rounded-md hover:opacity-90 transition font-medium"
+              className="w-full px-6 py-2 bg-graphite text-white rounded-xl hover:opacity-95 transition font-medium shadow-sm"
             >
               {tCommon('book')}
             </button>

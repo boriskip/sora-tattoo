@@ -30,7 +30,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="de" className="overflow-x-hidden">
-      <body className={`${inter.variable} ${cormorant.variable} font-sans overflow-x-hidden`}>
+      <body className={`${inter.variable} ${cormorant.variable} font-serif overflow-x-hidden`}>
         {children}
       </body>
     </html>

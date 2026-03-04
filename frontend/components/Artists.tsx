@@ -2,9 +2,9 @@
 
 import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useMobileAnimation } from '@/hooks/useMobileAnimation';
 import { viewportSettings } from '@/utils/animations';
 
@@ -22,7 +22,26 @@ export default function Artists() {
   const t = useTranslations('artists');
   const tCommon = useTranslations('common');
   const galleryRef = useRef<HTMLDivElement>(null);
+  const LIGHTBOX_WORKS_COUNT = 20;
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const { isMobile, prefersReducedMotion, getAnimationProps } = useMobileAnimation();
+
+  useEffect(() => {
+    const handleKeydown = (e: KeyboardEvent) => {
+      if (lightboxIndex === null) return;
+      if (e.key === 'Escape') setLightboxIndex(null);
+      if (e.key === 'ArrowLeft') setLightboxIndex((i) => (i === null ? null : (i - 1 + LIGHTBOX_WORKS_COUNT) % LIGHTBOX_WORKS_COUNT));
+      if (e.key === 'ArrowRight') setLightboxIndex((i) => (i === null ? null : (i + 1) % LIGHTBOX_WORKS_COUNT));
+    };
+    if (lightboxIndex !== null) {
+      document.addEventListener('keydown', handleKeydown);
+      document.body.style.overflow = 'hidden';
+    }
+    return () => {
+      document.removeEventListener('keydown', handleKeydown);
+      document.body.style.overflow = '';
+    };
+  }, [lightboxIndex]);
   
   const viewport = prefersReducedMotion
     ? viewportSettings.reduced
@@ -78,7 +97,7 @@ export default function Artists() {
     <section id="masters" className="py-12 md:py-32 bg-background overflow-x-hidden w-full">
       <div className="container mx-auto px-4 max-w-full">
         <motion.h2
-          className="text-4xl md:text-5xl font-serif font-semibold text-graphite mb-8 text-center"
+          className="font-serif font-normal text-[27px] leading-[36px] tracking-[0.2em] text-graphite mb-12 md:mb-16 text-center"
           {...getAnimationProps({
             initial: { opacity: 0, y: 10 },
             whileInView: { opacity: 1, y: 0 },
@@ -150,11 +169,13 @@ export default function Artists() {
                 WebkitOverflowScrolling: 'touch'
               }}
             >
-              {/* Simple gallery items - increased to 20 for better scrolling */}
-              {Array.from({ length: 20 }).map((_, index) => (
-                <div
+              {/* Simple gallery items */}
+              {Array.from({ length: LIGHTBOX_WORKS_COUNT }).map((_, index) => (
+                <button
                   key={index}
-                  className="flex-shrink-0 w-[200px] md:w-[250px] h-[200px] md:h-[250px] rounded-lg overflow-hidden bg-gray-200 relative group cursor-pointer"
+                  type="button"
+                  onClick={() => setLightboxIndex(index)}
+                  className="flex-shrink-0 w-[200px] md:w-[250px] h-[200px] md:h-[250px] rounded-lg overflow-hidden bg-gray-200 relative group cursor-pointer focus:outline-none focus:ring-2 focus:ring-graphite/50"
                 >
                   <Image
                     src="/placeholder-work.svg"
@@ -165,7 +186,7 @@ export default function Artists() {
                     unoptimized
                   />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
-                </div>
+                </button>
               ))}
             </div>
           </div>
@@ -197,7 +218,7 @@ export default function Artists() {
                 
                 {/* Content */}
                 <div className="md:col-span-2 p-4 md:p-8 flex flex-col justify-center">
-                  <h3 className="text-2xl md:text-4xl font-serif font-semibold text-graphite mb-2 md:mb-3">
+                  <h3 className="font-serif font-normal text-[27px] leading-[36px] tracking-[0.2em] text-graphite mb-2 md:mb-3">
                     {t(artist.nameKey)}
                   </h3>
                   <p className="text-sm md:text-base text-mocha mb-2 md:mb-4 font-medium">
@@ -210,13 +231,13 @@ export default function Artists() {
                     {/* Laikinai → #works (be backend). Vėliau: href={`/${locale}/artists/${artist.slug}`} */}
                     <Link 
                       href={`/${locale}#works`}
-                      className="px-6 py-2 bg-graphite text-white rounded-md hover:opacity-90 transition font-medium cursor-pointer inline-block text-center"
+                      className="px-6 py-1.5 bg-graphite text-white rounded-xl hover:opacity-95 transition font-medium cursor-pointer inline-block text-center shadow-sm"
                     >
                       {tCommon('viewWorks')}
                     </Link>
                     <Link 
                       href={`/${locale}${artist.slug ? `?artist=${artist.slug}` : ''}#contact`}
-                      className="px-6 py-2 bg-background text-graphite rounded-md hover:bg-white/90 transition font-medium border border-mocha/30 cursor-pointer inline-block text-center"
+                      className="px-6 py-1.5 bg-background/95 text-graphite rounded-xl hover:bg-white/90 transition font-medium border border-mocha/20 cursor-pointer inline-block text-center shadow-sm"
                     >
                       {tCommon('book')}
                     </Link>
@@ -227,6 +248,82 @@ export default function Artists() {
           ))}
         </div>
       </div>
+
+      {/* Lightbox - darbų peržiūra su slideriu */}
+      <AnimatePresence>
+        {lightboxIndex !== null && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/80"
+            onClick={() => setLightboxIndex(null)}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Work preview"
+          >
+            <motion.div
+              initial={{ scale: 0.95 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+              className="relative max-w-4xl max-h-[90vh] w-full flex items-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Prev */}
+              <button
+                type="button"
+                onClick={(e) => { e.stopPropagation(); setLightboxIndex((i) => (i === null ? null : (i - 1 + LIGHTBOX_WORKS_COUNT) % LIGHTBOX_WORKS_COUNT)); }}
+                className="absolute left-0 md:-left-12 z-10 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-white/90 text-graphite hover:bg-white transition shadow-lg"
+                aria-label="Previous work"
+              >
+                <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+
+              {/* Image */}
+              <div className="flex-1 px-12 md:px-4">
+                <Image
+                  key={lightboxIndex}
+                  src="/placeholder-work.svg"
+                  alt={`Work ${lightboxIndex + 1}`}
+                  width={800}
+                  height={800}
+                  className="w-full h-auto max-h-[90vh] object-contain rounded-lg shadow-2xl"
+                  unoptimized
+                />
+                <p className="text-center text-white/90 text-sm mt-2">Work {lightboxIndex + 1} / {LIGHTBOX_WORKS_COUNT}</p>
+              </div>
+
+              {/* Next */}
+              <button
+                type="button"
+                onClick={(e) => { e.stopPropagation(); setLightboxIndex((i) => (i === null ? null : (i + 1) % LIGHTBOX_WORKS_COUNT)); }}
+                className="absolute right-0 md:-right-12 z-10 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-white/90 text-graphite hover:bg-white transition shadow-lg"
+                aria-label="Next work"
+              >
+                <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+
+              {/* Close */}
+              <button
+                type="button"
+                onClick={() => setLightboxIndex(null)}
+                className="absolute -top-10 right-0 md:top-0 md:-right-10 w-10 h-10 flex items-center justify-center rounded-full bg-white/90 text-graphite hover:bg-white transition"
+                aria-label="Close"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

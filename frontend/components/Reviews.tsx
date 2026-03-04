@@ -81,7 +81,7 @@ export default function Reviews() {
       <div className="container mx-auto px-4 max-w-full">
         <div className="flex flex-col md:flex-row justify-between items-center mb-6 md:mb-12">
           <motion.h2
-            className="text-4xl md:text-5xl font-serif font-semibold text-graphite mb-6 md:mb-0 text-center md:text-left"
+            className="font-serif font-normal text-[27px] leading-[36px] tracking-[0.2em] text-graphite mb-6 md:mb-0 text-center md:text-left"
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false }}
@@ -92,7 +92,7 @@ export default function Reviews() {
           <motion.button
             type="button"
             onClick={() => setIsFormOpen(true)}
-            className="px-6 py-3 bg-graphite text-white rounded-md hover:opacity-90 transition font-medium cursor-pointer"
+            className="px-6 py-2 bg-graphite text-white rounded-xl hover:opacity-95 transition font-medium cursor-pointer shadow-sm"
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false }}
@@ -158,7 +158,7 @@ export default function Reviews() {
                 <div className="bg-background rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
                   <div className="p-6 md:p-8">
                     <div className="flex justify-between items-center mb-6">
-                      <h3 className="text-2xl md:text-3xl font-serif font-semibold text-graphite">
+                      <h3 className="font-serif font-normal text-[27px] leading-[36px] tracking-[0.2em] text-graphite">
                         {tReviews('leaveReview')}
                       </h3>
                       <button
@@ -231,13 +231,13 @@ export default function Reviews() {
                         <button
                           type="button"
                           onClick={() => setIsFormOpen(false)}
-                          className="px-6 py-2 bg-background text-graphite rounded-md hover:bg-white/90 transition font-medium border border-mocha/30"
+                          className="px-6 py-1.5 bg-background/95 text-graphite rounded-xl hover:bg-white/90 transition font-medium border border-mocha/20 shadow-sm"
                         >
                           {tReviews('formCancel')}
                         </button>
                         <button
                           type="submit"
-                          className="px-6 py-2 bg-graphite text-white rounded-md hover:opacity-90 transition font-medium"
+                          className="px-6 py-1.5 bg-graphite text-white rounded-xl hover:opacity-95 transition font-medium shadow-sm"
                         >
                           {tReviews('formSubmit')}
                         </button>

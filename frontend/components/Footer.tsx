@@ -15,7 +15,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Logo & Description */}
           <div>
-            <h3 className="text-2xl font-serif font-semibold tracking-[0.2em] mb-4 text-white">SORA TATTOO</h3>
+            <h3 className="font-serif font-normal text-[27px] leading-[36px] tracking-[0.2em] mb-4 text-white">SORA TATTOO</h3>
             <p className="text-white/80 text-sm">
               Where ink meets air.
             </p>
@@ -23,7 +23,7 @@ export default function Footer() {
 
           {/* Links */}
           <div>
-            <h4 className="font-semibold mb-4 text-white">{tFooter('navigation')}</h4>
+            <h4 className="font-serif font-normal text-[27px] leading-[36px] tracking-[0.2em] mb-4 text-white">{tFooter('navigation')}</h4>
             <ul className="space-y-2 text-sm text-white/80">
               <li>
                 <Link href={`/${locale}#works`} className="hover:text-white transition">
@@ -55,7 +55,7 @@ export default function Footer() {
 
           {/* Social */}
           <div>
-            <h4 className="font-semibold mb-4 text-white">{tFooter('followUs')}</h4>
+            <h4 className="font-serif font-normal text-[27px] leading-[36px] tracking-[0.2em] mb-4 text-white">{tFooter('followUs')}</h4>
             <div className="flex gap-4">
               <a
                 href="https://instagram.com"
