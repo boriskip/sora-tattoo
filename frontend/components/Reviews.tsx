@@ -1,66 +1,67 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import { buttonTransitionClass } from '@/utils/animations';
+import { getApiUrl } from '@/lib/api';
+import type { Review } from '@/lib/api';
 
-export default function Reviews() {
+type ReviewsProps = { data?: Review[] };
+
+export default function Reviews({ data }: ReviewsProps) {
   const tCommon = useTranslations('common');
   const tReviews = useTranslations('reviews');
+  const locale = useLocale();
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState<'success' | 'error' | null>(null);
   const [formData, setFormData] = useState({
     name: '',
+    email: '',
     rating: 5,
     message: ''
   });
 
-  // Mock data - reviews
-  const reviews = [
-    {
-      id: 1,
-      author: 'Sarah M.',
-      text: 'Absolut fantastische Erfahrung! Der Artist hat genau verstanden, was ich wollte, und das Ergebnis ist noch besser als erwartet.',
-      rating: 5
-    },
-    {
-      id: 2,
-      author: 'Michael K.',
-      text: 'Professionell, sauber und sehr talentiert. Das Studio ist wunderschön und die Atmosphäre ist entspannt.',
-      rating: 5
-    },
-    {
-      id: 3,
-      author: 'Lisa T.',
-      text: 'Mein erstes Tattoo und ich fühle mich so gut aufgehoben. Die Beratung war ausführlich und das Ergebnis ist perfekt.',
-      rating: 5
-    },
-    {
-      id: 4,
-      author: 'David R.',
-      text: 'Hervorragende Arbeit! Die Details sind unglaublich und die Heilung verlief problemlos.',
-      rating: 5
-    },
-    {
-      id: 5,
-      author: 'Emma L.',
-      text: 'Ich bin so glücklich mit meinem neuen Tattoo. Der Artist ist sehr geduldig und erklärt alles genau.',
-      rating: 5
-    },
-    {
-      id: 6,
-      author: 'Tom H.',
-      text: 'Top Qualität und Service! Kann ich nur weiterempfehlen. Werde definitiv wieder kommen.',
-      rating: 5
-    }
-  ];
+  const reviews: Review[] = Array.isArray(data) ? data : (data ? Object.values(data) : []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  function formatReviewDate(createdAt: string | undefined): string {
+    if (!createdAt) return '';
+    try {
+      return new Date(createdAt).toLocaleDateString(locale, { dateStyle: 'medium' });
+    } catch {
+      return '';
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Review submitted:', formData);
-    // TODO: Connect to backend API
-    setIsFormOpen(false);
-    setFormData({ name: '', rating: 5, message: '' });
+    setIsSubmitting(true);
+    setSubmitMessage(null);
+    try {
+      const apiUrl = getApiUrl();
+      const res = await fetch(`${apiUrl}/reviews?locale=${locale}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          author: formData.name,
+          email: formData.email,
+          text: formData.message,
+          rating: formData.rating,
+        }),
+      });
+      if (res.ok) {
+        setSubmitMessage('success');
+        setFormData({ name: '', email: '', rating: 5, message: '' });
+        setIsFormOpen(false);
+      } else {
+        setSubmitMessage('error');
+      }
+    } catch {
+      setSubmitMessage('error');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -104,7 +105,12 @@ export default function Reviews() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-          {reviews.map((review, index) => (
+          {reviews.length === 0 ? (
+            <p className="text-mocha col-span-full text-center py-8">
+              No reviews yet. Be the first to leave one!
+            </p>
+          ) : (
+          reviews.map((review, index) => (
             <motion.div
               key={review.id}
               initial={{ opacity: 0, y: 12 }}
@@ -128,11 +134,18 @@ export default function Reviews() {
               <p className="text-mocha mb-4 leading-relaxed">
                 &quot;{review.text}&quot;
               </p>
-              <p className="text-sm font-semibold text-graphite">
-                — {review.author}
-              </p>
+              <div className="flex items-baseline justify-between gap-2">
+                <p className="text-sm font-semibold text-graphite">
+                  — {review.author}
+                </p>
+                {review.created_at && (
+                  <p className="text-xs text-mocha/80 shrink-0">
+                    {formatReviewDate(review.created_at)}
+                  </p>
+                )}
+              </div>
             </motion.div>
-          ))}
+          )))}
         </div>
 
         {/* Review Form Modal */}
@@ -171,6 +184,16 @@ export default function Reviews() {
                       </button>
                     </div>
 
+                    {submitMessage === 'success' && (
+                      <p className="mb-4 text-green-600 font-medium">
+                        Thank you! Your review will be published after moderation.
+                      </p>
+                    )}
+                    {submitMessage === 'error' && (
+                      <p className="mb-4 text-red-600 font-medium">
+                        Something went wrong. Please try again.
+                      </p>
+                    )}
                     <form onSubmit={handleSubmit} className="space-y-6">
                       {/* Name */}
                       <div>
@@ -182,6 +205,22 @@ export default function Reviews() {
                           id="review-name"
                           name="name"
                           value={formData.name}
+                          onChange={handleChange}
+                          required
+                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-900"
+                        />
+                      </div>
+
+                      {/* Email */}
+                      <div>
+                        <label htmlFor="review-email" className="block text-sm font-medium text-mocha mb-2">
+                          {tReviews('formEmail')}
+                        </label>
+                        <input
+                          type="email"
+                          id="review-email"
+                          name="email"
+                          value={formData.email}
                           onChange={handleChange}
                           required
                           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-900"
@@ -238,9 +277,10 @@ export default function Reviews() {
                         </button>
                         <button
                           type="submit"
-                          className={`px-6 py-1.5 bg-graphite text-white rounded-xl hover:opacity-95 font-medium shadow-sm ${buttonTransitionClass}`}
+                          disabled={isSubmitting}
+                          className={`px-6 py-1.5 bg-graphite text-white rounded-xl hover:opacity-95 font-medium shadow-sm disabled:opacity-60 ${buttonTransitionClass}`}
                         >
-                          {tReviews('formSubmit')}
+                          {isSubmitting ? '…' : tReviews('formSubmit')}
                         </button>
                       </div>
                     </form>

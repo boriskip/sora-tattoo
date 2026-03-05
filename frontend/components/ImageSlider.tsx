@@ -5,13 +5,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { buttonIconTransitionClass } from '@/utils/animations';
 
+export type ImageSliderItem = { url: string; alt?: string };
+
 interface ImageSliderProps {
-  images: string[];
+  items: ImageSliderItem[];
   autoPlay?: boolean;
   interval?: number;
 }
 
-export default function ImageSlider({ images, autoPlay = true, interval = 5000 }: ImageSliderProps) {
+export default function ImageSlider({ items, autoPlay = true, interval = 5000 }: ImageSliderProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [imageError, setImageError] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -19,14 +21,14 @@ export default function ImageSlider({ images, autoPlay = true, interval = 5000 }
 
   // Auto-play with pause functionality
   useEffect(() => {
-    if (!autoPlay || images.length <= 1 || isPaused) return;
+    if (!autoPlay || items.length <= 1 || isPaused) return;
 
     const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % images.length);
+      setCurrentIndex((prev) => (prev + 1) % items.length);
     }, interval);
 
     return () => clearInterval(timer);
-  }, [autoPlay, interval, images.length, isPaused]);
+  }, [autoPlay, interval, items.length, isPaused]);
 
   // Cleanup pause timeout on unmount
   useEffect(() => {
@@ -55,16 +57,16 @@ export default function ImageSlider({ images, autoPlay = true, interval = 5000 }
   };
 
   const goToPrevious = () => {
-    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+    setCurrentIndex((prev) => (prev - 1 + items.length) % items.length);
     pauseAutoPlay();
   };
 
   const goToNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % images.length);
+    setCurrentIndex((prev) => (prev + 1) % items.length);
     pauseAutoPlay();
   };
 
-  if (images.length === 0) {
+  if (items.length === 0) {
     return (
       <div className="relative w-full h-[400px] md:h-[500px] rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center">
         <p className="text-gray-500">No images available</p>
@@ -72,44 +74,51 @@ export default function ImageSlider({ images, autoPlay = true, interval = 5000 }
     );
   }
 
+  const current = items[currentIndex];
+  const altText = current?.alt?.trim() || `Slide ${currentIndex + 1}`;
+
   return (
-    <div className="relative w-full h-[400px] md:h-[500px] rounded-lg overflow-hidden bg-gray-100 group">
-      {/* Main Image */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentIndex}
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -20 }}
-          transition={{ duration: 0.5 }}
-          className="relative w-full h-full"
-        >
-          <Image
-            src={images[currentIndex]}
-            alt={`Slide ${currentIndex + 1}`}
-            fill
-            className="object-cover pointer-events-none"
-            priority={currentIndex === 0}
-            sizes="(max-width: 768px) 100vw, 50vw"
-            unoptimized
-            onError={(e) => {
-              console.error('Image failed to load:', images[currentIndex]);
-              setImageError(true);
-            }}
-            onLoad={() => {
-              setImageError(false);
-            }}
-          />
-          {imageError && (
-            <div className="absolute inset-0 flex items-center justify-center bg-gray-200 pointer-events-none">
-              <p className="text-gray-500">Failed to load image</p>
-            </div>
-          )}
-        </motion.div>
-      </AnimatePresence>
+    <div className="relative w-full rounded-lg overflow-hidden bg-gray-100 group">
+      <div className="relative w-full h-[400px] md:h-[500px]">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentIndex}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.5 }}
+            className="relative w-full h-full"
+          >
+            <Image
+              src={current?.url ?? ''}
+              alt={altText}
+              fill
+              className="object-cover pointer-events-none"
+              priority={currentIndex === 0}
+              sizes="(max-width: 768px) 100vw, 50vw"
+              unoptimized
+              onError={() => setImageError(true)}
+              onLoad={() => setImageError(false)}
+            />
+            {imageError && (
+              <div className="absolute inset-0 flex items-center justify-center bg-gray-200 pointer-events-none">
+                <p className="text-gray-500">Failed to load image</p>
+              </div>
+            )}
+            {/* Label ant nuotraukos – stilius kaip header CTA mygtukas */}
+            {current?.alt?.trim() && (
+              <span
+                className="absolute right-3 bottom-[27px] px-4 py-2 text-sm font-medium text-graphite bg-white/80 rounded-xl shadow-sm backdrop-blur-sm max-w-[85%] text-right font-serif"
+                aria-hidden="true"
+              >
+                {current.alt.trim()}
+              </span>
+            )}
+          </motion.div>
+        </AnimatePresence>
 
       {/* Navigation Arrows */}
-      {images.length > 1 && (
+      {items.length > 1 && (
         <>
           <button
             onClick={(e) => {
@@ -145,9 +154,9 @@ export default function ImageSlider({ images, autoPlay = true, interval = 5000 }
       )}
 
       {/* Dots Indicator */}
-      {images.length > 1 && (
+      {items.length > 1 && (
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-50 pointer-events-auto" style={{ zIndex: 50 }}>
-          {images.map((_, index) => (
+          {items.map((_, index) => (
             <button
               key={index}
               type="button"
@@ -164,6 +173,7 @@ export default function ImageSlider({ images, autoPlay = true, interval = 5000 }
           ))}
         </div>
       )}
+      </div>
     </div>
   );
 }

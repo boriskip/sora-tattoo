@@ -14,7 +14,7 @@ export default async function ArtistPage({ params }: Props) {
 
   setRequestLocale(locale);
 
-  const res = await fetch(`${API_URL}/artists/${slug}`, {
+  const res = await fetch(`${API_URL}/artists/${slug}?locale=${locale}`, {
     next: { revalidate: 60 },
   });
   if (!res.ok) notFound();

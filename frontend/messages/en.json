@@ -26,6 +26,10 @@
   },
   "artists": {
     "title": "Masters",
+    "allMasters": "All",
+    "noWorks": "No works yet",
+    "noWorksByMaster": "No works by this master",
+    "noArtists": "No masters yet.",
     "artist1": {
       "name": "Artist 01",
       "style": "Japanese Style",
@@ -124,6 +128,10 @@
       "name": "Japanese",
       "description": "Traditional Japanese motifs with symbolism and balance. Timeless forms that carry inner strength and meaning."
     },
+    "minimal": {
+      "name": "Minimal",
+      "description": "Reduced forms and clear lines. Less is more – timeless elegance through conscious reduction."
+    },
     "graphic": {
       "name": "Graphic",
       "description": "Modern graphic elements with strong compositions and expressive details. Where tradition meets modern vision."
@@ -135,6 +143,9 @@
     "addressValue": "Berlin, Germany",
     "hours": "Opening Hours",
     "hoursValue": "By Appointment",
+    "phone": "Phone",
+    "email": "Email",
+    "noContactInfo": "Contact details are set in the admin panel.",
     "formName": "Name",
     "formContact": "Contact (Phone/Instagram)",
     "formBodyPart": "Desired Body Part",
@@ -147,11 +158,25 @@
   "footer": {
     "navigation": "Navigation",
     "followUs": "Follow Us",
-    "rights": "All rights reserved."
+    "rights": "All rights reserved.",
+    "impressum": "Imprint",
+    "privacy": "Privacy Policy",
+    "cookies": "We use only technically necessary cookies. See Privacy Policy for details."
+  },
+  "legal": {
+    "impressum": {
+      "title": "Imprint",
+      "content": "Information according to § 5 TMG (Germany)\n\n[Company/Name]\n[Address]\n[Postal code and city]\n\nContact: [Email or phone]\n\nResponsible for content per § 55 Abs. 2 RStV: [Name], [Address]\n\nPlease replace the placeholders with your actual details. For businesses, add VAT ID, trade register, and professional body if applicable."
+    },
+    "privacy": {
+      "title": "Privacy Policy",
+      "content": "The data controller for this website is [Name/Address].\n\nContact form: Data submitted via the contact form (name, contact details, message) is processed and stored only to handle your request. Legal basis is your consent or our legitimate interest in responding to enquiries. Data is deleted once the request is completed, unless legal retention obligations apply.\n\nCookies: This site currently uses only technically necessary cookies (e.g. for session). No tracking takes place without your consent.\n\nYour rights: You have the right to access, rectify, erase, and restrict processing of your personal data, and to data portability. You may lodge a complaint with a supervisory authority.\n\nPlease adapt this text to your actual data processing. If you use Google Analytics or similar, the privacy policy must be updated accordingly."
+    }
   },
   "reviews": {
     "leaveReview": "Leave Review",
     "formName": "Name",
+    "formEmail": "Email",
     "formRating": "Rating",
     "formMessage": "Your Review",
     "formSubmit": "Submit",

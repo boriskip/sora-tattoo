@@ -4,12 +4,25 @@ import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
 import { motion, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
-import Image from 'next/image';
 import { buttonTransitionClass } from '@/utils/animations';
+import type { HeroSettings } from '@/lib/api';
 
-export default function Hero() {
+type HeroProps = { data?: HeroSettings | null };
+
+export default function Hero({ data }: HeroProps) {
   const locale = useLocale();
   const t = useTranslations('hero');
+  const isDarkIcons = data?.social_icons_theme === 'dark';
+  const titleMain = data?.title_main ?? t('titleMain');
+  const titleSub = data?.title_sub ?? t('titleSub');
+  const subtitle = data?.subtitle ?? t('subtitle');
+  const description = data?.description ?? t('description');
+  const backgroundSrc = data?.background_image || '/hero-background.png';
+  const facebookUrl = data?.facebook_url || 'https://facebook.com';
+  const instagramUrl = data?.instagram_url || 'https://instagram.com';
+  const whatsappUrl = data?.whatsapp_url || 'https://wa.me';
+  const block1Color = data?.block1_color?.trim() ? data.block1_color.trim() : undefined;
+  const block2Color = data?.block2_color?.trim() ? data.block2_color.trim() : undefined;
   const tCommon = useTranslations('common');
   const containerRef = useRef<HTMLDivElement>(null);
   const [isContentVisible, setIsContentVisible] = useState(true);
@@ -71,14 +84,13 @@ export default function Hero() {
           y: backgroundY
         }}
       >
-        <Image
-          src="/hero-background.png"
+        {/* Use plain img for API URLs so the browser loads directly; next/image would proxy and can 500 in Docker */}
+        <img
+          src={backgroundSrc}
           alt="Sora Tattoo Background"
-          fill
-          priority
-          quality={90}
-          className="object-cover"
+          className="object-cover w-full h-full"
           style={{ objectPosition: 'center' }}
+          fetchPriority="high"
         />
         {/* Overlay for better text readability */}
         <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-white/50" />
@@ -96,46 +108,49 @@ export default function Hero() {
           pointerEvents: isContentVisible ? 'auto' : 'none'
         }}
       >
-        {/* Title: SORA – light 300, 80px, line-height 44px, letter-spacing 0.2em */}
+        {/* Block 1: SORA, Tattoo, lines */}
         <motion.h1
-          className="font-serif text-graphite mb-4 drop-shadow-lg flex flex-col items-center justify-center"
+          className={`font-serif mb-4 drop-shadow-lg flex flex-col items-center justify-center ${!block1Color ? 'text-graphite' : ''}`}
+          style={block1Color ? { color: block1Color } : undefined}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.6 }}
         >
-          <span className="font-light text-[80px] leading-[44px] tracking-[0.2em]">{t('titleMain')}</span>
-          {/* Tattoo su hr iš 2 pusių – storesnė prie teksto, plonėja link kraštų */}
+          <span className="font-light text-[80px] leading-[44px] tracking-[0.2em]" style={block1Color ? { color: block1Color } : undefined}>{titleMain}</span>
           <span className="flex items-center gap-4 w-full max-w-md justify-center mt-6">
             <span
-              className="h-0.5 flex-1 max-w-[80px] md:max-w-[120px] bg-gradient-to-r from-transparent to-graphite"
+              className={block1Color ? 'h-0.5 flex-1 max-w-[80px] md:max-w-[120px]' : 'h-0.5 flex-1 max-w-[80px] md:max-w-[120px] bg-gradient-to-r from-transparent to-graphite'}
+              style={block1Color ? { background: `linear-gradient(to right, transparent, ${block1Color})` } : undefined}
               aria-hidden
             />
-            <span className="font-inter font-light text-[25px] leading-[1.6] tracking-[0.2em] shrink-0 text-graphite">{t('titleSub')}</span>
+            <span className={`font-inter font-light text-[25px] leading-[1.6] tracking-[0.2em] shrink-0 ${!block1Color ? 'text-graphite' : ''}`} style={block1Color ? { color: block1Color } : undefined}>{titleSub}</span>
             <span
-              className="h-0.5 flex-1 max-w-[80px] md:max-w-[120px] bg-gradient-to-l from-transparent to-graphite"
+              className={block1Color ? 'h-0.5 flex-1 max-w-[80px] md:max-w-[120px]' : 'h-0.5 flex-1 max-w-[80px] md:max-w-[120px] bg-gradient-to-l from-transparent to-graphite'}
+              style={block1Color ? { background: `linear-gradient(to left, transparent, ${block1Color})` } : undefined}
               aria-hidden
             />
           </span>
         </motion.h1>
 
-        {/* Subtitle */}
+        {/* Block 2: subtitle, description */}
         <motion.p
-          className="text-xl md:text-2xl text-mocha mb-6 font-serif drop-shadow-md leading-relaxed"
+          className={`text-xl md:text-2xl mb-6 font-serif drop-shadow-md leading-relaxed ${!block2Color ? 'text-mocha' : ''}`}
+          style={block2Color ? { color: block2Color } : undefined}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7, duration: 0.6 }}
         >
-          {t('subtitle')}
+          {subtitle}
         </motion.p>
 
-        {/* Description */}
         <motion.p
-          className="text-lg text-mocha mb-8 max-w-2xl mx-auto drop-shadow-sm leading-relaxed"
+          className={`text-lg mb-8 max-w-2xl mx-auto drop-shadow-sm leading-relaxed ${!block2Color ? 'text-mocha' : ''}`}
+          style={block2Color ? { color: block2Color } : undefined}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.9, duration: 0.6 }}
         >
-          {t('description')}
+          {description}
         </motion.p>
 
         {/* CTA Buttons */}
@@ -145,26 +160,28 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.1, duration: 0.6 }}
         >
-          <Link href={`/${locale}#contact`} className={`px-8 py-2 bg-graphite text-white rounded-xl hover:opacity-95 font-medium text-lg shadow-md text-center ${buttonTransitionClass}`}>
+          <Link href={`/${locale}#contact`} className={`px-8 py-2 bg-white/90 text-graphite rounded-xl hover:bg-white font-medium text-lg border border-mocha/20 shadow-md backdrop-blur-sm text-center ${buttonTransitionClass}`}>
             {t('book')}
           </Link>
-          <Link href={`/${locale}#works`} className={`px-8 py-2 bg-background/95 text-graphite rounded-xl hover:bg-white/90 font-medium text-lg border border-mocha/20 shadow-md backdrop-blur-sm text-center ${buttonTransitionClass}`}>
+          <Link href={`/${locale}#works`} className={`px-8 py-2 bg-white/80 text-graphite rounded-xl hover:bg-white/95 font-medium text-lg border border-mocha/20 shadow-md backdrop-blur-sm text-center ${buttonTransitionClass}`}>
             {t('viewWorks')}
           </Link>
         </motion.div>
 
-        {/* Social Icons */}
+        {/* Social Icons – block2 color or theme */}
         <motion.div
           className="mt-12 flex justify-center space-x-6"
+          style={block2Color ? { color: block2Color } : undefined}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.3, duration: 0.6 }}
         >
           <a
-            href="https://facebook.com"
+            href={facebookUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-mocha hover:text-graphite transition drop-shadow-sm"
+            className={block2Color ? 'hover:opacity-80 transition drop-shadow-sm' : isDarkIcons ? 'text-white/90 hover:text-graphite transition drop-shadow-sm' : 'text-mocha hover:text-graphite transition drop-shadow-sm'}
+            style={block2Color ? { color: block2Color } : undefined}
             aria-label="Facebook"
           >
             <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -172,10 +189,11 @@ export default function Hero() {
             </svg>
           </a>
           <a
-            href="https://wa.me"
+            href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-mocha hover:text-graphite transition drop-shadow-sm"
+            className={block2Color ? 'hover:opacity-80 transition drop-shadow-sm' : isDarkIcons ? 'text-white/90 hover:text-graphite transition drop-shadow-sm' : 'text-mocha hover:text-graphite transition drop-shadow-sm'}
+            style={block2Color ? { color: block2Color } : undefined}
             aria-label="WhatsApp"
           >
             <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -183,10 +201,11 @@ export default function Hero() {
             </svg>
           </a>
           <a
-            href="https://instagram.com"
+            href={instagramUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-mocha hover:text-graphite transition drop-shadow-sm"
+            className={block2Color ? 'hover:opacity-80 transition drop-shadow-sm' : isDarkIcons ? 'text-white/90 hover:text-graphite transition drop-shadow-sm' : 'text-mocha hover:text-graphite transition drop-shadow-sm'}
+            style={block2Color ? { color: block2Color } : undefined}
             aria-label="Instagram"
           >
             <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">

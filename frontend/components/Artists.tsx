@@ -7,6 +7,8 @@ import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { useMobileAnimation } from '@/hooks/useMobileAnimation';
 import { viewportSettings, buttonTransitionClass, buttonIconTransitionClass } from '@/utils/animations';
+import type { Artist, Work } from '@/lib/api';
+import { getWorkFirstImage, getWorkFirstAlt } from '@/lib/api';
 
 const artistVariants = {
   hidden: { opacity: 0, y: 12 },
@@ -17,23 +19,35 @@ const artistVariants = {
   })
 };
 
-export default function Artists() {
+type ArtistsProps = { artists: Artist[]; works: Work[] };
+
+export default function Artists({ artists = [], works = [] }: ArtistsProps) {
   const locale = useLocale();
   const t = useTranslations('artists');
   const tCommon = useTranslations('common');
   const galleryRef = useRef<HTMLDivElement>(null);
-  const LIGHTBOX_WORKS_COUNT = 20;
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [lightboxWorkId, setLightboxWorkId] = useState<number | null>(null);
+  const [lightboxImageIndex, setLightboxImageIndex] = useState(0);
+  const openWork = lightboxWorkId !== null ? works.find((w) => w.id === lightboxWorkId) : null;
+  const openWorkImages = openWork?.images ?? [];
+  const worksWithImages = works.filter((w) => getWorkFirstImage(w));
+  const [selectedArtistId, setSelectedArtistId] = useState<number | null>(null);
+  const worksToShow =
+    selectedArtistId === null
+      ? worksWithImages
+      : worksWithImages.filter((w) => w.artist_id === selectedArtistId);
   const { isMobile, prefersReducedMotion, getAnimationProps } = useMobileAnimation();
 
   useEffect(() => {
     const handleKeydown = (e: KeyboardEvent) => {
-      if (lightboxIndex === null) return;
-      if (e.key === 'Escape') setLightboxIndex(null);
-      if (e.key === 'ArrowLeft') setLightboxIndex((i) => (i === null ? null : (i - 1 + LIGHTBOX_WORKS_COUNT) % LIGHTBOX_WORKS_COUNT));
-      if (e.key === 'ArrowRight') setLightboxIndex((i) => (i === null ? null : (i + 1) % LIGHTBOX_WORKS_COUNT));
+      if (lightboxWorkId === null) return;
+      if (e.key === 'Escape') setLightboxWorkId(null);
+      if (openWorkImages.length > 1) {
+        if (e.key === 'ArrowLeft') setLightboxImageIndex((i) => (i - 1 + openWorkImages.length) % openWorkImages.length);
+        if (e.key === 'ArrowRight') setLightboxImageIndex((i) => (i + 1) % openWorkImages.length);
+      }
     };
-    if (lightboxIndex !== null) {
+    if (lightboxWorkId !== null) {
       document.addEventListener('keydown', handleKeydown);
       document.body.style.overflow = 'hidden';
     }
@@ -41,7 +55,7 @@ export default function Artists() {
       document.removeEventListener('keydown', handleKeydown);
       document.body.style.overflow = '';
     };
-  }, [lightboxIndex]);
+  }, [lightboxWorkId, openWorkImages.length]);
   
   const viewport = prefersReducedMotion
     ? viewportSettings.reduced
@@ -49,49 +63,11 @@ export default function Artists() {
     ? viewportSettings.mobile
     : viewportSettings.desktop;
 
-
   const scrollGallery = (direction: 'left' | 'right') => {
     const gallery = galleryRef.current;
-    
-    if (!gallery) {
-      return;
-    }
-    
-    const scrollAmount = 500; // Fixed scroll amount in pixels
-    
-    if (direction === 'left') {
-      gallery.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-    } else {
-      gallery.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-    }
+    if (!gallery) return;
+    gallery.scrollBy({ left: direction === 'left' ? -500 : 500, behavior: 'smooth' });
   };
-
-  const artists = [
-    {
-      id: 1,
-      slug: 'artist-01',
-      nameKey: 'artist1.name',
-      styleKey: 'artist1.style',
-      descriptionKey: 'artist1.description',
-      avatar: '/placeholder-avatar.svg'
-    },
-    {
-      id: 2,
-      slug: 'artist-02',
-      nameKey: 'artist2.name',
-      styleKey: 'artist2.style',
-      descriptionKey: 'artist2.description',
-      avatar: '/placeholder-avatar.svg'
-    },
-    {
-      id: 3,
-      slug: 'artist-03',
-      nameKey: 'artist3.name',
-      styleKey: 'artist3.style',
-      descriptionKey: 'artist3.description',
-      avatar: '/placeholder-avatar.svg'
-    }
-  ];
 
   return (
     <section id="masters" className="py-12 md:py-32 bg-background overflow-x-hidden w-full">
@@ -118,6 +94,32 @@ export default function Artists() {
           })}
           viewport={viewport}
         >
+          {/* Filter by master */}
+          {artists.length > 1 && (
+            <div className="flex flex-wrap justify-center gap-2 mb-4">
+              <button
+                type="button"
+                onClick={() => setSelectedArtistId(null)}
+                className={`px-4 py-1.5 rounded-xl text-sm font-medium transition ${buttonTransitionClass} ${
+                  selectedArtistId === null ? 'bg-graphite text-white' : 'bg-mocha/10 text-mocha hover:bg-mocha/20'
+                }`}
+              >
+                {t('allMasters') || 'Visi'}
+              </button>
+              {artists.map((a) => (
+                <button
+                  key={a.id}
+                  type="button"
+                  onClick={() => setSelectedArtistId(selectedArtistId === a.id ? null : a.id)}
+                  className={`px-4 py-1.5 rounded-xl text-sm font-medium transition ${buttonTransitionClass} ${
+                    selectedArtistId === a.id ? 'bg-graphite text-white' : 'bg-mocha/10 text-mocha hover:bg-mocha/20'
+                  }`}
+                >
+                  {a.name}
+                </button>
+              ))}
+            </div>
+          )}
           <div className="relative">
             {/* Navigation Buttons */}
             <button
@@ -125,7 +127,6 @@ export default function Artists() {
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                console.log('LEFT BUTTON CLICKED');
                 scrollGallery('left');
               }}
               className={`absolute left-2 top-1/2 -translate-y-1/2 z-[100] bg-white hover:bg-gray-100 shadow-lg rounded-full p-2 md:p-2.5 hover:scale-110 cursor-pointer border border-gray-300 ${buttonIconTransitionClass}`}
@@ -145,7 +146,6 @@ export default function Artists() {
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                console.log('RIGHT BUTTON CLICKED');
                 scrollGallery('right');
               }}
               className={`absolute right-2 top-1/2 -translate-y-1/2 z-[100] bg-white hover:bg-gray-100 shadow-lg rounded-full p-2 md:p-2.5 hover:scale-110 cursor-pointer border border-gray-300 ${buttonIconTransitionClass}`}
@@ -169,100 +169,119 @@ export default function Artists() {
                 WebkitOverflowScrolling: 'touch'
               }}
             >
-              {/* Galerijos kortelės – paprasta hover animacija tiesiai čia */}
-              {Array.from({ length: LIGHTBOX_WORKS_COUNT }).map((_, index) => (
-                <div
-                  key={index}
-                  className="flex-shrink-0 w-[200px] md:w-[250px] h-[200px] md:h-[250px] rounded-lg transition-transform duration-300 hover:scale-105 hover:shadow-lg"
-                >
-                  <button
-                    type="button"
-                    onClick={() => setLightboxIndex(index)}
-                    className="w-full h-full rounded-lg overflow-hidden bg-gray-200 relative group cursor-pointer focus:ring-2 focus:ring-graphite/50 focus:ring-offset-2"
-                  >
-                    <Image
-                      src="/placeholder-work.svg"
-                      alt={`Work ${index + 1}`}
-                      width={250}
-                      height={250}
-                      className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-300"
-                      unoptimized
-                    />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
-                  </button>
+              {worksToShow.length === 0 ? (
+                <div className="flex-shrink-0 w-[200px] md:w-[250px] h-[200px] md:h-[250px] rounded-lg bg-gray-100 flex items-center justify-center text-mocha text-sm">
+                  {selectedArtistId ? (t('noWorksByMaster') || 'Šio meistro darbų nėra') : (t('noWorks') || 'No works yet')}
                 </div>
-              ))}
+              ) : (
+                worksToShow.map((work) => {
+                  const src = getWorkFirstImage(work);
+                  if (!src) return null;
+                  const label = (work.title || work.images?.[0]?.alt || '').trim() || null;
+                  const masterName = work.artist?.name ?? null;
+                  return (
+                    <div
+                      key={work.id}
+                      className="flex-shrink-0 w-[200px] md:w-[250px] rounded-lg transition-transform duration-300 hover:scale-105 hover:shadow-lg"
+                    >
+                      {masterName && (
+                        <p className="py-2 px-2 text-xs font-medium truncate text-center text-white rounded-t-lg" style={{ backgroundColor: '#383737' }} title={masterName}>{masterName}</p>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => { setLightboxWorkId(work.id); setLightboxImageIndex(0); }}
+                        className={`w-full h-[200px] md:h-[250px] overflow-hidden bg-gray-200 relative group cursor-pointer focus:ring-2 focus:ring-graphite/50 focus:ring-offset-2 block ${masterName ? 'rounded-t-none' : 'rounded-t-lg'} ${label ? 'rounded-b-none' : 'rounded-b-lg'}`}
+                      >
+                        <img
+                          src={src}
+                          alt={getWorkFirstAlt(work)}
+                          className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-300"
+                        />
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
+                      </button>
+                      {label && (
+                        <div className="mt-0 py-2 px-2 text-center text-white rounded-b-lg" style={{ backgroundColor: '#383737' }}>
+                          <p className="text-sm font-medium truncate" title={label}>{label}</p>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })
+              )}
             </div>
           </div>
         </motion.div>
 
-        {/* Artists Cards - Vertical Layout, Full Width */}
+        {/* Artists Cards - from API */}
         <div className="space-y-4 md:space-y-8">
-          {artists.map((artist, index) => (
-            <motion.div
-              key={artist.id}
-              custom={index}
-              initial="hidden"
-              whileInView="visible"
-              viewport={viewport}
-              variants={artistVariants}
-              className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow w-full"
-              style={{ pointerEvents: 'auto' }}
-            >
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-                {/* Image */}
-                <div className="relative h-48 md:h-full min-h-[300px] bg-gray-200">
-                  <Image
-                    src={artist.avatar}
-                    alt={t(artist.nameKey)}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                
-                {/* Content */}
-                <div className="md:col-span-2 p-4 md:p-8 flex flex-col justify-center">
-                  <h3 className="font-serif font-normal text-[27px] leading-[36px] tracking-[0.2em] text-graphite mb-2 md:mb-3">
-                    {t(artist.nameKey)}
-                  </h3>
-                  <p className="text-sm md:text-base text-mocha mb-2 md:mb-4 font-medium">
-                    {t(artist.styleKey)}
-                  </p>
-                  <p className="text-sm md:text-base text-mocha mb-4 md:mb-6 leading-relaxed whitespace-pre-line">
-                    {t(artist.descriptionKey)}
-                  </p>
-                  <div className="flex gap-3">
-                    {/* Laikinai → #works (be backend). Vėliau: href={`/${locale}/artists/${artist.slug}`} */}
-                    <Link 
-                      href={`/${locale}#works`}
-                      className={`px-6 py-1.5 bg-graphite text-white rounded-xl hover:opacity-95 font-medium cursor-pointer inline-block text-center shadow-sm ${buttonTransitionClass}`}
-                    >
-                      {tCommon('viewWorks')}
-                    </Link>
-                    <Link 
-                      href={`/${locale}${artist.slug ? `?artist=${artist.slug}` : ''}#contact`}
-                      className={`px-6 py-1.5 bg-background/95 text-graphite rounded-xl hover:bg-white/90 font-medium border border-mocha/20 cursor-pointer inline-block text-center shadow-sm ${buttonTransitionClass}`}
-                    >
-                      {tCommon('book')}
-                    </Link>
+          {artists.length === 0 ? (
+            <p className="text-center text-mocha">{t('noArtists') || 'No masters yet.'}</p>
+          ) : (
+            artists.map((artist, index) => (
+              <motion.div
+                key={artist.id}
+                custom={index}
+                initial="hidden"
+                whileInView="visible"
+                viewport={viewport}
+                variants={artistVariants}
+                className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow w-full"
+                style={{ pointerEvents: 'auto' }}
+              >
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+                  <div className="relative h-48 md:h-full min-h-[300px] bg-gray-200">
+                    <img
+                      src={artist.avatar || '/placeholder-avatar.svg'}
+                      alt={artist.name ? `Portrait of ${artist.name}` : 'Artist'}
+                      className="object-cover w-full h-full"
+                    />
+                  </div>
+                  <div className="md:col-span-2 p-4 md:p-8 flex flex-col justify-center">
+                    <h3 className="font-serif font-normal text-[27px] leading-[36px] tracking-[0.2em] text-graphite mb-2 md:mb-3">
+                      {artist.name}
+                    </h3>
+                    {artist.style && (
+                      <p className="text-sm md:text-base text-mocha mb-2 md:mb-4 font-medium">
+                        {artist.style}
+                      </p>
+                    )}
+                    {artist.description && (
+                      <p className="text-sm md:text-base text-mocha mb-4 md:mb-6 leading-relaxed whitespace-pre-line">
+                        {artist.description}
+                      </p>
+                    )}
+                    <div className="flex gap-3">
+                      <Link 
+                        href={`/${locale}#works`}
+                        className={`px-6 py-1.5 bg-graphite text-white rounded-xl hover:opacity-95 font-medium cursor-pointer inline-block text-center shadow-sm ${buttonTransitionClass}`}
+                      >
+                        {tCommon('viewWorks')}
+                      </Link>
+                      <Link 
+                        href={`/${locale}${artist.slug ? `?artist=${artist.slug}` : ''}#contact`}
+                        className={`px-6 py-1.5 bg-background/95 text-graphite rounded-xl hover:bg-white/90 font-medium border border-mocha/20 cursor-pointer inline-block text-center shadow-sm ${buttonTransitionClass}`}
+                      >
+                        {tCommon('book')}
+                      </Link>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            ))
+          )}
         </div>
       </div>
 
-      {/* Lightbox - darbų peržiūra su slideriu */}
+      {/* Lightbox – to darbo nuotraukos (slideris jei kelios) */}
       <AnimatePresence>
-        {lightboxIndex !== null && (
+        {openWork && openWorkImages.length > 0 && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/80"
-            onClick={() => setLightboxIndex(null)}
+            onClick={() => setLightboxWorkId(null)}
             role="dialog"
             aria-modal="true"
             aria-label="Work preview"
@@ -275,48 +294,51 @@ export default function Artists() {
               className="relative max-w-4xl max-h-[90vh] w-full flex items-center"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Prev */}
-              <button
-                type="button"
-                onClick={(e) => { e.stopPropagation(); setLightboxIndex((i) => (i === null ? null : (i - 1 + LIGHTBOX_WORKS_COUNT) % LIGHTBOX_WORKS_COUNT)); }}
-                className={`absolute left-0 md:-left-12 z-10 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-white/90 text-graphite hover:bg-white shadow-lg ${buttonIconTransitionClass}`}
-                aria-label="Previous work"
-              >
-                <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-              </button>
-
-              {/* Image */}
+              {openWorkImages.length > 1 && (
+                <button
+                  type="button"
+                  onClick={(e) => { e.stopPropagation(); setLightboxImageIndex((i) => (i - 1 + openWorkImages.length) % openWorkImages.length); }}
+                  className={`absolute left-0 md:-left-12 z-10 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-white/90 text-graphite hover:bg-white shadow-lg ${buttonIconTransitionClass}`}
+                  aria-label="Previous image"
+                >
+                  <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+              )}
               <div className="flex-1 px-12 md:px-4">
-                <Image
-                  key={lightboxIndex}
-                  src="/placeholder-work.svg"
-                  alt={`Work ${lightboxIndex + 1}`}
-                  width={800}
-                  height={800}
+                <img
+                  key={openWorkImages[lightboxImageIndex]?.id}
+                  src={openWorkImages[lightboxImageIndex]?.image}
+                  alt={(openWorkImages[lightboxImageIndex]?.alt || openWork.title || 'Work').trim() || 'Work'}
                   className="w-full h-auto max-h-[90vh] object-contain rounded-lg shadow-2xl"
-                  unoptimized
                 />
-                <p className="text-center text-white/90 text-sm mt-2">Work {lightboxIndex + 1} / {LIGHTBOX_WORKS_COUNT}</p>
+                {openWorkImages[lightboxImageIndex]?.alt?.trim() && (
+                  <p className="text-center text-white/90 text-sm mt-2">
+                    {openWorkImages[lightboxImageIndex].alt.trim()}
+                  </p>
+                )}
+                {openWorkImages.length > 1 && (
+                  <p className="text-center text-white/70 text-xs mt-1">
+                    {lightboxImageIndex + 1} / {openWorkImages.length}
+                  </p>
+                )}
               </div>
-
-              {/* Next */}
+              {openWorkImages.length > 1 && (
+                <button
+                  type="button"
+                  onClick={(e) => { e.stopPropagation(); setLightboxImageIndex((i) => (i + 1) % openWorkImages.length); }}
+                  className={`absolute right-0 md:-right-12 z-10 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-white/90 text-graphite hover:bg-white shadow-lg ${buttonIconTransitionClass}`}
+                  aria-label="Next image"
+                >
+                  <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              )}
               <button
                 type="button"
-                onClick={(e) => { e.stopPropagation(); setLightboxIndex((i) => (i === null ? null : (i + 1) % LIGHTBOX_WORKS_COUNT)); }}
-                className={`absolute right-0 md:-right-12 z-10 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-white/90 text-graphite hover:bg-white shadow-lg ${buttonIconTransitionClass}`}
-                aria-label="Next work"
-              >
-                <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-
-              {/* Close */}
-              <button
-                type="button"
-                onClick={() => setLightboxIndex(null)}
+                onClick={() => setLightboxWorkId(null)}
                 className={`absolute -top-10 right-0 md:top-0 md:-right-10 w-10 h-10 flex items-center justify-center rounded-full bg-white/90 text-graphite hover:bg-white ${buttonIconTransitionClass}`}
                 aria-label="Close"
               >

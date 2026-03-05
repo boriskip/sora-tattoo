@@ -3,13 +3,24 @@
 import { useTranslations } from 'next-intl';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useRef, useEffect } from 'react';
-import Image from 'next/image';
 import { useMobileAnimation } from '@/hooks/useMobileAnimation';
 import { viewportSettings } from '@/utils/animations';
 import { buttonIconTransitionClass, buttonTransitionClass } from '@/utils/animations';
+import type { InfoData, InfoGuideImage } from '@/lib/api';
+import { getInfoImageUrl } from '@/lib/api';
+
+function normalizeImageSrc(url: string): string {
+  if (url.startsWith('http') || url.startsWith('/')) return url;
+  return getInfoImageUrl(url);
+}
 
 // Mažas thumbnail slideris – rodyklės tik kai yra overflow (scrollWidth > clientWidth)
-function ThumbnailSlider({ images }: { images: string[] }) {
+function ThumbnailSlider({ images }: { images: (string | InfoGuideImage)[] }) {
+  const items = images.map((img) => {
+    const url = typeof img === 'string' ? img : img.url;
+    const alt = typeof img === 'string' ? '' : (img.alt ?? '');
+    return { url: normalizeImageSrc(url), alt };
+  });
   const scrollRef = useRef<HTMLDivElement>(null);
   const [showNavButtons, setShowNavButtons] = useState(false);
 
@@ -36,9 +47,9 @@ function ThumbnailSlider({ images }: { images: string[] }) {
       clearTimeout(t2);
       clearTimeout(t3);
     };
-  }, [images.length]);
+  }, [items.length]);
 
-  if (images.length === 0) return null;
+  if (items.length === 0) return null;
 
   const scroll = (dir: number) => {
     if (!scrollRef.current) return;
@@ -54,19 +65,18 @@ function ThumbnailSlider({ images }: { images: string[] }) {
 className="flex gap-3 overflow-x-auto overflow-y-visible scroll-smooth scrollbar-hide py-2 pl-4 pr-4"
           style={{ scrollSnapType: 'x mandatory' }}
         >
-          {images.map((src, i) => (
+          {items.map((item, i) => (
             <div
               key={i}
               className="relative flex-shrink-0 w-[140px] h-[100px] md:w-[160px] md:h-[112px] rounded-lg transition-transform duration-300 hover:scale-105 hover:shadow-lg"
               style={{ scrollSnapAlign: 'start' }}
             >
               <div className="w-full h-full rounded-lg overflow-hidden bg-mocha/10 relative">
-                <Image
-                  src={src}
-                  alt=""
-                  fill
-                  className="object-cover"
-                  sizes="160px"
+                <img
+                  src={item.url}
+                  alt={item.alt || ''}
+                  className="absolute inset-0 w-full h-full object-cover"
+                  loading="lazy"
                 />
               </div>
             </div>
@@ -97,7 +107,9 @@ className="flex gap-3 overflow-x-auto overflow-y-visible scroll-smooth scrollbar
   );
 }
 
-export default function Guides() {
+type GuidesProps = { data?: InfoData | null };
+
+export default function Guides({ data }: GuidesProps) {
   const t = useTranslations('guides');
   const tCommon = useTranslations('common');
   const [openIndex, setOpenIndex] = useState<number | null>(0);
@@ -109,8 +121,10 @@ export default function Guides() {
     ? viewportSettings.mobile
     : viewportSettings.desktop;
 
-  // Kiekvienam punktui 2–3 nuotraukos (galite pakeisti į /info/... kai bus medžiagos)
-  const guides = [
+  const useApiData = data?.guides?.length;
+
+  // Fallback: kai nėra API duomenų
+  const fallbackGuides = [
     {
       id: 'chooseArtist',
       titleKey: 'chooseArtist.title',
@@ -136,6 +150,16 @@ export default function Guides() {
       images: ['/about/uberuns-10.png', '/about/uberuns-1.png', '/about/uberuns-2.png'],
     },
   ];
+
+  const guidesFromApi = data?.guides ?? [];
+  const guides = useApiData
+    ? guidesFromApi.map((g) => ({
+        id: g.slug,
+        title: g.title,
+        content: g.content,
+        images: g.images,
+      }))
+    : fallbackGuides;
 
   const toggleGuide = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -223,7 +247,7 @@ export default function Guides() {
           })}
           viewport={viewport}
         >
-          {tCommon('info')}
+          {useApiData ? data!.title : tCommon('info')}
         </motion.h2>
 
         <div className="max-w-4xl mx-auto space-y-4">
@@ -243,7 +267,7 @@ export default function Guides() {
                 className={`w-full px-6 py-4 flex items-center justify-between text-left hover:bg-mocha/5 ${buttonTransitionClass}`}
               >
                 <h3 className="font-serif font-normal text-[27px] leading-[36px] tracking-[0.2em] text-graphite">
-                  {t(guide.titleKey)}
+                  {useApiData ? (guide as { title: string }).title : t((guide as { titleKey: string }).titleKey)}
                 </h3>
                 <svg
                   className={`w-5 h-5 text-mocha transition-transform ${
@@ -269,14 +293,26 @@ export default function Guides() {
                     className="overflow-hidden"
                   >
                     <div className="px-6 py-4 border-t border-mocha/20">
-                      {guide.id === 'aftercare' ? (
+                      {useApiData ? (
+                        (guide as { content: string | null }).content != null && (
+                          <p className="text-mocha leading-relaxed whitespace-pre-line">
+                            {(guide as { content: string }).content}
+                          </p>
+                        )
+                      ) : (guide as { id: string }).id === 'aftercare' ? (
                         renderAftercareContent()
                       ) : (
                         <p className="text-mocha leading-relaxed whitespace-pre-line">
-                          {t(guide.contentKey)}
+                          {t((guide as { contentKey: string }).contentKey)}
                         </p>
                       )}
-                      <ThumbnailSlider images={guide.images} />
+                      <ThumbnailSlider
+                        images={
+                          useApiData
+                            ? (guide as { images: InfoGuideImage[] }).images
+                            : (guide as { images: string[] }).images
+                        }
+                      />
                     </div>
                   </motion.div>
                 )}

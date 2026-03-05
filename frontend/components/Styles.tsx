@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useMobileAnimation } from '@/hooks/useMobileAnimation';
 import { viewportSettings } from '@/utils/animations';
+import type { Style } from '@/lib/api';
 
 const styleVariants = {
   hidden: { opacity: 0, y: 12 },
@@ -25,23 +26,63 @@ const styleVariantsMobile = {
   }
 };
 
-export default function Styles() {
+const FALLBACK_STYLES = [
+  { id: 1, slug: 'realism', name: 'Realism', description: null, images: [] },
+  { id: 2, slug: 'japanese', name: 'Japanese', description: null, images: [] },
+  { id: 3, slug: 'graphic', name: 'Graphic', description: null, images: [] },
+];
+
+type StylesProps = { data?: Style[] };
+
+/** Normalize API slug to message key (e.g. Minimalismus -> minimal) */
+function getStyleTranslationKey(slug: string): string {
+  const normalized: Record<string, string> = {
+    Minimalismus: 'minimal',
+    minimal: 'minimal',
+  };
+  return normalized[slug] ?? slug;
+}
+
+/** True if next-intl returned a key (missing translation) rather than real text */
+function isTranslationKey(s: string): boolean {
+  return s.includes('.name') || s.includes('.description') || s.startsWith('styles.');
+}
+
+export default function Styles({ data }: StylesProps) {
   const locale = useLocale();
   const tCommon = useTranslations('common');
   const tStyles = useTranslations('styles');
   const { isMobile, prefersReducedMotion, getAnimationProps } = useMobileAnimation();
+  const styles = (data?.length ? data : FALLBACK_STYLES) as Style[];
+
+  const getStyleName = (style: Style) => {
+    if (style.name?.trim()) return style.name.trim();
+    const key = getStyleTranslationKey(style.slug);
+    try {
+      const fromT = tStyles(`${key}.name`) as string;
+      if (fromT && !isTranslationKey(fromT)) return fromT;
+    } catch {
+      // missing message key – style added via admin, no entry in messages
+    }
+    return style.name || '';
+  };
+  const getStyleDescription = (style: Style) => {
+    if (style.description?.trim()) return style.description.trim();
+    const key = getStyleTranslationKey(style.slug);
+    try {
+      const fromT = tStyles(`${key}.description`) as string;
+      if (fromT && !isTranslationKey(fromT)) return fromT;
+    } catch {
+      // missing message key – style added via admin
+    }
+    return style.description ?? '';
+  };
 
   const viewport = prefersReducedMotion
     ? viewportSettings.reduced
     : isMobile
     ? viewportSettings.mobile
     : viewportSettings.desktop;
-
-  const styles = [
-    { id: 1, slug: 'realism' },
-    { id: 2, slug: 'japanese' },
-    { id: 3, slug: 'graphic' },
-  ];
 
   return (
     <section id="styles" className="py-12 md:py-32 bg-background overflow-x-hidden w-full">
@@ -75,10 +116,10 @@ export default function Styles() {
               <div className="relative z-10 h-full flex flex-col justify-between p-6">
                 <div>
                   <h3 className="font-serif font-normal text-[27px] leading-[36px] tracking-[0.2em] text-white mb-3">
-                    {tStyles(`${style.slug}.name`)}
+                    {getStyleName(style)}
                   </h3>
                   <p className="text-white/80 mb-4 leading-relaxed min-h-[4.5rem]">
-                    {tStyles(`${style.slug}.description`)}
+                    {getStyleDescription(style)}
                   </p>
                 </div>
                 <Link href={`/${locale}?style=${style.slug}#works`} className="text-white underline hover:no-underline font-medium shrink-0">

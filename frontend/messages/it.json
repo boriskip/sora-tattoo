@@ -26,6 +26,10 @@
   },
   "artists": {
     "title": "Maestri",
+    "allMasters": "Tutti",
+    "noWorks": "Ancora nessun lavoro",
+    "noWorksByMaster": "Nessun lavoro di questo maestro",
+    "noArtists": "Ancora nessun maestro.",
     "artist1": {
       "name": "Artist 01",
       "style": "Stile giapponese",
@@ -124,6 +128,10 @@
       "name": "Giapponese",
       "description": "Motivi tradizionali giapponesi con simbolismo e equilibrio. Forme senza tempo che portano forza interiore e significato."
     },
+    "minimal": {
+      "name": "Minimal",
+      "description": "Forme essenziali e linee pulite. Meno è più – eleganza senza tempo attraverso la riduzione consapevole."
+    },
     "graphic": {
       "name": "Grafica",
       "description": "Elementi grafici moderni con composizioni forti e dettagli espressivi. Dove la tradizione incontra la visione moderna."
@@ -135,6 +143,9 @@
     "addressValue": "Berlino, Germania",
     "hours": "Orari",
     "hoursValue": "Su appuntamento",
+    "phone": "Telefono",
+    "email": "Email",
+    "noContactInfo": "I dati di contatto sono impostati nel pannello admin.",
     "formName": "Nome",
     "formContact": "Contatto (telefono/Instagram)",
     "formBodyPart": "Parte del corpo desiderata",
@@ -147,11 +158,25 @@
   "footer": {
     "navigation": "Navigazione",
     "followUs": "Seguici",
-    "rights": "Tutti i diritti riservati."
+    "rights": "Tutti i diritti riservati.",
+    "impressum": "Impronta legale",
+    "privacy": "Privacy",
+    "cookies": "Utilizziamo solo cookie tecnici necessari. Dettagli nella Privacy."
+  },
+  "legal": {
+    "impressum": {
+      "title": "Impronta legale",
+      "content": "Informazioni secondo § 5 TMG (Germania)\n\n[Nome/Azienda]\n[Indirizzo]\n[CAP e città]\n\nContatto: [Email o telefono]\n\nResponsabile dei contenuti (§ 55 Abs. 2 RStV): [Nome], [Indirizzo]\n\nSostituire i segnaposto con i dati reali. Per attività commerciali indicare P.IVA, registro, ordine professionale se richiesto."
+    },
+    "privacy": {
+      "title": "Privacy",
+      "content": "Titolare del trattamento per questo sito: [Nome/Indirizzo].\n\nModulo di contatto: i dati inviati (nome, contatto, messaggio) sono trattati solo per rispondere alla richiesta. Base giuridica: consenso o legittimo interesse. I dati sono eliminati a richiesta conclusa, salvo obblighi di conservazione.\n\nCookie: il sito utilizza solo cookie tecnici necessari. Nessun tracking senza consenso.\n\nDiritti: accesso, rettifica, cancellazione, limitazione, portabilità, reclamo all'autorità.\n\nAdattare il testo alla propria pratica. In caso di uso di Google Analytics ecc., integrare la privacy policy."
+    }
   },
   "reviews": {
     "leaveReview": "Lascia una recensione",
     "formName": "Nome",
+    "formEmail": "Email",
     "formRating": "Valutazione",
     "formMessage": "La tua recensione",
     "formSubmit": "Invia",

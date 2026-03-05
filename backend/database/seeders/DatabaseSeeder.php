@@ -10,6 +10,13 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             ArtistSeeder::class,
+            HeroSettingSeeder::class,
+            AboutSectionSeeder::class,
+            StyleSeeder::class,
+            InfoSectionSeeder::class,
+            ReviewSeeder::class,
+            LegalPageSeeder::class,
+            AdminUserSeeder::class,
         ]);
     }
 }

@@ -3,58 +3,58 @@
 import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useMobileAnimation } from '@/hooks/useMobileAnimation';
 import { viewportSettings, buttonTransitionClass, buttonIconTransitionClass } from '@/utils/animations';
+import type { Work, Style } from '@/lib/api';
+import { getWorkFirstImage, getWorkFirstAlt, getApiUrl } from '@/lib/api';
 
-const VALID_STYLE_IDS = ['all', 'japanese', 'realism', 'minimal', 'graphic'];
+const FALLBACK_STYLE_IDS = ['japanese', 'realism', 'minimal', 'graphic'];
 
-type Work = { id: number; images: string[]; artist: string; style: string };
+type GalleryProps = { works: Work[] };
 
-export default function Gallery() {
+export default function Gallery({ works = [] }: GalleryProps) {
   const searchParams = useSearchParams();
   const tCommon = useTranslations('common');
   const tGallery = useTranslations('gallery');
   const [selectedFilter, setSelectedFilter] = useState<string>('all');
   const [openWorkId, setOpenWorkId] = useState<number | null>(null);
-  const [openWorkImageIndex, setOpenWorkImageIndex] = useState(0);
+  const [stylesFromApi, setStylesFromApi] = useState<Style[]>([]);
   const { isMobile, prefersReducedMotion, getAnimationProps } = useMobileAnimation();
 
   useEffect(() => {
-    const style = searchParams.get('style');
-    if (style && VALID_STYLE_IDS.includes(style)) setSelectedFilter(style);
-  }, [searchParams]);
+    let cancelled = false;
+    fetch(`${getApiUrl()}/styles`)
+      .then((res) => res.ok ? res.json() : null)
+      .then((json) => {
+        if (!cancelled && json?.data) setStylesFromApi(json.data as Style[]);
+      });
+    return () => { cancelled = true; };
+  }, []);
 
-  const works: Work[] = [
-    { id: 1, images: ['/placeholder-work.svg', '/placeholder-work.svg', '/placeholder-work.svg'], artist: 'artist-01', style: 'japanese' },
-    { id: 2, images: ['/placeholder-work.svg', '/placeholder-work.svg'], artist: 'artist-02', style: 'realism' },
-    { id: 3, images: ['/placeholder-work.svg', '/placeholder-work.svg', '/placeholder-work.svg'], artist: 'artist-03', style: 'minimal' },
-    { id: 4, images: ['/placeholder-work.svg', '/placeholder-work.svg'], artist: 'artist-01', style: 'japanese' },
-    { id: 5, images: ['/placeholder-work.svg', '/placeholder-work.svg', '/placeholder-work.svg'], artist: 'artist-02', style: 'graphic' },
-    { id: 6, images: ['/placeholder-work.svg', '/placeholder-work.svg'], artist: 'artist-03', style: 'minimal' },
-    { id: 7, images: ['/placeholder-work.svg', '/placeholder-work.svg'], artist: 'artist-01', style: 'japanese' },
-    { id: 8, images: ['/placeholder-work.svg', '/placeholder-work.svg', '/placeholder-work.svg'], artist: 'artist-02', style: 'realism' },
-    { id: 9, images: ['/placeholder-work.svg', '/placeholder-work.svg'], artist: 'artist-03', style: 'minimal' },
-  ];
+  const styleSlugs = stylesFromApi.length > 0 ? stylesFromApi.map((s) => s.slug) : FALLBACK_STYLE_IDS;
+
+  useEffect(() => {
+    const style = searchParams.get('style');
+    if (style && (style === 'all' || styleSlugs.includes(style))) setSelectedFilter(style);
+  }, [searchParams, styleSlugs]);
 
   const openWork = openWorkId !== null ? works.find((w) => w.id === openWorkId) : null;
+  const [lightboxImageIndex, setLightboxImageIndex] = useState(0);
   const openWorkImages = openWork?.images ?? [];
-  const currentImageIndex = Math.min(openWorkImageIndex, Math.max(0, openWorkImages.length - 1));
+
+  useEffect(() => {
+    if (openWorkId === null) return;
+    setLightboxImageIndex(0);
+  }, [openWorkId]);
 
   useEffect(() => {
     if (openWorkId === null) return;
     const handleKeydown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        setOpenWorkId(null);
-        return;
-      }
-      if (openWorkImages.length <= 1) return;
-      if (e.key === 'ArrowLeft') {
-        setOpenWorkImageIndex((i) => (i - 1 + openWorkImages.length) % openWorkImages.length);
-      }
-      if (e.key === 'ArrowRight') {
-        setOpenWorkImageIndex((i) => (i + 1) % openWorkImages.length);
+      if (e.key === 'Escape') setOpenWorkId(null);
+      if (openWorkImages.length > 1) {
+        if (e.key === 'ArrowLeft') setLightboxImageIndex((i) => (i - 1 + openWorkImages.length) % openWorkImages.length);
+        if (e.key === 'ArrowRight') setLightboxImageIndex((i) => (i + 1) % openWorkImages.length);
       }
     };
     document.addEventListener('keydown', handleKeydown);
@@ -65,17 +65,22 @@ export default function Gallery() {
     };
   }, [openWorkId, openWorkImages.length]);
 
-  const filters = [
-    { id: 'all', labelKey: 'all' },
-    { id: 'japanese', labelKey: 'japanese' },
-    { id: 'realism', labelKey: 'realism' },
-    { id: 'minimal', labelKey: 'minimal' },
-    { id: 'graphic', labelKey: 'graphic' }
-  ];
+  const filters =
+    stylesFromApi.length > 0
+      ? [{ id: 'all' as const, label: tGallery('all') }, ...stylesFromApi.map((s) => ({ id: s.slug, label: s.name }))]
+      : [
+          { id: 'all' as const, label: tGallery('all') },
+          { id: 'japanese', label: tGallery('japanese') },
+          { id: 'realism', label: tGallery('realism') },
+          { id: 'minimal', label: tGallery('minimal') },
+          { id: 'graphic', label: tGallery('graphic') },
+        ];
 
-  const filteredWorks = selectedFilter === 'all' 
-    ? works 
-    : works.filter(work => work.style === selectedFilter);
+  const filteredWorks =
+    selectedFilter === 'all'
+      ? works
+      : works.filter((work) => (work.style || '').toLowerCase() === selectedFilter.toLowerCase());
+  const filteredWithImages = filteredWorks.filter((w) => getWorkFirstImage(w));
 
   const viewport = prefersReducedMotion
     ? viewportSettings.reduced
@@ -115,7 +120,6 @@ export default function Gallery() {
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                console.log('Filter clicked:', filter.id);
                 setSelectedFilter(filter.id);
               }}
               className={`px-6 py-1.5 rounded-xl cursor-pointer shadow-sm ${buttonTransitionClass} ${
@@ -125,54 +129,68 @@ export default function Gallery() {
               }`}
               style={{ pointerEvents: 'auto' }}
             >
-              {tGallery(filter.labelKey)}
+              {filter.label}
             </button>
           ))}
         </motion.div>
 
         {/* Gallery Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl mx-auto">
-          {filteredWorks.map((work, index) => (
-            <motion.div
-              key={work.id}
-              role="button"
-              tabIndex={0}
-              onClick={() => {
-                setOpenWorkId(work.id);
-                setOpenWorkImageIndex(0);
-              }}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  setOpenWorkId(work.id);
-                  setOpenWorkImageIndex(0);
-                }
-              }}
-              {...getAnimationProps({
-                initial: { opacity: 0, scale: 0.98, y: 10 },
-                whileInView: { opacity: 1, scale: 1, y: 0 },
-                transition: { delay: index * 0.05, duration: 0.5, ease: 'easeOut' },
-              })}
-              viewport={viewport}
-              className="relative aspect-square rounded-lg cursor-pointer group transition-transform duration-300 hover:scale-105 hover:shadow-lg"
-            >
-              <div className="absolute inset-0 overflow-hidden rounded-lg">
-                <Image
-                  src={work.images[0]}
-                  alt={`Work ${work.id}`}
-                  fill
-                  className="object-cover group-hover:scale-110 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
-              </div>
-            </motion.div>
-          ))}
+          {filteredWithImages.length === 0 ? (
+            <p className="col-span-full text-center text-mocha">{tGallery('noWorks') || 'No works in this category.'}</p>
+          ) : (
+            filteredWithImages.map((work, index) => {
+              const src = getWorkFirstImage(work);
+              if (!src) return null;
+              const label = (work.title || work.images?.[0]?.alt || '').trim() || null;
+              const masterName = work.artist?.name ?? null;
+              return (
+                <motion.div
+                  key={work.id}
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => { setOpenWorkId(work.id); setLightboxImageIndex(0); }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      setOpenWorkId(work.id);
+                      setLightboxImageIndex(0);
+                    }
+                  }}
+                  {...getAnimationProps({
+                    initial: { opacity: 0, scale: 0.98, y: 10 },
+                    whileInView: { opacity: 1, scale: 1, y: 0 },
+                    transition: { delay: index * 0.05, duration: 0.5, ease: 'easeOut' },
+                  })}
+                  viewport={viewport}
+                  className="relative rounded-lg cursor-pointer group transition-transform duration-300 hover:scale-105 hover:shadow-lg"
+                >
+                  {masterName && (
+                    <p className="py-2 px-2 text-xs font-medium truncate text-center text-white rounded-t-lg" style={{ backgroundColor: '#383737' }} title={masterName}>{masterName}</p>
+                  )}
+                  <div className={`relative aspect-square overflow-hidden ${masterName ? 'rounded-t-none' : 'rounded-t-lg'} ${label ? 'rounded-b-none' : 'rounded-b-lg'}`}>
+                    <img
+                      src={src}
+                      alt={getWorkFirstAlt(work)}
+                      className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
+                  </div>
+                  {label && (
+                    <div className="mt-0 py-2 px-2 text-center text-white rounded-b-lg" style={{ backgroundColor: '#383737' }}>
+                      <p className="text-sm font-medium truncate" title={label}>{label}</p>
+                    </div>
+                  )}
+                </motion.div>
+              );
+            })
+          )}
         </div>
       </div>
 
-      {/* Lightbox – darbo nuotraukų slideris */}
+      {/* Lightbox – to darbo nuotraukos (slideris jei kelios) */}
       <AnimatePresence>
-        {openWorkId !== null && openWorkImages.length > 0 && (
+        {openWorkId !== null && openWork && openWorkImages.length > 0 && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -195,10 +213,7 @@ export default function Gallery() {
               {openWorkImages.length > 1 && (
                 <button
                   type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setOpenWorkImageIndex((i) => (i - 1 + openWorkImages.length) % openWorkImages.length);
-                  }}
+                  onClick={(e) => { e.stopPropagation(); setLightboxImageIndex((i) => (i - 1 + openWorkImages.length) % openWorkImages.length); }}
                   className={`absolute left-0 md:-left-12 z-10 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-white/90 text-graphite hover:bg-white shadow-lg ${buttonIconTransitionClass}`}
                   aria-label="Previous image"
                 >
@@ -207,28 +222,28 @@ export default function Gallery() {
                   </svg>
                 </button>
               )}
-
               <div className="flex-1 px-12 md:px-4">
-                <Image
-                  key={currentImageIndex}
-                  src={openWorkImages[currentImageIndex]}
-                  alt={`Work ${openWorkId} image ${currentImageIndex + 1}`}
-                  width={800}
-                  height={800}
+                <img
+                  key={openWorkImages[lightboxImageIndex]?.id}
+                  src={openWorkImages[lightboxImageIndex]?.image}
+                  alt={(openWorkImages[lightboxImageIndex]?.alt || openWork.title || `Work ${openWork.id}`).trim() || `Work ${openWork.id}`}
                   className="w-full h-auto max-h-[90vh] object-contain rounded-lg shadow-2xl"
                 />
-                <p className="text-center text-white/90 text-sm mt-2">
-                  {currentImageIndex + 1} / {openWorkImages.length}
-                </p>
+                {openWorkImages[lightboxImageIndex]?.alt?.trim() && (
+                  <p className="text-center text-white/90 text-sm mt-2">
+                    {openWorkImages[lightboxImageIndex].alt.trim()}
+                  </p>
+                )}
+                {openWorkImages.length > 1 && (
+                  <p className="text-center text-white/70 text-xs mt-1">
+                    {lightboxImageIndex + 1} / {openWorkImages.length}
+                  </p>
+                )}
               </div>
-
               {openWorkImages.length > 1 && (
                 <button
                   type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setOpenWorkImageIndex((i) => (i + 1) % openWorkImages.length);
-                  }}
+                  onClick={(e) => { e.stopPropagation(); setLightboxImageIndex((i) => (i + 1) % openWorkImages.length); }}
                   className={`absolute right-0 md:-right-12 z-10 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-white/90 text-graphite hover:bg-white shadow-lg ${buttonIconTransitionClass}`}
                   aria-label="Next image"
                 >
@@ -237,7 +252,6 @@ export default function Gallery() {
                   </svg>
                 </button>
               )}
-
               <button
                 type="button"
                 onClick={() => setOpenWorkId(null)}

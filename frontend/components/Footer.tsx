@@ -3,11 +3,17 @@
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useLocale } from 'next-intl';
+import type { HeroSettings } from '@/lib/api';
 
-export default function Footer() {
+type FooterProps = { hero?: HeroSettings | null };
+
+export default function Footer({ hero }: FooterProps) {
   const locale = useLocale();
   const tFooter = useTranslations('footer');
   const tNav = useTranslations('nav');
+  const instagramUrl = hero?.instagram_url || 'https://instagram.com';
+  const facebookUrl = hero?.facebook_url || 'https://facebook.com';
+  const whatsappUrl = hero?.whatsapp_url || 'https://wa.me';
 
   return (
     <footer className="bg-graphite text-white py-12 overflow-x-hidden w-full">
@@ -58,7 +64,7 @@ export default function Footer() {
             <h4 className="font-serif font-normal text-[27px] leading-[36px] tracking-[0.2em] mb-4 text-white">{tFooter('followUs')}</h4>
             <div className="flex gap-4">
               <a
-                href="https://instagram.com"
+                href={instagramUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white/80 hover:text-white transition"
@@ -69,7 +75,7 @@ export default function Footer() {
                 </svg>
               </a>
               <a
-                href="https://facebook.com"
+                href={facebookUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white/80 hover:text-white transition"
@@ -80,7 +86,7 @@ export default function Footer() {
                 </svg>
               </a>
               <a
-                href="https://wa.me"
+                href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white/80 hover:text-white transition"
@@ -94,7 +100,18 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-white/20 mt-8 pt-8 text-center text-sm text-white/80">
+        <div className="border-t border-white/20 mt-8 pt-8 text-center text-sm text-white/80 space-y-2">
+          <p className="flex flex-wrap justify-center gap-x-4 gap-y-1">
+            <Link href={`/${locale}/impressum`} className="hover:text-white transition">
+              {tFooter('impressum')}
+            </Link>
+            <Link href={`/${locale}/privacy`} className="hover:text-white transition">
+              {tFooter('privacy')}
+            </Link>
+          </p>
+          <p className="text-white/70 text-xs max-w-xl mx-auto">
+            {tFooter('cookies')}
+          </p>
           <p>&copy; {new Date().getFullYear()} SORA TATTOO. {tFooter('rights')}</p>
         </div>
       </div>

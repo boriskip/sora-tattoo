@@ -5,29 +5,35 @@ import { motion } from 'framer-motion';
 import ImageSlider from './ImageSlider';
 import { useMobileAnimation } from '@/hooks/useMobileAnimation';
 import { viewportSettings } from '@/utils/animations';
+import type { AboutSection, AboutImageItem } from '@/lib/api';
 
-export default function About() {
+const DEFAULT_ABOUT_IMAGES: AboutImageItem[] = [
+  '/about/uberuns-1.png', '/about/uberuns-2.png', '/about/uberuns-3.png',
+  '/about/uberuns-4.png', '/about/uberuns-5.png', '/about/uberuns-6.png',
+  '/about/uberuns-7.png', '/about/uberuns-8.png', '/about/uberuns-9.png', '/about/uberuns-10.png',
+].map((url) => ({ url, alt: '' }));
+
+function normalizeAboutImages(images: AboutSection['images']): AboutImageItem[] {
+  if (!images?.length) return DEFAULT_ABOUT_IMAGES;
+  return images.map((item) =>
+    typeof item === 'string' ? { url: item, alt: '' } : { url: item.url, alt: item.alt ?? '' }
+  );
+}
+
+type AboutProps = { data?: AboutSection | null };
+
+export default function About({ data }: AboutProps) {
   const t = useTranslations('about');
   const { isMobile, prefersReducedMotion, getAnimationProps } = useMobileAnimation();
+  const title = (data?.title?.trim() || t('title')) as string;
+  const content = (data?.content?.trim() || t('content')) as string;
+  const aboutImages = normalizeAboutImages(data?.images ?? null);
   
   const viewport = prefersReducedMotion
     ? viewportSettings.reduced
     : isMobile
     ? viewportSettings.mobile
     : viewportSettings.desktop;
-
-  const aboutImages = [
-    '/about/uberuns-1.png',
-    '/about/uberuns-2.png',
-    '/about/uberuns-3.png',
-    '/about/uberuns-4.png',
-    '/about/uberuns-5.png',
-    '/about/uberuns-6.png',
-    '/about/uberuns-7.png',
-    '/about/uberuns-8.png',
-    '/about/uberuns-9.png',
-    '/about/uberuns-10.png',
-  ];
 
   return (
     <section id="about" className="py-12 md:py-32 bg-background relative z-50 overflow-x-hidden w-full">
@@ -41,7 +47,7 @@ export default function About() {
           })}
           viewport={viewport}
         >
-          {t('title')}
+          {title}
         </motion.h2>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 max-w-6xl mx-auto items-start">
@@ -56,7 +62,7 @@ export default function About() {
             className="order-2 lg:order-1 lg:col-span-5"
           >
             <div className="max-w-md">
-              {t('content').split('\n').map((paragraph, index) => (
+              {content.split('\n').map((paragraph, index) => (
                 <p key={index} className="text-mocha mb-5 leading-relaxed">
                   {paragraph}
                 </p>
@@ -74,7 +80,7 @@ export default function About() {
             viewport={viewport}
             className="order-1 lg:order-2 lg:col-span-7"
           >
-            <ImageSlider images={aboutImages} autoPlay={false} interval={4000} />
+            <ImageSlider items={aboutImages} autoPlay={false} interval={4000} />
           </motion.div>
         </div>
       </div>
