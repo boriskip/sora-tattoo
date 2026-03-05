@@ -2,14 +2,41 @@
 
 import { useTranslations } from 'next-intl';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { useMobileAnimation } from '@/hooks/useMobileAnimation';
 import { viewportSettings } from '@/utils/animations';
+import { buttonIconTransitionClass, buttonTransitionClass } from '@/utils/animations';
 
-// Mažas thumbnail slideris – 2–3 nuotraukos, horizontalus scroll arba rodyklės
+// Mažas thumbnail slideris – rodyklės tik kai yra overflow (scrollWidth > clientWidth)
 function ThumbnailSlider({ images }: { images: string[] }) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [showNavButtons, setShowNavButtons] = useState(false);
+
+  const checkOverflow = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const overflow = el.scrollWidth > el.clientWidth;
+    const manyImages = images.length >= 4;
+    setShowNavButtons(overflow || manyImages);
+  };
+
+  useEffect(() => {
+    checkOverflow();
+    const el = scrollRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(() => checkOverflow());
+    ro.observe(el);
+    const t1 = setTimeout(checkOverflow, 150);
+    const t2 = setTimeout(checkOverflow, 500);
+    const t3 = setTimeout(checkOverflow, 1200);
+    return () => {
+      ro.disconnect();
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+    };
+  }, [images.length]);
 
   if (images.length === 0) return null;
 
@@ -21,34 +48,36 @@ function ThumbnailSlider({ images }: { images: string[] }) {
 
   return (
     <div className="mt-4 pt-4 border-t border-mocha/20">
-      <div className="relative">
+      <div className="relative pt-2 pb-2">
         <div
           ref={scrollRef}
-          className="flex gap-3 overflow-x-auto overflow-y-hidden scroll-smooth scrollbar-hide py-1"
+className="flex gap-3 overflow-x-auto overflow-y-visible scroll-smooth scrollbar-hide py-2 pl-4 pr-4"
           style={{ scrollSnapType: 'x mandatory' }}
         >
           {images.map((src, i) => (
             <div
               key={i}
-              className="relative flex-shrink-0 w-[140px] h-[100px] md:w-[160px] md:h-[112px] rounded-lg overflow-hidden bg-mocha/10"
+              className="relative flex-shrink-0 w-[140px] h-[100px] md:w-[160px] md:h-[112px] rounded-lg transition-transform duration-300 hover:scale-105 hover:shadow-lg"
               style={{ scrollSnapAlign: 'start' }}
             >
-              <Image
-                src={src}
-                alt=""
-                fill
-                className="object-cover"
-                sizes="160px"
-              />
+              <div className="w-full h-full rounded-lg overflow-hidden bg-mocha/10 relative">
+                <Image
+                  src={src}
+                  alt=""
+                  fill
+                  className="object-cover"
+                  sizes="160px"
+                />
+              </div>
             </div>
           ))}
         </div>
-        {images.length > 1 && (
+        {showNavButtons && (
           <>
             <button
               type="button"
               onClick={() => scroll(-1)}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white/90 shadow-md flex items-center justify-center text-graphite hover:bg-white transition"
+              className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white/90 shadow-md flex items-center justify-center text-graphite hover:bg-white ${buttonIconTransitionClass}`}
               aria-label="Previous"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
@@ -56,7 +85,7 @@ function ThumbnailSlider({ images }: { images: string[] }) {
             <button
               type="button"
               onClick={() => scroll(1)}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white/90 shadow-md flex items-center justify-center text-graphite hover:bg-white transition"
+              className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white/90 shadow-md flex items-center justify-center text-graphite hover:bg-white ${buttonIconTransitionClass}`}
               aria-label="Next"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
@@ -207,11 +236,11 @@ export default function Guides() {
                 transition: { delay: index * 0.1, duration: 0.6 },
               })}
               viewport={viewport}
-              className="bg-background rounded-lg shadow-md overflow-hidden"
+              className="bg-background rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow"
             >
               <button
                 onClick={() => toggleGuide(index)}
-                className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-mocha/5 transition"
+                className={`w-full px-6 py-4 flex items-center justify-between text-left hover:bg-mocha/5 ${buttonTransitionClass}`}
               >
                 <h3 className="font-serif font-normal text-[27px] leading-[36px] tracking-[0.2em] text-graphite">
                   {t(guide.titleKey)}

@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
+import { buttonIconTransitionClass } from '@/utils/animations';
 
 interface ImageSliderProps {
   images: string[];
@@ -117,7 +118,7 @@ export default function ImageSlider({ images, autoPlay = true, interval = 5000 }
               goToPrevious();
             }}
             type="button"
-            className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-3 transition-all z-50 shadow-lg hover:scale-110 cursor-pointer pointer-events-auto"
+            className={`absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-3 z-50 shadow-lg hover:scale-110 cursor-pointer pointer-events-auto ${buttonIconTransitionClass}`}
             aria-label="Previous image"
             style={{ zIndex: 50 }}
           >
@@ -132,7 +133,7 @@ export default function ImageSlider({ images, autoPlay = true, interval = 5000 }
               goToNext();
             }}
             type="button"
-            className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-3 transition-all z-50 shadow-lg hover:scale-110 cursor-pointer pointer-events-auto"
+            className={`absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-3 z-50 shadow-lg hover:scale-110 cursor-pointer pointer-events-auto ${buttonIconTransitionClass}`}
             aria-label="Next image"
             style={{ zIndex: 50 }}
           >
@@ -155,7 +156,7 @@ export default function ImageSlider({ images, autoPlay = true, interval = 5000 }
                 e.stopPropagation();
                 goToSlide(index);
               }}
-              className={`h-2 rounded-full transition-all cursor-pointer pointer-events-auto ${
+              className={`h-2 rounded-full cursor-pointer pointer-events-auto ${buttonIconTransitionClass} ${
                 index === currentIndex ? 'bg-white w-8' : 'bg-white/50 hover:bg-white/75 w-2'
               }`}
               aria-label={`Go to slide ${index + 1}`}

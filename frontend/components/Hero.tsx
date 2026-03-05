@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { motion, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
 import Image from 'next/image';
+import { buttonTransitionClass } from '@/utils/animations';
 
 export default function Hero() {
   const locale = useLocale();
@@ -144,10 +145,10 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.1, duration: 0.6 }}
         >
-          <Link href={`/${locale}#contact`} className="px-8 py-2 bg-graphite text-white rounded-xl hover:opacity-95 transition font-medium text-lg shadow-md text-center">
+          <Link href={`/${locale}#contact`} className={`px-8 py-2 bg-graphite text-white rounded-xl hover:opacity-95 font-medium text-lg shadow-md text-center ${buttonTransitionClass}`}>
             {t('book')}
           </Link>
-          <Link href={`/${locale}#works`} className="px-8 py-2 bg-background/95 text-graphite rounded-xl hover:bg-white/90 transition font-medium text-lg border border-mocha/20 shadow-md backdrop-blur-sm text-center">
+          <Link href={`/${locale}#works`} className={`px-8 py-2 bg-background/95 text-graphite rounded-xl hover:bg-white/90 font-medium text-lg border border-mocha/20 shadow-md backdrop-blur-sm text-center ${buttonTransitionClass}`}>
             {t('viewWorks')}
           </Link>
         </motion.div>

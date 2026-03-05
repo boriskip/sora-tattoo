@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
+import { buttonTransitionClass } from '@/utils/animations';
 
 export default function Contact() {
   const searchParams = useSearchParams();
@@ -231,7 +232,7 @@ export default function Contact() {
 
             <button
               type="submit"
-              className="w-full px-6 py-2 bg-graphite text-white rounded-xl hover:opacity-95 transition font-medium shadow-sm"
+              className={`w-full px-6 py-2 bg-graphite text-white rounded-xl hover:opacity-95 font-medium shadow-sm ${buttonTransitionClass}`}
             >
               {tCommon('book')}
             </button>

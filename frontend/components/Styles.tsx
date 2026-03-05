@@ -30,7 +30,7 @@ export default function Styles() {
   const tCommon = useTranslations('common');
   const tStyles = useTranslations('styles');
   const { isMobile, prefersReducedMotion, getAnimationProps } = useMobileAnimation();
-  
+
   const viewport = prefersReducedMotion
     ? viewportSettings.reduced
     : isMobile
@@ -67,9 +67,11 @@ export default function Styles() {
               whileInView="visible"
               viewport={isMobile ? { once: true, amount: 0.3, margin: '0px' } : viewport}
               variants={isMobile ? styleVariantsMobile : styleVariants}
-              className="relative h-80 rounded-lg overflow-hidden group cursor-pointer bg-stylesDark transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-xl"
+              className="relative h-80 rounded-lg group cursor-pointer shadow-md hover:shadow-xl transition-shadow"
             >
-              <div className="absolute inset-0 bg-stylesDark" />
+              <div className="absolute inset-0 overflow-hidden rounded-lg bg-stylesDark">
+                <div className="absolute inset-0 bg-stylesDark" />
+              </div>
               <div className="relative z-10 h-full flex flex-col justify-between p-6">
                 <div>
                   <h3 className="font-serif font-normal text-[27px] leading-[36px] tracking-[0.2em] text-white mb-3">

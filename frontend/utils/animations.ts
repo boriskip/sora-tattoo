@@ -94,6 +94,24 @@ export function getMobileAnimation(
 }
 
 /**
+ * Card/thumbnail hover: pakyla į priekį (translateY + scale + shadow) – viena vieta visiems sekcijoms
+ * hover:z-20 kad būtų virš kitų blokų (accordion, sekcijų)
+ */
+export const liftCardClass =
+  'transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.04] hover:shadow-xl hover:z-20 focus-visible:-translate-y-2 focus-visible:scale-[1.04] focus-visible:shadow-xl focus-visible:z-20 focus-visible:outline-none';
+export const liftCardClassReduced = '';
+
+/**
+ * Mygtukų animacija: vienoda transition + švelnus hover scale + focus-visible ring
+ */
+export const buttonTransitionClass =
+  'transition-all duration-200 ease-out hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-graphite focus-visible:ring-offset-2';
+
+/** Ikonų mygtukams (jau turi savo hover scale) – tik transition + focus-visible */
+export const buttonIconTransitionClass =
+  'transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-graphite focus-visible:ring-offset-2';
+
+/**
  * Viewport settings for scroll animations
  * once: true – blokai animuojasi tik vieną kartą, nebe „dingsta“ scrollinant
  */

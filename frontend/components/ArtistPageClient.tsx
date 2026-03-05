@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { viewportSettings } from '@/utils/animations';
+import { viewportSettings, buttonTransitionClass } from '@/utils/animations';
 import { useMobileAnimation } from '@/hooks/useMobileAnimation';
 
 type Work = { id: number; image: string; style?: string | null; title?: string | null };
@@ -91,7 +91,7 @@ export default function ArtistPageClient({
                 <div className="mt-6">
                   <Link
                     href={`/${locale}${artist.slug ? `?artist=${artist.slug}` : ''}#contact`}
-                    className="inline-block px-6 py-2 bg-graphite text-white rounded-xl hover:opacity-95 transition font-medium shadow-sm"
+                    className={`inline-block px-6 py-2 bg-graphite text-white rounded-xl hover:opacity-95 font-medium shadow-sm ${buttonTransitionClass}`}
                   >
                     {tCommon('book')}
                   </Link>

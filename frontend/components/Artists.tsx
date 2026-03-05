@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { useMobileAnimation } from '@/hooks/useMobileAnimation';
-import { viewportSettings } from '@/utils/animations';
+import { viewportSettings, buttonTransitionClass, buttonIconTransitionClass } from '@/utils/animations';
 
 const artistVariants = {
   hidden: { opacity: 0, y: 12 },
@@ -128,7 +128,7 @@ export default function Artists() {
                 console.log('LEFT BUTTON CLICKED');
                 scrollGallery('left');
               }}
-              className="absolute left-2 top-1/2 -translate-y-1/2 z-[100] bg-white hover:bg-gray-100 shadow-lg rounded-full p-2 md:p-2.5 transition-all hover:scale-110 cursor-pointer border border-gray-300"
+              className={`absolute left-2 top-1/2 -translate-y-1/2 z-[100] bg-white hover:bg-gray-100 shadow-lg rounded-full p-2 md:p-2.5 hover:scale-110 cursor-pointer border border-gray-300 ${buttonIconTransitionClass}`}
               aria-label="Scroll left"
               style={{ 
                 pointerEvents: 'auto',
@@ -148,7 +148,7 @@ export default function Artists() {
                 console.log('RIGHT BUTTON CLICKED');
                 scrollGallery('right');
               }}
-              className="absolute right-2 top-1/2 -translate-y-1/2 z-[100] bg-white hover:bg-gray-100 shadow-lg rounded-full p-2 md:p-2.5 transition-all hover:scale-110 cursor-pointer border border-gray-300"
+              className={`absolute right-2 top-1/2 -translate-y-1/2 z-[100] bg-white hover:bg-gray-100 shadow-lg rounded-full p-2 md:p-2.5 hover:scale-110 cursor-pointer border border-gray-300 ${buttonIconTransitionClass}`}
               aria-label="Scroll right"
               style={{ 
                 pointerEvents: 'auto',
@@ -163,30 +163,34 @@ export default function Artists() {
 
             <div 
               ref={galleryRef}
-              className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide relative"
+              className="flex gap-4 overflow-x-auto pt-4 pb-4 scrollbar-hide relative"
               style={{ 
                 scrollBehavior: 'smooth',
                 WebkitOverflowScrolling: 'touch'
               }}
             >
-              {/* Simple gallery items */}
+              {/* Galerijos kortelės – paprasta hover animacija tiesiai čia */}
               {Array.from({ length: LIGHTBOX_WORKS_COUNT }).map((_, index) => (
-                <button
+                <div
                   key={index}
-                  type="button"
-                  onClick={() => setLightboxIndex(index)}
-                  className="flex-shrink-0 w-[200px] md:w-[250px] h-[200px] md:h-[250px] rounded-lg overflow-hidden bg-gray-200 relative group cursor-pointer focus:outline-none focus:ring-2 focus:ring-graphite/50"
+                  className="flex-shrink-0 w-[200px] md:w-[250px] h-[200px] md:h-[250px] rounded-lg transition-transform duration-300 hover:scale-105 hover:shadow-lg"
                 >
-                  <Image
-                    src="/placeholder-work.svg"
-                    alt={`Work ${index + 1}`}
-                    width={250}
-                    height={250}
-                    className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-300"
-                    unoptimized
-                  />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
-                </button>
+                  <button
+                    type="button"
+                    onClick={() => setLightboxIndex(index)}
+                    className="w-full h-full rounded-lg overflow-hidden bg-gray-200 relative group cursor-pointer focus:ring-2 focus:ring-graphite/50 focus:ring-offset-2"
+                  >
+                    <Image
+                      src="/placeholder-work.svg"
+                      alt={`Work ${index + 1}`}
+                      width={250}
+                      height={250}
+                      className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-300"
+                      unoptimized
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
+                  </button>
+                </div>
               ))}
             </div>
           </div>
@@ -231,13 +235,13 @@ export default function Artists() {
                     {/* Laikinai → #works (be backend). Vėliau: href={`/${locale}/artists/${artist.slug}`} */}
                     <Link 
                       href={`/${locale}#works`}
-                      className="px-6 py-1.5 bg-graphite text-white rounded-xl hover:opacity-95 transition font-medium cursor-pointer inline-block text-center shadow-sm"
+                      className={`px-6 py-1.5 bg-graphite text-white rounded-xl hover:opacity-95 font-medium cursor-pointer inline-block text-center shadow-sm ${buttonTransitionClass}`}
                     >
                       {tCommon('viewWorks')}
                     </Link>
                     <Link 
                       href={`/${locale}${artist.slug ? `?artist=${artist.slug}` : ''}#contact`}
-                      className="px-6 py-1.5 bg-background/95 text-graphite rounded-xl hover:bg-white/90 transition font-medium border border-mocha/20 cursor-pointer inline-block text-center shadow-sm"
+                      className={`px-6 py-1.5 bg-background/95 text-graphite rounded-xl hover:bg-white/90 font-medium border border-mocha/20 cursor-pointer inline-block text-center shadow-sm ${buttonTransitionClass}`}
                     >
                       {tCommon('book')}
                     </Link>
@@ -275,7 +279,7 @@ export default function Artists() {
               <button
                 type="button"
                 onClick={(e) => { e.stopPropagation(); setLightboxIndex((i) => (i === null ? null : (i - 1 + LIGHTBOX_WORKS_COUNT) % LIGHTBOX_WORKS_COUNT)); }}
-                className="absolute left-0 md:-left-12 z-10 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-white/90 text-graphite hover:bg-white transition shadow-lg"
+                className={`absolute left-0 md:-left-12 z-10 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-white/90 text-graphite hover:bg-white shadow-lg ${buttonIconTransitionClass}`}
                 aria-label="Previous work"
               >
                 <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -301,7 +305,7 @@ export default function Artists() {
               <button
                 type="button"
                 onClick={(e) => { e.stopPropagation(); setLightboxIndex((i) => (i === null ? null : (i + 1) % LIGHTBOX_WORKS_COUNT)); }}
-                className="absolute right-0 md:-right-12 z-10 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-white/90 text-graphite hover:bg-white transition shadow-lg"
+                className={`absolute right-0 md:-right-12 z-10 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-white/90 text-graphite hover:bg-white shadow-lg ${buttonIconTransitionClass}`}
                 aria-label="Next work"
               >
                 <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -313,7 +317,7 @@ export default function Artists() {
               <button
                 type="button"
                 onClick={() => setLightboxIndex(null)}
-                className="absolute -top-10 right-0 md:top-0 md:-right-10 w-10 h-10 flex items-center justify-center rounded-full bg-white/90 text-graphite hover:bg-white transition"
+                className={`absolute -top-10 right-0 md:top-0 md:-right-10 w-10 h-10 flex items-center justify-center rounded-full bg-white/90 text-graphite hover:bg-white ${buttonIconTransitionClass}`}
                 aria-label="Close"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

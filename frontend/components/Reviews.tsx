@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
+import { buttonTransitionClass } from '@/utils/animations';
 
 export default function Reviews() {
   const tCommon = useTranslations('common');
@@ -92,7 +93,7 @@ export default function Reviews() {
           <motion.button
             type="button"
             onClick={() => setIsFormOpen(true)}
-            className="px-6 py-2 bg-graphite text-white rounded-xl hover:opacity-95 transition font-medium cursor-pointer shadow-sm"
+            className={`px-6 py-2 bg-graphite text-white rounded-xl hover:opacity-95 font-medium cursor-pointer shadow-sm ${buttonTransitionClass}`}
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false }}
@@ -110,7 +111,7 @@ export default function Reviews() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1, duration: 0.6 }}
-              className="bg-background p-6 rounded-lg shadow-md"
+              className="bg-background p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow"
             >
               <div className="flex items-center mb-4">
                 {[...Array(review.rating)].map((_, i) => (
@@ -231,13 +232,13 @@ export default function Reviews() {
                         <button
                           type="button"
                           onClick={() => setIsFormOpen(false)}
-                          className="px-6 py-1.5 bg-background/95 text-graphite rounded-xl hover:bg-white/90 transition font-medium border border-mocha/20 shadow-sm"
+                          className={`px-6 py-1.5 bg-background/95 text-graphite rounded-xl hover:bg-white/90 font-medium border border-mocha/20 shadow-sm ${buttonTransitionClass}`}
                         >
                           {tReviews('formCancel')}
                         </button>
                         <button
                           type="submit"
-                          className="px-6 py-1.5 bg-graphite text-white rounded-xl hover:opacity-95 transition font-medium shadow-sm"
+                          className={`px-6 py-1.5 bg-graphite text-white rounded-xl hover:opacity-95 font-medium shadow-sm ${buttonTransitionClass}`}
                         >
                           {tReviews('formSubmit')}
                         </button>

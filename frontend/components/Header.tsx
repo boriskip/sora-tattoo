@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { locales } from '@/i18n';
+import { buttonTransitionClass } from '@/utils/animations';
 
 export default function Header() {
   const t = useTranslations('nav');
@@ -92,19 +93,19 @@ export default function Header() {
 
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center space-x-6">
-              <Link href={`/${locale}#works`} className="text-white/90 hover:text-white transition">
+              <Link href={`/${locale}#works`} className="text-white/80 hover:text-white px-2 py-1 rounded hover:bg-white/10 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent">
                 {t('works')}
               </Link>
-              <Link href={`/${locale}#masters`} className="text-white/90 hover:text-white transition">
+              <Link href={`/${locale}#masters`} className="text-white/80 hover:text-white px-2 py-1 rounded hover:bg-white/10 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent">
                 {t('masters')}
               </Link>
-              <Link href={`/${locale}#styles`} className="text-white/90 hover:text-white transition">
+              <Link href={`/${locale}#styles`} className="text-white/80 hover:text-white px-2 py-1 rounded hover:bg-white/10 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent">
                 {t('styles')}
               </Link>
-              <Link href={`/${locale}#info`} className="text-white/90 hover:text-white transition">
+              <Link href={`/${locale}#info`} className="text-white/80 hover:text-white px-2 py-1 rounded hover:bg-white/10 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent">
                 {t('info')}
               </Link>
-              <Link href={`/${locale}#contact`} className="text-white/90 hover:text-white transition">
+              <Link href={`/${locale}#contact`} className="text-white/80 hover:text-white px-2 py-1 rounded hover:bg-white/10 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent">
                 {t('contact')}
               </Link>
             </nav>
@@ -193,7 +194,7 @@ export default function Header() {
               </div>
 
               {/* CTA Button */}
-              <Link href={`/${locale}#contact`} className="px-6 py-1.5 bg-white/95 text-graphite rounded-xl hover:bg-white transition font-medium inline-block shadow-sm">
+              <Link href={`/${locale}#contact`} className={`px-6 py-1.5 bg-white/95 text-graphite rounded-xl hover:bg-white font-medium inline-block shadow-sm ${buttonTransitionClass}`}>
                 {t('book')}
               </Link>
             </div>
@@ -330,7 +331,7 @@ export default function Header() {
               <Link href={`/${locale}#contact`} onClick={closeMobileMenu} className="block py-2 text-white/90 hover:text-white transition border-b border-white/10">
                 {t('contact')}
               </Link>
-              <Link href={`/${locale}#contact`} onClick={closeMobileMenu} className="block w-full mt-4 px-6 py-2 bg-white/95 text-graphite rounded-xl hover:bg-white transition font-medium text-center shadow-sm">
+              <Link href={`/${locale}#contact`} onClick={closeMobileMenu} className={`block w-full mt-4 px-6 py-2 bg-white/95 text-graphite rounded-xl hover:bg-white font-medium text-center shadow-sm ${buttonTransitionClass}`}>
                 {t('book')}
               </Link>
               
