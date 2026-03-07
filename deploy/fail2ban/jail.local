@@ -1,0 +1,26 @@
+# Fail2ban jail – SORA Tattoo serveris
+# Įdėk kaip: /etc/fail2ban/jail.d/sora-tattoo.conf
+
+[DEFAULT]
+bantime  = 1h
+findtime = 10m
+maxretry = 5
+
+# SSH – blokuoja IP po 5 nesėkmingų bandymų per 10 min
+[sshd]
+enabled = true
+port    = ssh
+filter  = sshd
+logpath = %(sshd_log)s
+maxretry = 5
+bantime  = 1h
+
+# Optional: Nginx 429 (rate limit) – blokuoti IP, kurie dažnai gauna 429
+# Reikalauja filter failo (žr. nginx-limit-req.conf) ir Nginx logų su 429
+# [nginx-limit-req]
+# enabled = true
+# filter   = nginx-limit-req
+# logpath  = /var/log/nginx/error.log
+# maxretry = 10
+# findtime = 1m
+# bantime  = 30m

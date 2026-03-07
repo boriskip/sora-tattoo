@@ -2,9 +2,7 @@ import { setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { locales } from '@/i18n';
 import ArtistPageClient from '@/components/ArtistPageClient';
-
-// Server-side: use API_URL in Docker (backend:8000), else localhost for host-run dev
-const API_URL = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001/api';
+import { getApiUrl } from '@/lib/api';
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
@@ -14,7 +12,7 @@ export default async function ArtistPage({ params }: Props) {
 
   setRequestLocale(locale);
 
-  const res = await fetch(`${API_URL}/artists/${slug}?locale=${locale}`, {
+  const res = await fetch(`${getApiUrl()}/artists/${slug}?locale=${locale}`, {
     next: { revalidate: 60 },
   });
   if (!res.ok) notFound();

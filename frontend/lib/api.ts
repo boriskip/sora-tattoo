@@ -1,11 +1,20 @@
+const PRODUCTION_API = 'https://api.soratattoo.de/api';
+
 /**
  * API base URL: server (API_URL in Docker) or client (NEXT_PUBLIC_API_URL).
+ * In production (soratattoo.de) defaults to api.soratattoo.de when env is missing.
  */
 export function getApiUrl(): string {
-  if (typeof window !== 'undefined') {
-    return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001/api';
+  const envUrl = typeof window !== 'undefined'
+    ? process.env.NEXT_PUBLIC_API_URL
+    : (process.env.API_URL || process.env.NEXT_PUBLIC_API_URL);
+  if (envUrl) return envUrl;
+  if (typeof window !== 'undefined' && typeof window.location?.hostname === 'string') {
+    const h = window.location.hostname;
+    if (h === 'soratattoo.de' || h === 'www.soratattoo.de') return PRODUCTION_API;
   }
-  return process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001/api';
+  if (typeof process !== 'undefined' && process.env.VERCEL) return PRODUCTION_API;
+  return 'http://localhost:8001/api';
 }
 
 export type HeroSettings = {
@@ -84,9 +93,7 @@ export type AdminInfoResponse = { sections: AdminInfoSection[]; guides: AdminInf
 
 /** Base URL for backend (no /api). Prefer NEXT_PUBLIC so SSR HTML works in browser. */
 function getStorageBaseUrl(): string {
-  const apiUrl = typeof window !== 'undefined'
-    ? (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001/api')
-    : (process.env.NEXT_PUBLIC_API_URL || process.env.API_URL || 'http://localhost:8001/api');
+  const apiUrl = getApiUrl();
   return apiUrl.replace(/\/api\/?$/, '');
 }
 
