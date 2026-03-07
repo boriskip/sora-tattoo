@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Artist;
 use App\Models\Work;
+use App\Models\WorkImage;
 use Illuminate\Database\Seeder;
 
 class ArtistSeeder extends Seeder
@@ -62,11 +63,15 @@ class ArtistSeeder extends Seeder
             unset($data['works']);
             $artist = Artist::create($data);
             foreach ($worksData as $i => $work) {
-                Work::create([
+                $workModel = Work::create([
                     'artist_id' => $artist->id,
-                    'image' => $work['image'],
                     'style' => $work['style'] ?? null,
                     'sort_order' => $i + 1,
+                ]);
+                WorkImage::create([
+                    'work_id' => $workModel->id,
+                    'image' => $work['image'],
+                    'sort_order' => 0,
                 ]);
             }
         }
