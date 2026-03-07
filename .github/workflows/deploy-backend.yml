@@ -28,6 +28,7 @@ jobs:
             rm -f bootstrap/cache/packages.php bootstrap/cache/services.php
             composer install --no-dev --prefer-dist --optimize-autoloader
             php artisan migrate --force
+            php artisan storage:link 2>/dev/null || true
             php artisan config:cache
             php artisan route:cache
             chown -R www-data:www-data storage bootstrap/cache

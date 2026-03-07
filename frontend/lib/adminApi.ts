@@ -14,7 +14,9 @@ export async function adminFetch(
     ...getAdminAuthHeaders(),
     ...(options.headers as Record<string, string>),
   };
-  if (options.body && typeof options.body === 'string' && !headers['Content-Type']) {
+  if (options.body instanceof FormData) {
+    delete headers['Content-Type'];
+  } else if (options.body && typeof options.body === 'string' && !headers['Content-Type']) {
     headers['Content-Type'] = 'application/json';
   }
   return fetch(url, { ...options, headers });
