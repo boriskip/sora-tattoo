@@ -12,8 +12,6 @@ import Footer from '@/components/Footer';
 import { getApiUrl } from '@/lib/api';
 import type { HeroSettings, AboutSection, Style, Review, Artist, Work, InfoData, ContactSettings } from '@/lib/api';
 
-export const dynamic = 'force-dynamic';
-
 const revalidate = 60;
 
 async function fetchHomeData(locale: string) {

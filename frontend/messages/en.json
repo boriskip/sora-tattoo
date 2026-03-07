@@ -117,7 +117,8 @@
     "japanese": "Japanese",
     "realism": "Realism",
     "minimal": "Minimal",
-    "graphic": "Graphic"
+    "graphic": "Graphic",
+    "noWorks": "No works yet"
   },
   "styles": {
     "realism": {
