@@ -2,10 +2,12 @@
 
 import { useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { getApiUrl } from '@/lib/api';
 import { setAdminToken } from '@/lib/adminAuth';
 
 export default function AdminLoginPage() {
+  const t = useTranslations('adminLogin');
   const router = useRouter();
   const params = useParams();
   const locale = (params?.locale as string) || 'de';
@@ -27,14 +29,14 @@ export default function AdminLoginPage() {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        setError(data.message || data.errors?.email?.[0] || 'Ошибка входа');
+        setError(data.message || data.errors?.email?.[0] || t('errorLogin'));
         return;
       }
       setAdminToken(data.token);
       router.replace(`/${locale}/admin`);
       router.refresh();
     } catch {
-      setError('Ошибка сети. Попробуйте снова.');
+      setError(t('errorNetwork'));
     } finally {
       setLoading(false);
     }
@@ -44,9 +46,9 @@ export default function AdminLoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-graphite/5 px-4">
       <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
         <h1 className="font-serif text-2xl tracking-wide text-graphite mb-2">
-          Sora Tattoo Admin
+          {t('title')}
         </h1>
-        <p className="text-mocha text-sm mb-6">Войдите для управления контентом</p>
+        <p className="text-mocha text-sm mb-6">{t('subtitle')}</p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
@@ -56,7 +58,7 @@ export default function AdminLoginPage() {
           )}
           <div>
             <label htmlFor="admin-email" className="block text-sm font-medium text-graphite mb-1">
-              Эл. почта
+              {t('email')}
             </label>
             <input
               id="admin-email"
@@ -70,7 +72,7 @@ export default function AdminLoginPage() {
           </div>
           <div>
             <label htmlFor="admin-password" className="block text-sm font-medium text-graphite mb-1">
-              Пароль
+              {t('password')}
             </label>
             <input
               id="admin-password"
@@ -87,13 +89,9 @@ export default function AdminLoginPage() {
             disabled={loading}
             className="w-full py-2.5 bg-graphite text-white font-medium rounded-lg hover:opacity-90 disabled:opacity-60 transition"
           >
-            {loading ? 'Вход…' : 'Войти'}
+            {loading ? t('submitting') : t('submit')}
           </button>
         </form>
-
-        <p className="mt-6 text-xs text-mocha">
-          По умолчанию: admin@sora-tattoo.local / admin123
-        </p>
       </div>
     </div>
   );

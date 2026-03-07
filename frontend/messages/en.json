@@ -182,5 +182,16 @@
     "formMessage": "Your Review",
     "formSubmit": "Submit",
     "formCancel": "Cancel"
+  },
+  "adminLogin": {
+    "title": "Sora Tattoo Admin",
+    "subtitle": "Log in to manage content.",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Log in",
+    "submitting": "Logging in…",
+    "errorLogin": "Login failed.",
+    "errorNetwork": "Network error. Please try again.",
+    "defaultCredentials": "Default: admin@sora-tattoo.local / admin123"
   }
 }

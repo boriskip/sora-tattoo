@@ -182,5 +182,16 @@
     "formMessage": "Ваш отзыв",
     "formSubmit": "Отправить",
     "formCancel": "Отмена"
+  },
+  "adminLogin": {
+    "title": "Sora Tattoo Admin",
+    "subtitle": "Войдите для управления контентом.",
+    "email": "Эл. почта",
+    "password": "Пароль",
+    "submit": "Войти",
+    "submitting": "Вход…",
+    "errorLogin": "Ошибка входа.",
+    "errorNetwork": "Ошибка сети. Попробуйте снова.",
+    "defaultCredentials": "По умолчанию: admin@sora-tattoo.local / admin123"
   }
 }
