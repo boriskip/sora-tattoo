@@ -1,10 +1,11 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { buttonTransitionClass } from '@/utils/animations';
+import { getApiUrl } from '@/lib/api';
 import type { ContactSettings, HeroSettings } from '@/lib/api';
 
 type ContactProps = {
@@ -14,6 +15,7 @@ type ContactProps = {
 
 export default function Contact({ contact, hero }: ContactProps) {
   const searchParams = useSearchParams();
+  const locale = useLocale();
   const tCommon = useTranslations('common');
   const tContact = useTranslations('contact');
   const tArtists = useTranslations('artists');
@@ -26,16 +28,58 @@ export default function Contact({ contact, hero }: ContactProps) {
     preferredDate: '',
     message: ''
   });
+  const [honeypot, setHoneypot] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState<'success' | 'error' | null>(null);
 
   useEffect(() => {
     const artist = searchParams.get('artist') || '';
     if (artist) setFormData((prev) => ({ ...prev, artist }));
   }, [searchParams]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Connect to backend API
-    console.log('Form submitted:', formData);
+    if (honeypot) return;
+    setIsSubmitting(true);
+    setSubmitMessage(null);
+    try {
+      const apiUrl = getApiUrl();
+      const res = await fetch(`${apiUrl}/contact-inquiry`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name.trim(),
+          contact: formData.contact.trim(),
+          body_part: formData.bodyPart.trim() || null,
+          style: formData.style.trim() || null,
+          artist: formData.artist.trim() || null,
+          preferred_date: formData.preferredDate || null,
+          message: formData.message.trim() || null,
+          locale,
+          website: honeypot,
+        }),
+      });
+      if (res.ok) {
+        setSubmitMessage('success');
+        const artistFromUrl = searchParams.get('artist') || '';
+        setFormData({
+          name: '',
+          contact: '',
+          bodyPart: '',
+          style: '',
+          artist: artistFromUrl,
+          preferredDate: '',
+          message: '',
+        });
+        setHoneypot('');
+      } else {
+        setSubmitMessage('error');
+      }
+    } catch {
+      setSubmitMessage('error');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -156,6 +200,18 @@ export default function Contact({ contact, hero }: ContactProps) {
             onSubmit={handleSubmit}
             className="space-y-4"
           >
+            <div className="sr-only" aria-hidden="true">
+              <label htmlFor="contact-form-website">Leave blank</label>
+              <input
+                type="text"
+                id="contact-form-website"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                value={honeypot}
+                onChange={(e) => setHoneypot(e.target.value)}
+              />
+            </div>
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-mocha mb-1">
                 {tContact('formName')} *
@@ -265,11 +321,23 @@ export default function Contact({ contact, hero }: ContactProps) {
               />
             </div>
 
+            {submitMessage === 'success' && (
+              <p className="text-sm text-green-800 bg-green-50 border border-green-200 rounded-md px-3 py-2">
+                {tContact('formSubmitSuccess')}
+              </p>
+            )}
+            {submitMessage === 'error' && (
+              <p className="text-sm text-red-800 bg-red-50 border border-red-200 rounded-md px-3 py-2">
+                {tContact('formSubmitError')}
+              </p>
+            )}
+
             <button
               type="submit"
-              className={`w-full px-6 py-2 bg-graphite text-white rounded-xl hover:opacity-95 font-medium shadow-sm ${buttonTransitionClass}`}
+              disabled={isSubmitting}
+              className={`w-full px-6 py-2 bg-graphite text-white rounded-xl hover:opacity-95 font-medium shadow-sm disabled:opacity-60 ${buttonTransitionClass}`}
             >
-              {tCommon('book')}
+              {isSubmitting ? tContact('formSubmitting') : tCommon('book')}
             </button>
           </form>
           </motion.div>

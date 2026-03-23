@@ -154,7 +154,10 @@
     "formStylePlaceholder": "Please select",
     "formArtist": "Preferred artist",
     "formDate": "Preferred Date",
-    "formMessage": "Message"
+    "formMessage": "Message",
+    "formSubmitSuccess": "Thank you! We will get back to you as soon as possible.",
+    "formSubmitError": "We could not send your message. Please try again later or contact us directly.",
+    "formSubmitting": "Sending…"
   },
   "footer": {
     "navigation": "Navigation",

@@ -154,7 +154,10 @@
     "formStylePlaceholder": "Bitte wählen",
     "formArtist": "Bevorzugter Artist",
     "formDate": "Bevorzugtes Datum",
-    "formMessage": "Nachricht"
+    "formMessage": "Nachricht",
+    "formSubmitSuccess": "Vielen Dank! Wir melden uns so bald wie möglich.",
+    "formSubmitError": "Die Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es später erneut oder kontaktieren Sie uns direkt.",
+    "formSubmitting": "Wird gesendet…"
   },
   "footer": {
     "navigation": "Navigation",

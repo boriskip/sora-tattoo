@@ -154,7 +154,10 @@
     "formStylePlaceholder": "Выберите",
     "formArtist": "Предпочитаемый мастер",
     "formDate": "Желаемая дата",
-    "formMessage": "Сообщение"
+    "formMessage": "Сообщение",
+    "formSubmitSuccess": "Спасибо! Мы свяжемся с вами как можно скорее.",
+    "formSubmitError": "Не удалось отправить сообщение. Попробуйте позже или свяжитесь с нами напрямую.",
+    "formSubmitting": "Отправка…"
   },
   "footer": {
     "navigation": "Навигация",

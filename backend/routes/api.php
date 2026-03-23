@@ -1,25 +1,25 @@
 <?php
 
-use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AboutController;
+use App\Http\Controllers\Api\Admin\AboutController as AdminAboutController;
+use App\Http\Controllers\Api\Admin\ArtistController as AdminArtistController;
+use App\Http\Controllers\Api\Admin\ContactSettingsController as AdminContactSettingsController;
+use App\Http\Controllers\Api\Admin\HeroSettingsController as AdminHeroSettingsController;
+use App\Http\Controllers\Api\Admin\InfoController as AdminInfoController;
+use App\Http\Controllers\Api\Admin\LegalController as AdminLegalController;
+use App\Http\Controllers\Api\Admin\ReviewController as AdminReviewController;
+use App\Http\Controllers\Api\Admin\StyleController as AdminStyleController;
+use App\Http\Controllers\Api\Admin\WorkController as AdminWorkController;
 use App\Http\Controllers\Api\ArtistController;
-use App\Http\Controllers\Api\WorkController;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ContactInquiryController;
+use App\Http\Controllers\Api\ContactSettingsController;
 use App\Http\Controllers\Api\HeroSettingsController;
+use App\Http\Controllers\Api\InfoController;
+use App\Http\Controllers\Api\LegalController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\StyleController;
-use App\Http\Controllers\Api\InfoController;
-use App\Http\Controllers\Api\ContactSettingsController;
-use App\Http\Controllers\Api\LegalController;
-use App\Http\Controllers\Api\Admin\AboutController as AdminAboutController;
-use App\Http\Controllers\Api\Admin\LegalController as AdminLegalController;
-use App\Http\Controllers\Api\Admin\ContactSettingsController as AdminContactSettingsController;
-use App\Http\Controllers\Api\Admin\InfoController as AdminInfoController;
-use App\Http\Controllers\Api\Admin\HeroSettingsController as AdminHeroSettingsController;
-use App\Http\Controllers\Api\Admin\ReviewController as AdminReviewController;
-use App\Http\Controllers\Api\Admin\ArtistController as AdminArtistController;
-use App\Http\Controllers\Api\Admin\WorkController as AdminWorkController;
-use App\Http\Controllers\Api\Admin\StyleController as AdminStyleController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\WorkController;
 use Illuminate\Support\Facades\Route;
 
 // Auth: login (public), logout + user (protected)
@@ -44,6 +44,8 @@ Route::get('/reviews', [ReviewController::class, 'index']);
 Route::post('/reviews', [ReviewController::class, 'store']);
 Route::get('/info', [InfoController::class, 'show']);
 Route::get('/contact-settings', [ContactSettingsController::class, 'show']);
+Route::post('/contact-inquiry', [ContactInquiryController::class, 'store'])
+    ->middleware('throttle:10,1');
 Route::get('/legal', [LegalController::class, 'show']);
 
 // Admin (protected by auth:sanctum)
@@ -95,4 +97,3 @@ Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
     Route::delete('/reviews/{id}', [AdminReviewController::class, 'destroy']);
     Route::post('/reviews/{id}/approve', [AdminReviewController::class, 'approve']);
 });
-
