@@ -100,6 +100,15 @@ After deploying frontend, update backend CORS to allow your Vercel domain:
    - Run Command: `php artisan serve --host=0.0.0.0 --port=$PORT`
    - Add Database: Managed Database (MySQL)
 
+## ⚙️ GitHub Actions (this repository)
+
+| Workflow | When it runs | Purpose |
+|----------|----------------|---------|
+| **Deploy Backend** (`.github/workflows/deploy-backend.yml`) | Push to `main` when `backend/**`, `deploy/**`, or that workflow file changes | SSH to the server (`SERVER_HOST`, `SERVER_USER`, `SSH_PRIVATE_KEY`), `git pull`, `composer install`, `migrate`, `storage:link`, config/route cache. |
+| **Deploy to Vercel** (`.github/workflows/deploy.yml`) | Push to `main`/`master` when `frontend/**` or that workflow changes, or **Run workflow** manually | Builds the Next.js app in CI (checks that `npm run build` succeeds). Production deploy to Vercel is still typically done by **Vercel’s Git integration**; align `NEXT_PUBLIC_API_URL` in Vercel and in this workflow’s secret if you use the build job. |
+
+**Uploaded media** (`backend/storage/app/public`) is **not** tracked in git. Keep **backups** or snapshots on the server so images are not lost on reinstall or bad deploys.
+
 ## 📋 Post-Deployment Checklist
 
 - [ ] Frontend deployed to Vercel
