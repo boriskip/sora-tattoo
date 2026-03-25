@@ -93,7 +93,7 @@ export default function ImageSlider({ items, autoPlay = true, interval = 5000 }:
               src={current?.url ?? ''}
               alt={altText}
               fill
-              className="object-cover pointer-events-none"
+                className="object-cover pointer-events-none"
               priority={currentIndex === 0}
               sizes="(max-width: 768px) 100vw, 50vw"
               unoptimized

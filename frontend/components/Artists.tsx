@@ -190,14 +190,26 @@ export default function Artists({ artists = [], works = [] }: ArtistsProps) {
                       <button
                         type="button"
                         onClick={() => { setLightboxWorkId(work.id); setLightboxImageIndex(0); }}
-                        className={`w-full h-[200px] md:h-[250px] overflow-hidden bg-gray-200 relative group cursor-pointer focus:ring-2 focus:ring-graphite/50 focus:ring-offset-2 block ${masterName ? 'rounded-t-none' : 'rounded-t-lg'} ${label ? 'rounded-b-none' : 'rounded-b-lg'}`}
+                        className={`w-full aspect-[4/5] overflow-hidden bg-gray-200 relative group cursor-pointer focus:ring-2 focus:ring-graphite/50 focus:ring-offset-2 block ${masterName ? 'rounded-t-none' : 'rounded-t-lg'} ${label ? 'rounded-b-none' : 'rounded-b-lg'}`}
                       >
+                        {/* Blur background so `object-contain` doesn't leave visible side gaps */}
+                        <div
+                          aria-hidden
+                          className="absolute inset-0 z-0 bg-cover bg-center blur-2xl scale-110 opacity-60 pointer-events-none"
+                          style={{ backgroundImage: `url(${src})` }}
+                        />
+                        {/* Tint only side edges (not the whole blurred region) */}
+                        <div
+                          aria-hidden
+                          className="absolute inset-0 z-0 pointer-events-none bg-gradient-to-r from-[#383737]/55 via-transparent to-[#383737]/55"
+                        />
                         <img
                           src={src}
                           alt={getWorkFirstAlt(work)}
-                          className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-300"
+                          // Use contain so image height isn't clipped; keeps aspect ratio
+                          className="relative z-10 object-contain w-full h-full group-hover:scale-110 transition-transform duration-300 bg-transparent"
                         />
-                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
+                        <div className="absolute inset-0 z-20 bg-black/0 group-hover:bg-black/20 transition-colors" />
                       </button>
                       {label && (
                         <div className="mt-0 py-2 px-2 text-center text-white rounded-b-lg" style={{ backgroundColor: '#383737' }}>
