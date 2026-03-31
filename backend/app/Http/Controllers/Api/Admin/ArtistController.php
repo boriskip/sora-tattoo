@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Artist;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -164,8 +165,30 @@ class ArtistController extends Controller
         if (!$artist) {
             return response()->json(['message' => 'Artist not found'], 404);
         }
-        $artist->delete();
-        return response()->json(['message' => 'Deleted'], 200);
+        try {
+            DB::transaction(function () use ($artist) {
+                // Be defensive: some production DBs may have stricter FK constraints than local.
+                // Explicitly delete children to avoid FK violations.
+                $artist->load(['translations', 'works.translations', 'works.images.translations', 'works.images']);
+
+                $artist->translations()->delete();
+                foreach ($artist->works as $work) {
+                    $work->translations()->delete();
+                    foreach ($work->images as $img) {
+                        $img->translations()->delete();
+                    }
+                    $work->images()->delete();
+                    $work->delete();
+                }
+
+                $artist->delete();
+            });
+
+            return response()->json(['message' => 'Deleted'], 200);
+        } catch (\Throwable $e) {
+            $message = config('app.debug') ? $e->getMessage() : 'Delete failed.';
+            return response()->json(['message' => $message], 500);
+        }
     }
 
     public function uploadAvatar(Request $request): JsonResponse

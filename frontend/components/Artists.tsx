@@ -86,7 +86,7 @@ export default function Artists({ artists = [], works = [] }: ArtistsProps) {
 
         {/* Gallery - Infinite Horizontal Scroll */}
         <motion.div
-          className="w-full mb-6 md:mb-12 overflow-hidden"
+          className="w-full mb-6 md:mb-12 overflow-visible"
           {...getAnimationProps({
             initial: { opacity: 0, y: 10 },
             whileInView: { opacity: 1, y: 0 },
@@ -163,7 +163,7 @@ export default function Artists({ artists = [], works = [] }: ArtistsProps) {
 
             <div 
               ref={galleryRef}
-              className="flex gap-4 overflow-x-auto pt-4 pb-4 scrollbar-hide relative"
+              className="flex gap-4 overflow-x-auto overflow-y-visible pt-4 pb-4 px-2 sm:px-4 scrollbar-hide relative"
               style={{ 
                 scrollBehavior: 'smooth',
                 WebkitOverflowScrolling: 'touch'
@@ -182,7 +182,7 @@ export default function Artists({ artists = [], works = [] }: ArtistsProps) {
                   return (
                     <div
                       key={work.id}
-                      className="flex-shrink-0 w-[200px] md:w-[250px] rounded-lg transition-transform duration-300 hover:scale-105 hover:shadow-lg"
+                      className="flex-shrink-0 w-[200px] md:w-[250px] rounded-lg transition-transform duration-300 hover:scale-105 hover:shadow-lg transform-gpu"
                     >
                       {masterName && (
                         <p className="py-2 px-2 text-xs font-medium truncate text-center text-white rounded-t-lg" style={{ backgroundColor: '#383737' }} title={masterName}>{masterName}</p>
