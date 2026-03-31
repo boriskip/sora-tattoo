@@ -17,7 +17,8 @@ export default function Header() {
   const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const lastScrollYRef = useRef(0);
+  const aboutStartYRef = useRef<number | null>(null);
   const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
   const langDropdownDesktopRef = useRef<HTMLDivElement>(null);
   const langDropdownMobileRef = useRef<HTMLDivElement>(null);
@@ -34,24 +35,63 @@ export default function Header() {
   }, [isLangDropdownOpen]);
 
   useEffect(() => {
+    const updateAboutStart = () => {
+      const el = document.getElementById('about');
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      aboutStartYRef.current = rect.top + window.scrollY;
+    };
+
+    // Initial + after layout settles (About is a client component).
+    updateAboutStart();
+    const raf1 = window.requestAnimationFrame(updateAboutStart);
+    const raf2 = window.requestAnimationFrame(updateAboutStart);
+
+    window.addEventListener('resize', updateAboutStart, { passive: true });
+    return () => {
+      window.cancelAnimationFrame(raf1);
+      window.cancelAnimationFrame(raf2);
+      window.removeEventListener('resize', updateAboutStart);
+    };
+  }, []);
+
+  useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
+      const lastScrollY = lastScrollYRef.current;
+      const delta = currentScrollY - lastScrollY;
+      const MIN_DELTA = 8;
+
+      const aboutStartY = aboutStartYRef.current;
+      const HEADER_H = 80;
+      const isBeforeAbout = aboutStartY !== null ? currentScrollY < aboutStartY - HEADER_H : currentScrollY < 500;
+
+      // Before About (Hero/top area): keep header visible.
+      if (isBeforeAbout) {
+        setIsVisible(true);
+        lastScrollYRef.current = currentScrollY;
+        return;
+      }
       
       // Show header when scrolling up or at the top
-      if (currentScrollY < lastScrollY || currentScrollY < 100) {
+      if (currentScrollY < 100) {
         setIsVisible(true);
-      } 
+      }
+      // Show header when scrolling up (ignore tiny jitter)
+      else if (delta < -MIN_DELTA) {
+        setIsVisible(true);
+      }
       // Hide header when scrolling down (but not at the very top)
-      else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+      else if (delta > MIN_DELTA) {
         setIsVisible(false);
       }
       
-      setLastScrollY(currentScrollY);
+      lastScrollYRef.current = currentScrollY;
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
+  }, []);
 
   const switchLocale = (newLocale: string) => {
     setIsLangDropdownOpen(false);
@@ -73,7 +113,7 @@ export default function Header() {
         initial={{ y: 0 }}
         animate={{ y: isVisible ? 0 : -100 }}
         transition={{ duration: 0.3, ease: 'easeInOut' }}
-        className="fixed top-0 left-0 right-0 z-50 bg-graphite border-b border-white/10"
+        className="fixed top-0 left-0 right-0 z-[200] bg-graphite border-b border-white/10"
       >
         <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
           <div className="flex items-center justify-between gap-2">
