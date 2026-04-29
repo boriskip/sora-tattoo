@@ -9,6 +9,7 @@ type FooterProps = { hero?: HeroSettings | null };
 
 export default function Footer({ hero }: FooterProps) {
   const locale = useLocale();
+  const tHero = useTranslations('hero');
   const tFooter = useTranslations('footer');
   const tNav = useTranslations('nav');
   const instagramUrl = hero?.instagram_url || 'https://instagram.com';
@@ -23,7 +24,7 @@ export default function Footer({ hero }: FooterProps) {
           <div>
             <h3 className="font-serif font-normal text-[27px] leading-[36px] tracking-[0.2em] mb-4 text-white">SORA TATTOO</h3>
             <p className="text-white/80 text-sm">
-              Where ink meets air.
+              {tHero('tagline')}
             </p>
           </div>
 
