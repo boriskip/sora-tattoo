@@ -6,14 +6,15 @@ import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { buttonTransitionClass } from '@/utils/animations';
 import { getApiUrl } from '@/lib/api';
-import type { ContactSettings, HeroSettings } from '@/lib/api';
+import type { ContactSettings, HeroSettings, Style } from '@/lib/api';
 
 type ContactProps = {
   contact?: ContactSettings | null;
   hero?: HeroSettings | null;
+  styles?: Style[];
 };
 
-export default function Contact({ contact, hero }: ContactProps) {
+export default function Contact({ contact, hero, styles = [] }: ContactProps) {
   const searchParams = useSearchParams();
   const locale = useLocale();
   const tCommon = useTranslations('common');
@@ -286,10 +287,11 @@ export default function Contact({ contact, hero }: ContactProps) {
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-900 focus:border-transparent"
               >
                 <option value="">{tContact('formStylePlaceholder')}</option>
-                <option value="japanese">Japanese</option>
-                <option value="realism">Realism</option>
-                <option value="minimal">Minimal</option>
-                <option value="graphic">Graphic</option>
+                {styles.map((styleItem) => (
+                  <option key={styleItem.id} value={styleItem.slug || styleItem.name}>
+                    {styleItem.name}
+                  </option>
+                ))}
               </select>
             </div>
 

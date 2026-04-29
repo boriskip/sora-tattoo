@@ -7,32 +7,20 @@ import { useState, useEffect } from 'react';
 import { useMobileAnimation } from '@/hooks/useMobileAnimation';
 import { viewportSettings, buttonTransitionClass, buttonIconTransitionClass } from '@/utils/animations';
 import type { Work, Style } from '@/lib/api';
-import { getWorkFirstImage, getWorkFirstAlt, getApiUrl } from '@/lib/api';
+import { getWorkFirstImage, getWorkFirstAlt } from '@/lib/api';
 
 const FALLBACK_STYLE_IDS = ['japanese', 'realism', 'minimal', 'graphic'];
 
-type GalleryProps = { works: Work[] };
+type GalleryProps = { works: Work[]; styles?: Style[] };
 
-export default function Gallery({ works = [] }: GalleryProps) {
+export default function Gallery({ works = [], styles = [] }: GalleryProps) {
   const searchParams = useSearchParams();
   const tCommon = useTranslations('common');
   const tGallery = useTranslations('gallery');
   const [selectedFilter, setSelectedFilter] = useState<string>('all');
   const [openWorkId, setOpenWorkId] = useState<number | null>(null);
-  const [stylesFromApi, setStylesFromApi] = useState<Style[]>([]);
   const { isMobile, prefersReducedMotion, getAnimationProps } = useMobileAnimation();
-
-  useEffect(() => {
-    let cancelled = false;
-    fetch(`${getApiUrl()}/styles`)
-      .then((res) => res.ok ? res.json() : null)
-      .then((json) => {
-        if (!cancelled && json?.data) setStylesFromApi(json.data as Style[]);
-      });
-    return () => { cancelled = true; };
-  }, []);
-
-  const styleSlugs = stylesFromApi.length > 0 ? stylesFromApi.map((s) => s.slug) : FALLBACK_STYLE_IDS;
+  const styleSlugs = styles.length > 0 ? styles.map((s) => s.slug) : FALLBACK_STYLE_IDS;
 
   useEffect(() => {
     const style = searchParams.get('style');
@@ -66,8 +54,8 @@ export default function Gallery({ works = [] }: GalleryProps) {
   }, [openWorkId, openWorkImages.length]);
 
   const filters =
-    stylesFromApi.length > 0
-      ? [{ id: 'all' as const, label: tGallery('all') }, ...stylesFromApi.map((s) => ({ id: s.slug, label: s.name }))]
+    styles.length > 0
+      ? [{ id: 'all' as const, label: tGallery('all') }, ...styles.map((s) => ({ id: s.slug, label: s.name }))]
       : [
           { id: 'all' as const, label: tGallery('all') },
           { id: 'japanese', label: tGallery('japanese') },

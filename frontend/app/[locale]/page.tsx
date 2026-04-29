@@ -80,11 +80,11 @@ export default async function HomePage({ params }: Props) {
       <Hero data={hero} />
       <About data={about} />
       <Artists artists={artists} works={works} />
-      <Gallery works={works} />
+      <Gallery works={works} styles={styles} />
       {styles.length > 0 && <Styles data={styles} />}
       <Guides data={info} />
       <Reviews data={reviews} />
-      <Contact contact={contact} hero={hero} />
+      <Contact contact={contact} hero={hero} styles={styles} />
       <Footer hero={hero} />
     </main>
   );
