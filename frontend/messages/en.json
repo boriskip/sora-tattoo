@@ -167,6 +167,13 @@
     "privacy": "Privacy Policy",
     "cookies": "We use only technically necessary cookies. See Privacy Policy for details."
   },
+  "cookieConsent": {
+    "title": "Cookies & analytics",
+    "body": "With your consent we use Google Analytics to understand how the site is used. Without consent we do not set analytics cookies.",
+    "privacyLink": "Privacy Policy",
+    "accept": "Accept",
+    "decline": "Decline"
+  },
   "legal": {
     "impressum": {
       "title": "Imprint",

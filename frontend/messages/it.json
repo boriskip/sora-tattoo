@@ -167,6 +167,13 @@
     "privacy": "Privacy",
     "cookies": "Utilizziamo solo cookie tecnici necessari. Dettagli nella Privacy."
   },
+  "cookieConsent": {
+    "title": "Cookie e analitica",
+    "body": "Con il tuo consenso usiamo Google Analytics per capire come viene usato il sito. Senza consenso non impostiamo cookie di analitica.",
+    "privacyLink": "Privacy",
+    "accept": "Accetta",
+    "decline": "Rifiuta"
+  },
   "legal": {
     "impressum": {
       "title": "Impronta legale",

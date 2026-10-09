@@ -167,6 +167,13 @@
     "privacy": "Datenschutzerklärung",
     "cookies": "Wir verwenden nur technisch notwendige Cookies. Details in der Datenschutzerklärung."
   },
+  "cookieConsent": {
+    "title": "Cookies & Analyse",
+    "body": "Mit Ihrer Einwilligung nutzen wir Google Analytics, um die Nutzung der Website zu verstehen. Ohne Einwilligung setzen wir keine Analyse-Cookies.",
+    "privacyLink": "Datenschutzerklärung",
+    "accept": "Akzeptieren",
+    "decline": "Ablehnen"
+  },
   "legal": {
     "impressum": {
       "title": "Impressum",
